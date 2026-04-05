@@ -1,23 +1,5 @@
 <template>
   <div class="home">
-    <!-- Navbar -->
-    <header class="navbar">
-      <div class="logo-section">
-        <span class="logo">♻</span>
-        <span class="brand">EcoTech</span>
-      </div>
-
-      <nav class="nav-links">
-        <router-link to="/" class="nav-item active">Home</router-link>
-        <router-link to="/dashboard" class="nav-item">Dashboard</router-link>
-        <router-link to="/repair-check" class="nav-item">Repair Check</router-link>
-        <router-link to="/extend-usage" class="nav-item">Extend Usage</router-link>
-        <router-link to="/ai-chat" class="nav-item">AI Chat</router-link>
-        <router-link to="/safe-guidance" class="nav-item">Safe Guidance</router-link>
-        <router-link to="/disposal" class="nav-item">Disposal Locations</router-link>
-      </nav>
-    </header>
-
     <!-- Hero -->
     <section class="hero">
       <img :src="heroImg" class="hero-img" />
@@ -109,46 +91,6 @@ import heroImg from '@/assets/e-waste.png'
 .home {
   background: #f7f7f7;
   font-family: Arial, sans-serif;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px 32px;
-  background: white;
-  border-bottom: 1px solid #eee;
-}
-
-.logo-section {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.logo {
-  color: green;
-  font-size: 24px;
-}
-
-.brand {
-  font-weight: bold;
-}
-
-.nav-links {
-  display: flex;
-  gap: 12px;
-}
-
-.nav-item {
-  text-decoration: none;
-  color: #333;
-  padding: 8px 14px;
-  border-radius: 10px;
-}
-
-.nav-item.active {
-  background: #dcfce7;
-  color: green;
 }
 
 .hero {
