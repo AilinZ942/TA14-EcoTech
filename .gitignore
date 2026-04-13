@@ -40,3 +40,6 @@ __screenshots__/
 
 #.env files
 .env.local
+
+# Python virtual environment
+.venv/

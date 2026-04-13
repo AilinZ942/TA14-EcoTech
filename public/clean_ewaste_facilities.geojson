@@ -1,0 +1,6089 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.1,
+          -29.32
+        ]
+      },
+      "properties": {
+        "facility_name": "ASHFORD RURAL TRANSFER STATION",
+        "address": "159 LIMESTONE ROAD",
+        "suburb": "ASHFORD",
+        "postcode": "2361",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "ashford rural transfer station|2361"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.19,
+          -35.3
+        ]
+      },
+      "properties": {
+        "facility_name": "DOMAYNE FYSHWICK",
+        "address": "80 COLLIE STREET",
+        "suburb": "FYSHWICK",
+        "postcode": "2609",
+        "state": "ACT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "domayne fyshwick|2609"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.61,
+          -33.74
+        ]
+      },
+      "properties": {
+        "facility_name": "BLAXLAND RESOURCE RECOVERY AND WASTE MANAGEMENT FA",
+        "address": "28-30 ATTUNGA ROAD",
+        "suburb": "BLAXLAND",
+        "postcode": "2774",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "blaxland resource recovery and waste management fa|2774"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          116.61,
+          -31.54
+        ]
+      },
+      "properties": {
+        "facility_name": "OLD QUARRY ROAD WASTE MANAGEMENT FACILITY",
+        "address": "LOT 422 OLD QUARRY ROAD",
+        "suburb": "NORTHAM",
+        "postcode": "6401",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "old quarry road waste management facility|6401"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.99,
+          -41.62
+        ]
+      },
+      "properties": {
+        "facility_name": "LONGFORD TRANSFER STATION AND TIP SHOP",
+        "address": "291 MARLBOROUGH STREET",
+        "suburb": "LONGFORD",
+        "postcode": "7301",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "longford transfer station and tip shop|7301"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.12,
+          -34.04
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "41-49 WILLARONG ROAD",
+        "suburb": "CARINGBAH",
+        "postcode": "2229",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2229"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.64,
+          -32.99
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "240-260 HILLSBOROUGH ROAD",
+        "suburb": "WARNERS BAY",
+        "postcode": "2282",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2282"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.91,
+          -33.95
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "22 ORANGE GROVE ROAD",
+        "suburb": "WARWICK FARM",
+        "postcode": "2170",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2170"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          117.23,
+          -31.27
+        ]
+      },
+      "properties": {
+        "facility_name": "AMERY REFUSE SITE",
+        "address": "CNR DOWERIN/KALANNIE ROADS",
+        "suburb": "MINNIVALE",
+        "postcode": "6462",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "amery refuse site|6462"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.33,
+          -42.87
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "105 CAMPBELL STREET",
+        "suburb": "HOBART",
+        "postcode": "7000",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|7000"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.91,
+          -36.08
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "423 SMOLLETT STREET",
+        "suburb": "ALBURY",
+        "postcode": "2640",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2640"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.19,
+          -35.3
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "1 WHYALLA STREET",
+        "suburb": "FYSHWICK",
+        "postcode": "2609",
+        "state": "ACT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2609"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.75,
+          -16.88
+        ]
+      },
+      "properties": {
+        "facility_name": "PORTSMITH TRANSFER STATION",
+        "address": "37-51 LYONS STREET",
+        "suburb": "PORTSMITH",
+        "postcode": "4870",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "portsmith transfer station|4870"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.84,
+          -12.44
+        ]
+      },
+      "properties": {
+        "facility_name": "IGEAR",
+        "address": "28 RAILWAY TERRACE",
+        "suburb": "ALICE SPRINGS",
+        "postcode": "0870",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "igear|0870"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          117.09,
+          -20.66
+        ]
+      },
+      "properties": {
+        "facility_name": "KARRATHA 7 MILE WASTE FACILITY",
+        "address": "LOT 553 PINDAN ROAD",
+        "suburb": "GAP RIDGE",
+        "postcode": "6714",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "karratha 7 mile waste facility|6714"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.5,
+          -35.1
+        ]
+      },
+      "properties": {
+        "facility_name": "ADVANCED RECYCLING TECHNOLOGIES",
+        "address": "13 CHRYSLER ROAD",
+        "suburb": "LONSDALE",
+        "postcode": "5160",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "advanced recycling technologies|5160"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.28,
+          -33.7
+        ]
+      },
+      "properties": {
+        "facility_name": "KIMBRIKI RESOURCE RECOVERY CENTRE",
+        "address": "KIMBRIKI ROAD",
+        "suburb": "INGLESIDE",
+        "postcode": "2101",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "kimbriki resource recovery centre|2101"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.84,
+          -32.09
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "133 GARLING STREET",
+        "suburb": "O'CONNOR",
+        "postcode": "6163",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|6163"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.72,
+          -20.27
+        ]
+      },
+      "properties": {
+        "facility_name": "CANNONVALE TRANSFER STATION",
+        "address": "CARLO DRIVE",
+        "suburb": "CANNONVALE",
+        "postcode": "4802",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "cannonvale transfer station|4802"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.87,
+          -33.79
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "22-26 THIRD AVENUE",
+        "suburb": "BLACKTOWN",
+        "postcode": "2148",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2148"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.52,
+          -23.36
+        ]
+      },
+      "properties": {
+        "facility_name": "LAKES CREEK ROAD WASTE MANAGEMENT FACILITY",
+        "address": "152 LAKES CREEK ROAD",
+        "suburb": "THE COMMON",
+        "postcode": "4701",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "lakes creek road waste management facility|4701"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.38,
+          -30.81
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN (WAREHOUSE)",
+        "address": "31 KAKARRA ROAD",
+        "suburb": "WEST KALGOORLIE",
+        "postcode": "6430",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman warehouse|6430"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          117.43,
+          -31.52
+        ]
+      },
+      "properties": {
+        "facility_name": "TAMMIN REFUSE FACILITY",
+        "address": "HUNT ROAD",
+        "suburb": "SOUTH TAMMIN",
+        "postcode": "6409",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "tammin refuse facility|6409"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.11,
+          -35.98
+        ]
+      },
+      "properties": {
+        "facility_name": "MORUYA TRANSFER STATION",
+        "address": "21 YARRAGEE ROAD",
+        "suburb": "MORUYA",
+        "postcode": "2537",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "moruya transfer station|2537"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.82,
+          -33.73
+        ]
+      },
+      "properties": {
+        "facility_name": "CERTIFIED DESTRUCTION SERVICES",
+        "address": "120 KURRAJONG AVENUE",
+        "suburb": "MOUNT DRUITT",
+        "postcode": "2770",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "certified destruction services|2770"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.19,
+          -35.3
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "25-33 BARRIER STREET",
+        "suburb": "FYSHWICK",
+        "postcode": "2609",
+        "state": "ACT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2609"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.56,
+          -30.59
+        ]
+      },
+      "properties": {
+        "facility_name": "URALLA COMMUNITY RECYCLING CENTRE",
+        "address": "TIP ROAD",
+        "suburb": "URALLA",
+        "postcode": "2358",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "uralla community recycling centre|2358"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.67,
+          -34.7
+        ]
+      },
+      "properties": {
+        "facility_name": "ANGLICARE",
+        "address": "ALLOTMENT 24 (FP 130716) RIDGEWAY ROAD",
+        "suburb": "EDINBURGH NORTH",
+        "postcode": "5113",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "anglicare|5113"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.51,
+          -35.16
+        ]
+      },
+      "properties": {
+        "facility_name": "KURRAJONG RECYCLING",
+        "address": "54 CHASTON STREET",
+        "suburb": "WAGGA WAGGA",
+        "postcode": "2650",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "kurrajong recycling|2650"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.33,
+          -33.91
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "UNIT 3 14 STOCKLAND DRIVE",
+        "suburb": "KELSO",
+        "postcode": "2795",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2795"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.21,
+          -33.74
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN DOMAYNE",
+        "address": "SHOP 4 4-6 NIANGALA CLOSE",
+        "suburb": "BELROSE",
+        "postcode": "2085",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman domayne|2085"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.76,
+          -19.3
+        ]
+      },
+      "properties": {
+        "facility_name": "ENDEAVOUR FOUNDATION",
+        "address": "SHOP 4 95 DUCKWORTH STREET",
+        "suburb": "GARBUTT",
+        "postcode": "4814",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "endeavour foundation|4814"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.65,
+          -33.74
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "331-335 MULGOA ROAD",
+        "suburb": "JAMISONTOWN",
+        "postcode": "2750",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2750"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.54,
+          -34.93
+        ]
+      },
+      "properties": {
+        "facility_name": "ASPITECH",
+        "address": "149 HOLBROOKS ROAD",
+        "suburb": "UNDERDALE",
+        "postcode": "5032",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "aspitech|5032"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.87,
+          -12.38
+        ]
+      },
+      "properties": {
+        "facility_name": "NHULUNBUY LANDFILL",
+        "address": "LOT 1422",
+        "suburb": "NHULUNBUY",
+        "postcode": "0880",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "nhulunbuy landfill|0880"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.57,
+          -34.96
+        ]
+      },
+      "properties": {
+        "facility_name": "ADELAIDE WASTE AND RECYCLING CENTRE",
+        "address": "181 MORPHETT ROAD",
+        "suburb": "NORTH PLYMPTON",
+        "postcode": "5037",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "adelaide waste and recycling centre|5037"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          131.1,
+          -12.53
+        ]
+      },
+      "properties": {
+        "facility_name": "HUMPTY DOO TRANSFER STATION",
+        "address": "225 STRANGWAYS ROAD",
+        "suburb": "HUMPTY DOO",
+        "postcode": "0836",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "humpty doo transfer station|0836"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.43,
+          -35.81
+        ]
+      },
+      "properties": {
+        "facility_name": "BUNGENDORE RESOURCE RECOVERY FACILITY",
+        "address": "210 TARAGO ROAD",
+        "suburb": "BUNGENDORE",
+        "postcode": "2621",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "bungendore resource recovery facility|2621"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.71,
+          -33.28
+        ]
+      },
+      "properties": {
+        "facility_name": "WASTE MANAGEMENT FACILITY",
+        "address": "51 STANLEY ROAD",
+        "suburb": "WELLESLEY",
+        "postcode": "6233",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "waste management facility|6233"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.91,
+          -36.08
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "SHOP 7 94 BORELLA ROAD",
+        "suburb": "EAST ALBURY",
+        "postcode": "2640",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2640"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.56,
+          -34.99
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "822-826 MARION ROAD",
+        "suburb": "MARION",
+        "postcode": "5043",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|5043"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          153.54,
+          -28.21
+        ]
+      },
+      "properties": {
+        "facility_name": "THE GOOD GUYS",
+        "address": "UNIT 5 112 MINJUNGBAL DRIVE",
+        "suburb": "TWEED HEADS SOUTH",
+        "postcode": "2486",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "the good guys|2486"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.6,
+          -34.83
+        ]
+      },
+      "properties": {
+        "facility_name": "SHRED-X SA",
+        "address": "3/2 LAFITTE RD",
+        "suburb": "DRY CREEK",
+        "postcode": "5094",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "shred x sa|5094"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.91,
+          -33.95
+        ]
+      },
+      "properties": {
+        "facility_name": "MRI E-CYCLE SOLUTIONS (AUST) PTY LTD",
+        "address": "36 ORANGE GROVE ROAD",
+        "suburb": "WARWICK FARM",
+        "postcode": "2170",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "mri e cycle solutions aust pty ltd|2170"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.29,
+          -42.84
+        ]
+      },
+      "properties": {
+        "facility_name": "SHRED-X TAS",
+        "address": "4-8 SUNMONT STREET",
+        "suburb": "DERWENT PARK",
+        "postcode": "7009",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "shred x tas|7009"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.19,
+          -33.81
+        ]
+      },
+      "properties": {
+        "facility_name": "NORTHERN SYDNEY COMMUNITY RECYCLING CENTRE",
+        "address": "8 WALTHAM STREET",
+        "suburb": "ARTARMON",
+        "postcode": "2064",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "northern sydney community recycling centre|2064"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.78,
+          -19.27
+        ]
+      },
+      "properties": {
+        "facility_name": "BI-RITE",
+        "address": "42 CAMBRIDGE STREET",
+        "suburb": "GULLIVER",
+        "postcode": "4812",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "bi rite|4812"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.86,
+          -32.13
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "UNIT 20 87 ARMADALE ROAD",
+        "suburb": "JANDAKOT",
+        "postcode": "6164",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|6164"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.07,
+          -35.24
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "5 COHEN STREET",
+        "suburb": "BELCONNEN",
+        "postcode": "2617",
+        "state": "ACT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2617"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.94,
+          -33.85
+        ]
+      },
+      "properties": {
+        "facility_name": "SUEZ WETHERILL PARK RESOURCE RECOVERY CENTRE",
+        "address": "20 DAVIS ROAD",
+        "suburb": "WETHERILL PARK",
+        "postcode": "2164",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "suez wetherill park resource recovery centre|2164"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.2,
+          -35.73
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "4 FLORA CRESCENT",
+        "suburb": "BATEMANS BAY",
+        "postcode": "2536",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2536"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.19,
+          -35.3
+        ]
+      },
+      "properties": {
+        "facility_name": "WV TECHNOLOGIES",
+        "address": "39 WHYALLA STREET",
+        "suburb": "FYSHWICK",
+        "postcode": "2609",
+        "state": "ACT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "wv technologies|2609"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.07,
+          -35.83
+        ]
+      },
+      "properties": {
+        "facility_name": "TUMBARUMBA TRANSFER STATION",
+        "address": "SALEYARDS RD",
+        "suburb": "TUMBARUMBA",
+        "postcode": "2653",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "tumbarumba transfer station|2653"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.0,
+          -17.56
+        ]
+      },
+      "properties": {
+        "facility_name": "STOTERS HILL WASTE FACILITY",
+        "address": "QUARRY ROAD PIN GIN HILL",
+        "suburb": "STOTERS HILL",
+        "postcode": "4860",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "stoters hill waste facility|4860"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          118.6,
+          -20.79
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "150 ANDERSON STREET",
+        "suburb": "PORT HEDLAND",
+        "postcode": "6721",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|6721"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.78,
+          -19.27
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "44-52 CHARTERS TOWERS ROAD",
+        "suburb": "HERMIT PARK",
+        "postcode": "4812",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|4812"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.12,
+          -30.5
+        ]
+      },
+      "properties": {
+        "facility_name": "YARRI ROAD REFUSE FACILITY",
+        "address": "33 YARRI ROAD",
+        "suburb": "PARKESTON",
+        "postcode": "6434",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "yarri road refuse facility|6434"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.91,
+          -12.4
+        ]
+      },
+      "properties": {
+        "facility_name": "SHOAL BAY WASTE MANAGEMENT FACILITY",
+        "address": "SHOAL BAY ACCESS ROAD",
+        "suburb": "HOLMES",
+        "postcode": "0812",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "shoal bay waste management facility|0812"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.66,
+          -34.88
+        ]
+      },
+      "properties": {
+        "facility_name": "CAMPBELLTOWN WORKS DEPOT",
+        "address": "6 NEWTON ROAD",
+        "suburb": "CAMPBELLTOWN",
+        "postcode": "5074",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "campbelltown works depot|5074"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.87,
+          -34.47
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "157-161 KING STREET",
+        "suburb": "WARRAWONG",
+        "postcode": "2502",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2502"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          153.06,
+          -26.4
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "7-9 GIBSON ROAD",
+        "suburb": "NOOSAVILLE",
+        "postcode": "4566",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|4566"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.13,
+          -35.13
+        ]
+      },
+      "properties": {
+        "facility_name": "URANA COMMUNITY RECYCLING CENTRE AND WASTE DISPOSA",
+        "address": "BOREE CREEK RD",
+        "suburb": "URANA",
+        "postcode": "2645",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "urana community recycling centre and waste disposa|2645"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.5,
+          -23.39
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "134-144 KENT STREET",
+        "suburb": "ROCKHAMPTON CITY",
+        "postcode": "4700",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|4700"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.25,
+          -33.89
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "14-26 EBLEY STREET",
+        "suburb": "BONDI JUNCTION",
+        "postcode": "2022",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2022"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.66,
+          -34.86
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "621 NORTH EAST ROAD",
+        "suburb": "GILLES PLAINS",
+        "postcode": "5086",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|5086"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.81,
+          -29.32
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "103 BALO STREET",
+        "suburb": "MOREE",
+        "postcode": "2400",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2400"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.27,
+          -23.86
+        ]
+      },
+      "properties": {
+        "facility_name": "GLADSTONE TRANSFER STATION",
+        "address": "JOE JOSEPH DRIVE",
+        "suburb": "WEST GLADSTONE",
+        "postcode": "4680",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "gladstone transfer station|4680"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.1,
+          -34.26
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "86-94 WILLANDRA AVENUE",
+        "suburb": "GRIFFITH",
+        "postcode": "2680",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2680"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.08,
+          -41.46
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "45-59 CHARLES STREET",
+        "suburb": "LAUNCESTON",
+        "postcode": "7250",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|7250"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          131.13,
+          -12.8
+        ]
+      },
+      "properties": {
+        "facility_name": "RAMINGINING WASTE FACILITY",
+        "address": null,
+        "suburb": "RAMINGINING",
+        "postcode": "0822",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "ramingining waste facility|0822"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          142.14,
+          -10.12
+        ]
+      },
+      "properties": {
+        "facility_name": "THURSDAY ISLAND BOWLS CLUB",
+        "address": "LOT 1 VICTORIA PARADE",
+        "suburb": "THURSDAY ISLAND",
+        "postcode": "4875",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "thursday island bowls club|4875"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          131.13,
+          -12.8
+        ]
+      },
+      "properties": {
+        "facility_name": "GAPUWIYAK WASTE FACILITY",
+        "address": "GAPUWIYAK ROAD",
+        "suburb": "EAST ARNHEM",
+        "postcode": "0822",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "gapuwiyak waste facility|0822"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.84,
+          -32.09
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "2 STOCKDALE ROAD",
+        "suburb": "O'CONNOR",
+        "postcode": "6163",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|6163"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.0,
+          -35.67
+        ]
+      },
+      "properties": {
+        "facility_name": "CULCAIRN TRANSFER STATION",
+        "address": "48 SCHNAARS ROAD",
+        "suburb": "CULCAIRN",
+        "postcode": "2660",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "culcairn transfer station|2660"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.61,
+          -27.95
+        ]
+      },
+      "properties": {
+        "facility_name": "GERALDTON GREENOUGH CITY COUNCIL",
+        "address": "61 LANDFILL LANE",
+        "suburb": "NARNGULU",
+        "postcode": "6532",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "geraldton greenough city council|6532"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.14,
+          -34.11
+        ]
+      },
+      "properties": {
+        "facility_name": "BLAND SHIRE COUNCIL WASTE DEPOT",
+        "address": "161 RACECOURSE ROAD",
+        "suburb": "WEST WYALONG",
+        "postcode": "2671",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "bland shire council waste depot|2671"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.91,
+          -33.95
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "5 ORANGE GROVE ROAD",
+        "suburb": "WARWICK FARM",
+        "postcode": "2170",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2170"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.96,
+          -33.88
+        ]
+      },
+      "properties": {
+        "facility_name": "SIMS E-RECYCLING",
+        "address": "82 MARPLE AVENUE",
+        "suburb": "VILLAWOOD",
+        "postcode": "2163",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "sims e recycling|2163"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.66,
+          -34.89
+        ]
+      },
+      "properties": {
+        "facility_name": "THE GOOD GUYS",
+        "address": "TENANCY 3, 60 GLYNBURN ROAD",
+        "suburb": "HECTORVILLE",
+        "postcode": "5073",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "the good guys|5073"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.54,
+          -34.08
+        ]
+      },
+      "properties": {
+        "facility_name": "SUEZ SPRING FARM RESOURCE RECOVERY PARK",
+        "address": "20 BARROW ROAD",
+        "suburb": "SPRING FARM",
+        "postcode": "2570",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "suez spring farm resource recovery park|2570"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.73,
+          -32.93
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "35 NORTHCOTT DRIVE",
+        "suburb": "KOTARA",
+        "postcode": "2289",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2289"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.76,
+          -19.3
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN TOWNSVILLE",
+        "address": "17 STOCK ROUTE WAY",
+        "suburb": "GARBUTT",
+        "postcode": "4814",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman townsville|4814"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.03,
+          -33.87
+        ]
+      },
+      "properties": {
+        "facility_name": "SUEZ AUBURN TRANSFER STATION",
+        "address": "OLD HILL LINK",
+        "suburb": "SYDNEY OLYMPIC PARK",
+        "postcode": "2141",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "suez auburn transfer station|2141"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.57,
+          -34.84
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "1 HAIGH AVENUE",
+        "suburb": "NOWRA",
+        "postcode": "2541",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2541"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.64,
+          -34.79
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "LOT 13 LAWRENCE HARGRAVE WAY",
+        "suburb": "PARAFIELD",
+        "postcode": "5106",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|5106"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.27,
+          -23.86
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "57 HANSON ROAD",
+        "suburb": "GLADSTONE CENTRAL",
+        "postcode": "4680",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|4680"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.26,
+          -43.05
+        ]
+      },
+      "properties": {
+        "facility_name": "BARRETTA WASTE MANAGEMENT FACILITY",
+        "address": "1922 CHANNEL HIGHWAY",
+        "suburb": "BARRETTA",
+        "postcode": "7054",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "barretta waste management facility|7054"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.28,
+          -33.74
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "800 PITTWATER ROAD",
+        "suburb": "DEE WHY",
+        "postcode": "2099",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2099"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.66,
+          -34.95
+        ]
+      },
+      "properties": {
+        "facility_name": "BURNSIDE COUNCIL DEPOT",
+        "address": "528 GLYNBURN ROAD",
+        "suburb": "BURNSIDE",
+        "postcode": "5066",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "burnside council depot|5066"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.6,
+          -34.83
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "760 MAIN NORTH ROAD",
+        "suburb": "GEPPS CROSS",
+        "postcode": "5094",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|5094"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.13,
+          -41.42
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "78 LINDSAY STREET",
+        "suburb": "INVERMAY",
+        "postcode": "7248",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|7248"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          152.54,
+          -32.35
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "29 BREESE PARADE",
+        "suburb": "FORSTER",
+        "postcode": "2428",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2428"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.89,
+          -41.07
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "43 MARINE TERRACE",
+        "suburb": "SOUTH BURNIE",
+        "postcode": "7320",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|7320"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.3,
+          -33.68
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "47-51 BARRENJOEY ROAD",
+        "suburb": "MONA VALE",
+        "postcode": "2103",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2103"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.08,
+          -33.97
+        ]
+      },
+      "properties": {
+        "facility_name": "GEORGES RIVER COUNCIL WORKS DEPOT",
+        "address": "100 ROBERTS AVENUE",
+        "suburb": "MORTDALE",
+        "postcode": "2223",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "georges river council works depot|2223"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.78,
+          -34.38
+        ]
+      },
+      "properties": {
+        "facility_name": "WHYTES GULLY WASTE AND RESOURCE RECOVERY PARK",
+        "address": "133 REDDALLS ROAD",
+        "suburb": "KEMBLA GRANGE",
+        "postcode": "2526",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "whytes gully waste and resource recovery park|2526"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          119.74,
+          -23.36
+        ]
+      },
+      "properties": {
+        "facility_name": "NEWMAN LANDFILL",
+        "address": "YATES ROAD",
+        "suburb": "NEWMAN",
+        "postcode": "6753",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "newman landfill|6753"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.19,
+          -35.3
+        ]
+      },
+      "properties": {
+        "facility_name": "SHRED-X ACT",
+        "address": "1 DAIRY ROAD",
+        "suburb": "FYSHWICK",
+        "postcode": "2609",
+        "state": "ACT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "shred x act|2609"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.32,
+          -41.24
+        ]
+      },
+      "properties": {
+        "facility_name": "SPREYTON TRANSFER STATION",
+        "address": "21 BAY DRIVE",
+        "suburb": "SPREYTON",
+        "postcode": "7310",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "spreyton transfer station|7310"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.31,
+          -33.71
+        ]
+      },
+      "properties": {
+        "facility_name": "KATOOMBA WASTE MANAGEMENT FACILITY",
+        "address": "49-89 WOODLANDS ROAD",
+        "suburb": "KATOOMBA",
+        "postcode": "2780",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "katoomba waste management facility|2780"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.59,
+          -34.9
+        ]
+      },
+      "properties": {
+        "facility_name": "RADIO RENTALS",
+        "address": "108 MAIN NORTH ROAD",
+        "suburb": "PROSPECT",
+        "postcode": "5082",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "radio rentals|5082"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.7,
+          -34.82
+        ]
+      },
+      "properties": {
+        "facility_name": "ENVIRO CARE SUNDAY",
+        "address": "240 SMART ROAD",
+        "suburb": "ST AGNES",
+        "postcode": "5097",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "enviro care sunday|5097"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.6,
+          -34.83
+        ]
+      },
+      "properties": {
+        "facility_name": "THE GOOD GUYS",
+        "address": "TENANCY 46 GEPPS CROSS HOMEMAKER CENTRE, 750 - 778 MAIN NORTH ROAD,",
+        "suburb": "GEPPS CROSS",
+        "postcode": "5094",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "the good guys|5094"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          117.36,
+          -32.95
+        ]
+      },
+      "properties": {
+        "facility_name": "KNIGHTLINE COMPUTERS",
+        "address": "109 FEDERAL STREET",
+        "suburb": "NARROGIN",
+        "postcode": "6312",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "knightline computers|6312"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.63,
+          -34.35
+        ]
+      },
+      "properties": {
+        "facility_name": "BARGO WASTE MANAGEMENT CENTRE",
+        "address": "1 ANTHONY ROAD",
+        "suburb": "BARGO",
+        "postcode": "2574",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "bargo waste management centre|2574"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.68,
+          -34.46
+        ]
+      },
+      "properties": {
+        "facility_name": "TEMORA LANDFILL",
+        "address": "TEAL STREET",
+        "suburb": "TEMORA",
+        "postcode": "2666",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "temora landfill|2666"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.64,
+          -33.33
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "34 DENNING ROAD",
+        "suburb": "EAST BUNBURY",
+        "postcode": "6230",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|6230"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.49,
+          -30.78
+        ]
+      },
+      "properties": {
+        "facility_name": "SUEZ - KALGOORLIE SERVICE CENTRE",
+        "address": "82 LEVIATHAN STREET",
+        "suburb": "SOUTH BOULDER",
+        "postcode": "6432",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "suez kalgoorlie service centre|6432"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.19,
+          -33.93
+        ]
+      },
+      "properties": {
+        "facility_name": "BROOKS RADIO AND TV",
+        "address": "1117 BOTANY ROAD",
+        "suburb": "MASCOT",
+        "postcode": "2020",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "brooks radio and tv|2020"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.31,
+          -40.85
+        ]
+      },
+      "properties": {
+        "facility_name": "BURNIE WASTE MANAGEMENT AND RESOURCE RECOVERY CENT",
+        "address": "289 MOOREVILLE ROAD",
+        "suburb": "MOOREVILLE",
+        "postcode": "7321",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "burnie waste management and resource recovery cent|7321"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.13,
+          -35.63
+        ]
+      },
+      "properties": {
+        "facility_name": "BARHAM TRANSFER STATION",
+        "address": "732 EAST BARHAM ROAD",
+        "suburb": "BARHAM",
+        "postcode": "2732",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "barham transfer station|2732"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          153.57,
+          -28.3
+        ]
+      },
+      "properties": {
+        "facility_name": "STOTTS CREEK RECOVERY CENTRE",
+        "address": "LEDDAYS CREEK ROAD",
+        "suburb": "STOTTS CREEK",
+        "postcode": "2487",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "stotts creek recovery centre|2487"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.98,
+          -35.15
+        ]
+      },
+      "properties": {
+        "facility_name": "JUNEE WASTE LANDFILL FACILITY",
+        "address": "KAHMOO LANE",
+        "suburb": "JUNEE",
+        "postcode": "2663",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "junee waste landfill facility|2663"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          152.67,
+          -26.35
+        ]
+      },
+      "properties": {
+        "facility_name": "GYMPIE WASTE MANAGEMENT FACILITY",
+        "address": "LOT 542 BONNICK ROAD",
+        "suburb": "GYMPIE",
+        "postcode": "4570",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "gympie waste management facility|4570"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.45,
+          -35.32
+        ]
+      },
+      "properties": {
+        "facility_name": "GILMORE RECOVERY CENTRE",
+        "address": "6 KILLARNEY ROAD",
+        "suburb": "GILMORE",
+        "postcode": "2720",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "gilmore recovery centre|2720"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.32,
+          -41.3
+        ]
+      },
+      "properties": {
+        "facility_name": "ST HELENS TRANSFER STATION",
+        "address": "EAGLE STREET",
+        "suburb": "ST HELENS",
+        "postcode": "7216",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "st helens transfer station|7216"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.78,
+          -24.33
+        ]
+      },
+      "properties": {
+        "facility_name": "GRACEMERE WASTE TRANSFER STATION",
+        "address": "74 ALLEN ROAD",
+        "suburb": "GRACEMERE",
+        "postcode": "4702",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "gracemere waste transfer station|4702"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.46,
+          -33.68
+        ]
+      },
+      "properties": {
+        "facility_name": "BUSSELTON TRANSFER STATION",
+        "address": "39 RENDEZVOUS ROAD",
+        "suburb": "VASSE",
+        "postcode": "6280",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "busselton transfer station|6280"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.14,
+          -33.11
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN (ERINA)",
+        "address": "10 KARALTA LANE",
+        "suburb": "ERINA",
+        "postcode": "2250",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman erina|2250"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.5,
+          -35.1
+        ]
+      },
+      "properties": {
+        "facility_name": "WASTEK PTY LTD",
+        "address": "17 MEYER ROAD",
+        "suburb": "LONSDALE",
+        "postcode": "5160",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "wastek pty ltd|5160"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.63,
+          -26.76
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "18 ROGERS DRIVE",
+        "suburb": "KINGAROY",
+        "postcode": "4610",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|4610"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.92,
+          -36.04
+        ]
+      },
+      "properties": {
+        "facility_name": "ALBURY WASTE MANAGEMENT CENTRE",
+        "address": "565 MUDGE STREET",
+        "suburb": "LAVINGTON",
+        "postcode": "2641",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "albury waste management centre|2641"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.99,
+          -33.85
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "702 WOODVILLE ROAD",
+        "suburb": "OLD GUILDFORD",
+        "postcode": "2161",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2161"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.76,
+          -32.92
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "136 PARRY STREET",
+        "suburb": "NEWCASTLE WEST",
+        "postcode": "2302",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2302"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.04,
+          -29.84
+        ]
+      },
+      "properties": {
+        "facility_name": "INVERELL WASTE DEPOT",
+        "address": "55 BURTENSHAW ROAD",
+        "suburb": "INVERELL",
+        "postcode": "2360",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "inverell waste depot|2360"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.03,
+          -33.85
+        ]
+      },
+      "properties": {
+        "facility_name": "THE GOOD GUYS",
+        "address": "SHOP 7 265 PARRAMATTA ROAD",
+        "suburb": "AUBURN",
+        "postcode": "2144",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "the good guys|2144"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.55,
+          -15.17
+        ]
+      },
+      "properties": {
+        "facility_name": "KUNUNURRA LANDFILL",
+        "address": "OLD DARWIN ROAD",
+        "suburb": "KUNUNURRA",
+        "postcode": "6743",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "kununurra landfill|6743"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.83,
+          -30.96
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "8-16 BRISBANE STREET",
+        "suburb": "TAMWORTH",
+        "postcode": "2340",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2340"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.77,
+          -32.12
+        ]
+      },
+      "properties": {
+        "facility_name": "HENDERSON WASTE RECOVERY PARK",
+        "address": "920 ROCKINGHAM ROAD",
+        "suburb": "WATTLEUP",
+        "postcode": "6166",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "henderson waste recovery park|6166"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.1,
+          -21.16
+        ]
+      },
+      "properties": {
+        "facility_name": "MOUNT ISA REFUSE FACILITY",
+        "address": "JESSOP DRIVE",
+        "suburb": "MOUNT ISA",
+        "postcode": "4825",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "mount isa refuse facility|4825"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          152.8,
+          -26.48
+        ]
+      },
+      "properties": {
+        "facility_name": "EUMUNDI ROAD LANDFILL",
+        "address": "561 EUMUNDI NOOSA ROAD",
+        "suburb": "DOONAN",
+        "postcode": "4562",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "eumundi road landfill|4562"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.65,
+          -34.93
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS TRINITY GARDENS",
+        "address": "210-212 PORTRUSH RD",
+        "suburb": "TRINITY GARDENS",
+        "postcode": "5068",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks trinity gardens|5068"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.82,
+          -32.33
+        ]
+      },
+      "properties": {
+        "facility_name": "MILLAR ROAD LANDFILL FACILITY",
+        "address": "218 MILLAR ROAD",
+        "suburb": "BALDIVIS",
+        "postcode": "6171",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "millar road landfill facility|6171"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          152.54,
+          -32.07
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "9 MILL CLOSE",
+        "suburb": "TAREE",
+        "postcode": "2430",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2430"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.91,
+          -12.47
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN (DARWIN)",
+        "address": "644 STUART HIGHWAY",
+        "suburb": "BERRIMAH",
+        "postcode": "0828",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman darwin|0828"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          117.88,
+          -35.02
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "5 BROOKS GARDEN BOULEVARD",
+        "suburb": "LANGE",
+        "postcode": "6330",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|6330"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.14,
+          -35.31
+        ]
+      },
+      "properties": {
+        "facility_name": "HUME RESOURCE MANAGEMENT CENTRE",
+        "address": "499 MUGGA LANE",
+        "suburb": "JERRABOMBERRA",
+        "postcode": "2600",
+        "state": "ACT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "hume resource management centre|2600"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.54,
+          -34.88
+        ]
+      },
+      "properties": {
+        "facility_name": "RADIO RENTALS",
+        "address": "WOODVILLE WAREHOUSE UNIT 2/BUILDING 21, CHARLES STURT INDUSTRIAL ESTATE",
+        "suburb": "WOODVILLE",
+        "postcode": "5011",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "radio rentals|5011"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          122.25,
+          -17.91
+        ]
+      },
+      "properties": {
+        "facility_name": "BROOME WASTE MANAGEMENT FACILITY",
+        "address": "LOT 400 BUCKLEYS ROAD",
+        "suburb": "BILINGURR",
+        "postcode": "6725",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "broome waste management facility|6725"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.13,
+          -41.42
+        ]
+      },
+      "properties": {
+        "facility_name": "LAUNCESTON WASTE CENTRE",
+        "address": "REMOUNT ROAD",
+        "suburb": "MOWBRAY",
+        "postcode": "7248",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "launceston waste centre|7248"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.08,
+          -34.82
+        ]
+      },
+      "properties": {
+        "facility_name": "GUNDAGAI WASTE TRANSFER STATION",
+        "address": "BURRA RD",
+        "suburb": "RENO",
+        "postcode": "2722",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "gundagai waste transfer station|2722"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.13,
+          -33.8
+        ]
+      },
+      "properties": {
+        "facility_name": "RYDE RESOURCE RECOVERY CENTRE",
+        "address": "145 WICKS ROAD",
+        "suburb": "MACQUARIE PARK",
+        "postcode": "2113",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "ryde resource recovery centre|2113"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          152.85,
+          -31.4
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "140 LAKE ROAD",
+        "suburb": "PORT MACQUARIE",
+        "postcode": "2444",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2444"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.85,
+          -34.76
+        ]
+      },
+      "properties": {
+        "facility_name": "COOTAMUNDRA WASTE TRANSFER STATION",
+        "address": "35 TURNERS LANE",
+        "suburb": "COOTAMUNDRA",
+        "postcode": "2590",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "cootamundra waste transfer station|2590"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.14,
+          -33.11
+        ]
+      },
+      "properties": {
+        "facility_name": "DOMAYNE",
+        "address": "16 DIGNITY CRESCENT",
+        "suburb": "WEST GOSFORD",
+        "postcode": "2250",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "domayne|2250"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.94,
+          -33.85
+        ]
+      },
+      "properties": {
+        "facility_name": "SHRED-X NSW",
+        "address": "29 DAVIS ROAD",
+        "suburb": "WETHERILL PARK",
+        "postcode": "2164",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "shred x nsw|2164"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.75,
+          -16.88
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "186-196 DRAPER STREET",
+        "suburb": "PORTSMITH",
+        "postcode": "4870",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|4870"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.58,
+          -34.97
+        ]
+      },
+      "properties": {
+        "facility_name": "THE GOOD GUYS",
+        "address": "957 SOUTH ROAD",
+        "suburb": "MELROSE PARK",
+        "postcode": "5039",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "the good guys|5039"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.42,
+          -20.58
+        ]
+      },
+      "properties": {
+        "facility_name": "KELSEY CREEK LANDFILL",
+        "address": "139 KELSEY CREEK ROAD",
+        "suburb": "PROSERPINE",
+        "postcode": "4800",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "kelsey creek landfill|4800"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.85,
+          -33.8
+        ]
+      },
+      "properties": {
+        "facility_name": "SUEZ EASTERN CREEK TRANSFER STATION",
+        "address": "WALLGROVE ROAD",
+        "suburb": "EASTERN CREEK",
+        "postcode": "2766",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "suez eastern creek transfer station|2766"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.58,
+          -33.06
+        ]
+      },
+      "properties": {
+        "facility_name": "AWABA WASTE MANAGEMENT FACILITY",
+        "address": "367 WILTON ROAD",
+        "suburb": "AWABA",
+        "postcode": "2283",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "awaba waste management facility|2283"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          117.9,
+          -33.63
+        ]
+      },
+      "properties": {
+        "facility_name": "KATANNING SHIRE REFUSE SITE",
+        "address": "KATANNING NYABING ROAD AND DEPOT ROAD",
+        "suburb": "KATANNING",
+        "postcode": "6317",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "katanning shire refuse site|6317"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.81,
+          -29.32
+        ]
+      },
+      "properties": {
+        "facility_name": "MOREE WASTE MANAGEMENT FACILITY",
+        "address": "57 EVERGREEN ROAD",
+        "suburb": "MOREE",
+        "postcode": "2400",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "moree waste management facility|2400"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.12,
+          -34.04
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "96-98 TAREN POINT ROAD",
+        "suburb": "TAREN POINT",
+        "postcode": "2229",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2229"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.6,
+          -34.93
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN CITY CROSS",
+        "address": "SHOP 1, 31-33 RUNDLE MALL",
+        "suburb": "ADELAIDE",
+        "postcode": "5000",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman city cross|5000"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.97,
+          -41.31
+        ]
+      },
+      "properties": {
+        "facility_name": "EXETER TRANSFER STATION",
+        "address": "16 BILOO STREET",
+        "suburb": "EXETER",
+        "postcode": "7275",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "exeter transfer station|7275"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.61,
+          -34.87
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS PROSPECT",
+        "address": "87-93 MAIN NORTH ROAD",
+        "suburb": "NAILSWORTH",
+        "postcode": "5083",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks prospect|5083"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.67,
+          -34.67
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "LOT 2005 MAIN NORTH ROAD",
+        "suburb": "SMITHFIELD",
+        "postcode": "5114",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|5114"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.75,
+          -16.88
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "13-15 WATER STREET",
+        "suburb": "CAIRNS CITY",
+        "postcode": "4870",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|4870"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.06,
+          -33.89
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "UNIT 3 51 ROBERTS ROAD",
+        "suburb": "GREENACRE",
+        "postcode": "2190",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2190"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.07,
+          -34.43
+        ]
+      },
+      "properties": {
+        "facility_name": "VICTORIA ST WASTE MANAGEMENT FACILITY",
+        "address": "VICTORIA STREET",
+        "suburb": "YOUNG",
+        "postcode": "2594",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "victoria st waste management facility|2594"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.26,
+          -14.46
+        ]
+      },
+      "properties": {
+        "facility_name": "KATHERINE WASTE MANAGEMENT FACILITY",
+        "address": "LOT 5043 NOVIS QUARRY ROAD",
+        "suburb": "COSSACK",
+        "postcode": "0850",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "katherine waste management facility|0850"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.11,
+          -33.69
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "108-114 GEORGE STREET",
+        "suburb": "HORNSBY",
+        "postcode": "2077",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2077"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.92,
+          -36.88
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "SHOP 11 1 TURA BEACH DRIVE",
+        "suburb": "TURA BEACH",
+        "postcode": "2548",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2548"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.67,
+          -34.71
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS ELIZABETH",
+        "address": "1 PHILLIP HWY",
+        "suburb": "ELIZABETH",
+        "postcode": "5112",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks elizabeth|5112"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.05,
+          -34.13
+        ]
+      },
+      "properties": {
+        "facility_name": "DAVIS ROAD RECYCLING AND WASTE MANAGEMENT FACILITY",
+        "address": "DAVIS ROAD",
+        "suburb": "FOREST GROVE",
+        "postcode": "6286",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "davis road recycling and waste management facility|6286"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.66,
+          -34.89
+        ]
+      },
+      "properties": {
+        "facility_name": "CAMPBELLTOWN CITY COUNCIL",
+        "address": "172 MONTACUTE ROAD",
+        "suburb": "ROSTREVOR",
+        "postcode": "5073",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "campbelltown city council|5073"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.89,
+          -33.0
+        ]
+      },
+      "properties": {
+        "facility_name": "RETRAVISION HARVEY",
+        "address": "80 UDUC ROAD",
+        "suburb": "HARVEY",
+        "postcode": "6220",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "retravision harvey|6220"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.23,
+          -35.58
+        ]
+      },
+      "properties": {
+        "facility_name": "MRI E-CYCLE SOLUTIONS (AUST) PTY LTD",
+        "address": "UNIT 3 14 ALDERSON PLACE",
+        "suburb": "HUME",
+        "postcode": "2620",
+        "state": "ACT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "mri e cycle solutions aust pty ltd|2620"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.21,
+          -33.74
+        ]
+      },
+      "properties": {
+        "facility_name": "BELROSE RESOURCE RECOVERY CENTRE",
+        "address": "CROZIER ROAD",
+        "suburb": "BELROSE",
+        "postcode": "2085",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "belrose resource recovery centre|2085"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.54,
+          -34.88
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "853-867 PORT ROAD",
+        "suburb": "WOODVILLE",
+        "postcode": "5011",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|5011"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.83,
+          -23.26
+        ]
+      },
+      "properties": {
+        "facility_name": "BETTA ELECTRICAL",
+        "address": "16 HILL STREET",
+        "suburb": "EMU PARK",
+        "postcode": "4710",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "betta electrical|4710"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.2,
+          -34.82
+        ]
+      },
+      "properties": {
+        "facility_name": "COOLAMON COMMUNITY RECYCLING CENTRE",
+        "address": "102 DYCES LANE",
+        "suburb": "COOLAMON",
+        "postcode": "2701",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "coolamon community recycling centre|2701"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.96,
+          -33.88
+        ]
+      },
+      "properties": {
+        "facility_name": "TES-AMM NSW",
+        "address": "1 MARPLE AVENUE",
+        "suburb": "VILLAWOOD",
+        "postcode": "2163",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "tes amm nsw|2163"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          134.19,
+          -19.65
+        ]
+      },
+      "properties": {
+        "facility_name": "DARRENS RUBBISH REMOVAL",
+        "address": "1 IRVINE STREET",
+        "suburb": "TENNANT CREEK",
+        "postcode": "0860",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "darrens rubbish removal|0860"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.48,
+          -34.61
+        ]
+      },
+      "properties": {
+        "facility_name": "MOSS VALE RESOURCE RECOVERY CENTRE",
+        "address": "177 BERRIMA ROAD",
+        "suburb": "MOSS VALE",
+        "postcode": "2577",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "moss vale resource recovery centre|2577"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.94,
+          -33.85
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "1183-1187 THE HORSLEY DRIVE",
+        "suburb": "WETHERILL PARK",
+        "postcode": "2164",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2164"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          115.75,
+          -32.55
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "UNIT 6 8 MAGENTA TERRACE",
+        "suburb": "MANDURAH",
+        "postcode": "6210",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|6210"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          153.54,
+          -28.21
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "SHOP 1 29-41 GREENWAY DRIVE",
+        "suburb": "TWEED HEADS SOUTH",
+        "postcode": "2486",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2486"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.85,
+          -20.55
+        ]
+      },
+      "properties": {
+        "facility_name": "COLLINSVILLE TRANSFER STATION",
+        "address": "155 SCOTTSVILLE ROAD",
+        "suburb": "SCOTTVILLE",
+        "postcode": "4804",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "collinsville transfer station|4804"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.13,
+          -41.42
+        ]
+      },
+      "properties": {
+        "facility_name": "LAUNCESTON RECYCLING CENTRE",
+        "address": "19 CAVALRY ROAD",
+        "suburb": "MOWBRAY",
+        "postcode": "7248",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "launceston recycling centre|7248"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.12,
+          -34.04
+        ]
+      },
+      "properties": {
+        "facility_name": "THE GOOD GUYS",
+        "address": "152-158 TAREN POINT ROAD",
+        "suburb": "CARINGBAH",
+        "postcode": "2229",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "the good guys|2229"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          153.1,
+          -26.66
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "66 DALTON DRIVE",
+        "suburb": "MAROOCHYDORE",
+        "postcode": "4558",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|4558"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.94,
+          -33.82
+        ]
+      },
+      "properties": {
+        "facility_name": "WYLIE BAY WASTE AND RECYCLING",
+        "address": "WYLIE BAY ROAD",
+        "suburb": "BANDY CREEK",
+        "postcode": "6450",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "wylie bay waste and recycling|6450"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.64,
+          -34.96
+        ]
+      },
+      "properties": {
+        "facility_name": "GLEN OSMOND RECYCLING CENTRE",
+        "address": "389 GLEN OSMOND ROAD",
+        "suburb": "GLEN OSMOND",
+        "postcode": "5064",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "glen osmond recycling centre|5064"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          153.04,
+          -28.61
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "250 MOLESWORTH STREET",
+        "suburb": "LISMORE",
+        "postcode": "2480",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2480"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.89,
+          -20.38
+        ]
+      },
+      "properties": {
+        "facility_name": "BOWEN LANDFILL",
+        "address": "908 BOWEN DEVELOPMENT ROAD",
+        "suburb": "BOWEN",
+        "postcode": "4805",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "bowen landfill|4805"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          118.57,
+          -20.4
+        ]
+      },
+      "properties": {
+        "facility_name": "SOUTH HEDLAND LANDFILL",
+        "address": "NORTH CIRCULAR ROAD",
+        "suburb": "SOUTH HEDLAND",
+        "postcode": "6722",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "south hedland landfill|6722"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.16,
+          -23.53
+        ]
+      },
+      "properties": {
+        "facility_name": "EMERALD TRANSFER STATION",
+        "address": "GLASSON STREET",
+        "suburb": "EMERALD",
+        "postcode": "4720",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "emerald transfer station|4720"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.2,
+          -33.9
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "UNIT 1 85-91 O'RIORDAN STREET",
+        "suburb": "ALEXANDRIA",
+        "postcode": "2015",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2015"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.07,
+          -34.43
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "326 BOOROWA STREET",
+        "suburb": "YOUNG",
+        "postcode": "2594",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2594"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.68,
+          -41.82
+        ]
+      },
+      "properties": {
+        "facility_name": "DELORAINE WASTE DISPOSAL SITE",
+        "address": "54 TIP ROAD",
+        "suburb": "DELORAINE",
+        "postcode": "7304",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "deloraine waste disposal site|7304"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.56,
+          -34.93
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN (CITY CROSS WAREHOUSE)",
+        "address": "5-19 WILLIAM STREET",
+        "suburb": "MILE END SOUTH",
+        "postcode": "5031",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman city cross warehouse|5031"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.33,
+          -42.87
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "161-177 MURRAY STREET",
+        "suburb": "HOBART",
+        "postcode": "7000",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|7000"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.3,
+          -42.82
+        ]
+      },
+      "properties": {
+        "facility_name": "JACKSON STREET WASTE MANAGEMENT CENTRE",
+        "address": "JACKSON STREET",
+        "suburb": "GLENORCHY",
+        "postcode": "7010",
+        "state": "TAS",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "jackson street waste management centre|7010"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          141.14,
+          -23.76
+        ]
+      },
+      "properties": {
+        "facility_name": "HBB ELECTRICAL",
+        "address": "37 ELDERSLIE STREET",
+        "suburb": "WINTON",
+        "postcode": "4735",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "hbb electrical|4735"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.05,
+          -33.93
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "1618 CANTERBURY ROAD",
+        "suburb": "PUNCHBOWL",
+        "postcode": "2196",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2196"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.08,
+          -33.8
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "UNIT 1 927-933 VICTORIA ROAD",
+        "suburb": "WEST RYDE",
+        "postcode": "2114",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2114"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.56,
+          -34.9
+        ]
+      },
+      "properties": {
+        "facility_name": "BEVERLEY WASTE MANAGEMENT CENTRE",
+        "address": "2-6 TOOGOOD AVE",
+        "suburb": "BEVERLEY",
+        "postcode": "5009",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "beverley waste management centre|5009"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.87,
+          -33.79
+        ]
+      },
+      "properties": {
+        "facility_name": "THE GOOD GUYS",
+        "address": "UNIT 17 19 STODDART ROAD",
+        "suburb": "PROSPECT",
+        "postcode": "2148",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "the good guys|2148"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.26,
+          -33.79
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "176-180 CONDAMINE STREET",
+        "suburb": "BALGOWLAH",
+        "postcode": "2093",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2093"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.14,
+          -33.89
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "163-181 NEW CANTERBURY ROAD",
+        "suburb": "LEWISHAM",
+        "postcode": "2049",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2049"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          147.0,
+          -35.12
+        ]
+      },
+      "properties": {
+        "facility_name": "LOCKHART SHIRE COUNCIL WASTE DEPOT",
+        "address": "40 TIP ROAD",
+        "suburb": "LOCKHART",
+        "postcode": "2656",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "lockhart shire council waste depot|2656"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.6,
+          -28.79
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "38 CHAPMAN ROAD",
+        "suburb": "GERALDTON",
+        "postcode": "6530",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|6530"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.6,
+          -34.83
+        ]
+      },
+      "properties": {
+        "facility_name": "E-CYCLE RECOVERY",
+        "address": "12-14 BAULDERSTONE ROAD",
+        "suburb": "GEPPS CROSS",
+        "postcode": "5094",
+        "state": "SA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "e cycle recovery|5094"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          152.59,
+          -29.05
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "125 PRINCE STREET",
+        "suburb": "GRAFTON",
+        "postcode": "2460",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2460"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          150.83,
+          -29.65
+        ]
+      },
+      "properties": {
+        "facility_name": "DELUNGRA LANDFILL",
+        "address": "123 HAYWOOD ROAD",
+        "suburb": "DELUNGRA",
+        "postcode": "2403",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "delungra landfill|2403"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.71,
+          -36.15
+        ]
+      },
+      "properties": {
+        "facility_name": "BROU LANDFILL FACILITY",
+        "address": "BROU LAKE ROAD",
+        "suburb": "BODALLA",
+        "postcode": "2545",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "brou landfill facility|2545"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.66,
+          -19.2
+        ]
+      },
+      "properties": {
+        "facility_name": "E-WASTE RECYCLING AUSTRALIA",
+        "address": "45 NORTHERN LINK CIRCUIT",
+        "suburb": "SHAW",
+        "postcode": "4818",
+        "state": "QLD",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING AUSTRALIA",
+        "ewaste_match_column": "facility_owner",
+        "review_flag": null,
+        "dedupe_key": "e waste recycling australia|4818"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.84,
+          -12.44
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "1 COLSON STREET",
+        "suburb": "ALICE SPRINGS",
+        "postcode": "0870",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|0870"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.26,
+          -14.46
+        ]
+      },
+      "properties": {
+        "facility_name": "BETTA HOME LIVING",
+        "address": "33 KATHERINE TERRACE",
+        "suburb": "KATHERINE",
+        "postcode": "0850",
+        "state": "NT",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "betta home living|0850"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          151.03,
+          -33.85
+        ]
+      },
+      "properties": {
+        "facility_name": "OFFICEWORKS",
+        "address": "298 PARRAMATTA ROAD",
+        "suburb": "AUBURN",
+        "postcode": "2144",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "officeworks|2144"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.813629,
+          -37.818277
+        ]
+      },
+      "properties": {
+        "facility_name": "SHRED-X VIC",
+        "address": "30 PLUMMER ROAD",
+        "suburb": "LAVERTON NORTH",
+        "postcode": "3026",
+        "state": "VIC",
+        "coord_source": "dataset",
+        "duplicate_count": 2,
+        "source_file": "147594_01_1.csv | Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "147594_01_1.csv | Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE RECYCLING FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "shred x vic|3026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          116.52,
+          -32.67
+        ]
+      },
+      "properties": {
+        "facility_name": "BODDINGTON REFUSE DISPOSAL SITE",
+        "address": "LOT 71 ROBINS ROAD",
+        "suburb": "BODDINGTON",
+        "postcode": "6390",
+        "state": "WA",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "boddington refuse disposal site|6390"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          149.96,
+          -34.44
+        ]
+      },
+      "properties": {
+        "facility_name": "HARVEY NORMAN",
+        "address": "180 AUBURN STREET",
+        "suburb": "GOULBURN",
+        "postcode": "2580",
+        "state": "NSW",
+        "coord_source": "postcode_fallback",
+        "duplicate_count": 1,
+        "source_file": "147594_01_1.csv",
+        "source_provenance": "147594_01_1.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-WASTE DROP-OFF FACILITY",
+        "ewaste_match_column": "facility_infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "harvey norman|2580"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.2019,
+          -38.031918
+        ]
+      },
+      "properties": {
+        "facility_name": "Ecycle Solutions (Dandenong South, E-waste recycling)",
+        "address": "398-418 Hammond Road",
+        "suburb": "Dandenong South",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "Ecycle Solutions (Dandenong South, E-waste recycling)",
+        "ewaste_match_column": "facility_name",
+        "review_flag": null,
+        "dedupe_key": "398 418 hammond road"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.1638486,
+          -37.78143824
+        ]
+      },
+      "properties": {
+        "facility_name": "PhoneCycle",
+        "address": "2/290 Blackburn Road",
+        "suburb": "Doncaster East",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "2 290 blackburn road"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.160357,
+          -37.921469
+        ]
+      },
+      "properties": {
+        "facility_name": "TES-AMM (Mulgrave), E-waste recycling)",
+        "address": "15 Glenvale Crescent",
+        "suburb": "Mulgrave",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "TES-AMM (Mulgrave), E-waste recycling)",
+        "ewaste_match_column": "facility_name",
+        "review_flag": null,
+        "dedupe_key": "15 glenvale crescent"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.9570923,
+          -37.64239502
+        ]
+      },
+      "properties": {
+        "facility_name": "TES-AMM (Somerton)",
+        "address": "23 Fillo Drive",
+        "suburb": "Somerton",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "23 fillo drive"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.940391,
+          -37.6842416
+        ]
+      },
+      "properties": {
+        "facility_name": "Advanced Resource Recycling",
+        "address": "160 Camp Road",
+        "suburb": "Broadmeadows",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "160 camp road"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.143619,
+          -38.113635
+        ]
+      },
+      "properties": {
+        "facility_name": "Ewastec",
+        "address": "9 Apsley Place",
+        "suburb": "Seaford",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "9 apsley place"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.350202,
+          -38.124661
+        ]
+      },
+      "properties": {
+        "facility_name": "Geelong Disabled People's Industries",
+        "address": "6-8 Baxter Road",
+        "suburb": "North Geelong",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "6 8 baxter road"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.862989,
+          -37.791151
+        ]
+      },
+      "properties": {
+        "facility_name": "Green Collect",
+        "address": "Unit 1, 75A Ashley Street",
+        "suburb": "Braybrook",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "unit 1 75a ashley street"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.8881545,
+          -37.72265292
+        ]
+      },
+      "properties": {
+        "facility_name": "Platinum Recycling",
+        "address": "35 Hawker Street",
+        "suburb": "Airport West",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "35 hawker street"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.162021,
+          -38.096235
+        ]
+      },
+      "properties": {
+        "facility_name": "Quantum Recycling Solutions",
+        "address": "16 Sonia Street",
+        "suburb": "Carrum Downs",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "16 sonia street"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.98034,
+          -37.69132495
+        ]
+      },
+      "properties": {
+        "facility_name": "SRS Metals",
+        "address": "304/308 Mahoneys Road",
+        "suburb": "Thomastown",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "304 308 mahoneys road"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.7540718,
+          -37.81030202
+        ]
+      },
+      "properties": {
+        "facility_name": "United Star Resource",
+        "address": "494 Boundary Road",
+        "suburb": "Derrimut",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "494 boundary road"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          142.0043304,
+          -37.72716681
+        ]
+      },
+      "properties": {
+        "facility_name": "WDEA - Nigretta of Hamilton",
+        "address": "4 Peck Street",
+        "suburb": "Hamilton",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "4 peck street"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.787851,
+          -37.837268
+        ]
+      },
+      "properties": {
+        "facility_name": "Envirostream (PF metals) (TA Livium)",
+        "address": "17/19 Maria Street",
+        "suburb": "Laverton North",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "17 19 maria street"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.105119,
+          -37.85386291
+        ]
+      },
+      "properties": {
+        "facility_name": "Active Group Solutions (Ecoactive)",
+        "address": "26 Harker St",
+        "suburb": "Burwood",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "26 harker st"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.1992215,
+          -37.98722713
+        ]
+      },
+      "properties": {
+        "facility_name": "Ace recycling (Dandenong)",
+        "address": "32-34 Bennet Street",
+        "suburb": "Dandenong",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "32 34 bennet street"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          146.922372,
+          -38.102588
+        ]
+      },
+      "properties": {
+        "facility_name": "Elecsome PV Recycling",
+        "address": "14A Velore Rd",
+        "suburb": "Kilmany",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "14a velore rd"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.8587539,
+          -37.85086052
+        ]
+      },
+      "properties": {
+        "facility_name": "Ace Recycling (Williamstown)",
+        "address": "63 Albermarle Street",
+        "suburb": "Williamstown",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "63 albermarle street"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.0358729,
+          -37.68793718
+        ]
+      },
+      "properties": {
+        "facility_name": "Lotus Recycling",
+        "address": "2/72 Northgate Drive",
+        "suburb": "Thomastown",
+        "postcode": null,
+        "state": null,
+        "coord_source": "dataset",
+        "duplicate_count": 1,
+        "source_file": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "source_provenance": "Victoria's-waste-and-resource-recovery-infrastructure-map-data-October-2025.csv",
+        "ewaste_match_flag": true,
+        "ewaste_match_text": "E-waste recycling",
+        "ewaste_match_column": "infrastructure_type",
+        "review_flag": null,
+        "dedupe_key": "2 72 northgate drive"
+      }
+    }
+  ]
+}

@@ -1,3 +1,7 @@
+<script setup>
+import EwasteAustraliaMap from './EwasteAustraliaMap.vue'
+</script>
+
 <template>
-  <h1>Disposal Locations Page</h1>
+  <EwasteAustraliaMap />
 </template>
