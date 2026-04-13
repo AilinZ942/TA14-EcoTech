@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { actAnnotation, australiaStatesGeoJson } from '../lib/australiaStatesGeoJson.js'
+import vicLgaGda2020Raw from '../lib/vic_lga_gda2020.geojson?raw'
 import {
   buildCategorySummary,
   buildFacilityMarkers,
@@ -12,13 +13,18 @@ import {
   normalizeStateCode,
 } from '../lib/ewasteMapModel'
 import { searchMapFacilities } from '../lib/mapApi'
-import { buildGeoFeaturePaths, mapViewport, projectCoordinates } from '../lib/uvMapModel'
+import {
+  buildGeoFeaturePaths,
+  mapViewport,
+  projectCoordinates,
+  projectMelbourneRegionCoordinates,
+} from '../lib/uvMapModel'
 
 const svgRef = ref(null)
 const hoveredFacilityId = ref('')
 const hoveredStateCode = ref('')
 const selectedFacilityId = ref('')
-const selectedState = ref('')
+const selectedState = ref('VIC')
 const selectedCategory = ref('')
 const searchTerm = ref('')
 const resourceType = ref('disposal')
@@ -36,11 +42,19 @@ let activeRequestController = null
 
 const stateOptions = ['NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'NT', 'ACT']
 const categoryOptions = getCategoryOptions()
-const geoFeatures = buildGeoFeaturePaths(australiaStatesGeoJson)
+const australiaGeoFeatures = buildGeoFeaturePaths(australiaStatesGeoJson)
+const vicLgaGda2020GeoJson = JSON.parse(vicLgaGda2020Raw)
+const victoriaGeoFeatures = buildGeoFeaturePaths(vicLgaGda2020GeoJson, {
+  projector: projectMelbourneRegionCoordinates,
+  getName: (properties) => properties?.LGA_NAME || properties?.ABB_NAME || properties?.name || '',
+  getCode: (properties, _, index) => properties?.LGA_PID || properties?.LG_PLY_PID || `VIC-LGA-${index}`,
+})
 const projectedAct = {
   centroid: projectCoordinates(149.15, -35.45),
   lineEnd: projectCoordinates(actAnnotation.lineEnd[0], actAnnotation.lineEnd[1]),
 }
+const isVictoriaDisposalMode = computed(() => resourceType.value === 'disposal')
+const geoFeatures = computed(() => (isVictoriaDisposalMode.value ? victoriaGeoFeatures : australiaGeoFeatures))
 
 const visibleMarkers = computed(() =>
   filterFacilities(facilityMarkers.value, {
@@ -74,23 +88,26 @@ const selectedMarker = computed(
     facilityMarkers.value.find((marker) => marker.id === selectedFacilityId.value) ||
     null,
 )
-const hoveredState = computed(() => geoFeatures.find((feature) => feature.code === hoveredStateCode.value) || null)
+const hoveredState = computed(() => geoFeatures.value.find((feature) => feature.code === hoveredStateCode.value) || null)
 const hoveredStateSummary = computed(() => (hoveredState.value ? stateFillSummary.value.get(hoveredState.value.code) || null : null))
-const selectedRegionLabel = computed(() => selectedState.value || 'Australia')
+const selectedRegionLabel = computed(() => {
+  if (isVictoriaDisposalMode.value) return 'Victoria'
+  return selectedState.value || 'Australia'
+})
 const selectedCategoryLabel = computed(() => {
   if (resourceType.value === 'repair') return 'Repair and reuse'
   return selectedCategory.value ? getCategoryLabel(selectedCategory.value) : 'All categories'
 })
 const selectedCategoryVisibleCount = computed(() => (selectedCategory.value ? visibleMarkers.value.filter((marker) => marker.category === selectedCategory.value).length : visibleMarkers.value.length))
 const mapTransform = computed(() => `translate(${pan.value.x} ${pan.value.y}) scale(${zoom.value})`)
-const pageEyebrow = computed(() => (resourceType.value === 'repair' ? 'National Repair Map' : 'National Disposal Map'))
-const pageTitle = computed(() => (resourceType.value === 'repair' ? 'Australia repair agencies for electronic devices' : 'Australia e-waste drop-off and recycling facilities'))
+const pageEyebrow = computed(() => (resourceType.value === 'repair' ? 'National Repair Map' : 'Victoria Disposal Map'))
+const pageTitle = computed(() => (resourceType.value === 'repair' ? 'Australia repair agencies for electronic devices' : 'Victoria e-waste drop-off and recycling facilities'))
 const pageDescription = computed(() =>
   resourceType.value === 'repair'
     ? 'Search for repair agencies by suburb and optional brand, then inspect the returned locations on the same custom SVG basemap.'
-    : 'Explore cleaned facility records across Australia, filter by state or category, and inspect individual disposal and recycling locations on the same custom SVG basemap used in the earlier UV prototype.',
+    : 'Explore cleaned facility records across Victoria, with disposal sites restricted to rows where state is VIC. The disposal map is zoomed to the main serviced region so remote areas do not dominate the view.',
 )
-const activeMapTitle = computed(() => (resourceType.value === 'repair' ? 'Repair agency overview' : 'E-waste facility overview'))
+const activeMapTitle = computed(() => (resourceType.value === 'repair' ? 'Repair agency overview' : 'Victoria facility overview'))
 const activeLegendTitle = computed(() => (resourceType.value === 'repair' ? 'Repair legend' : 'Facility legend'))
 const activeSearchPlaceholder = computed(() => (resourceType.value === 'repair' ? 'Repair business, suburb, or address' : 'Facility name or suburb'))
 const visibleLegendOptions = computed(() => (resourceType.value === 'repair' ? categoryOptions.filter((option) => option.value === 'repair_reuse') : categoryOptions))
@@ -99,7 +116,7 @@ const statsSearchLabel = computed(() => (resourceType.value === 'repair' ? 'Addi
 function buildRequestPayload() {
   return {
     resourceType: resourceType.value,
-    state: selectedState.value,
+    state: resourceType.value === 'disposal' ? 'VIC' : selectedState.value,
     category: resourceType.value === 'repair' ? '' : selectedCategory.value,
     searchText: searchTerm.value,
     suburb: resourceType.value === 'repair' ? suburb.value : '',
@@ -156,7 +173,11 @@ function queueFacilityLoad() {
 }
 
 function markerScreenPoint(marker) {
-  return { x: marker.point.x * zoom.value + pan.value.x, y: marker.point.y * zoom.value + pan.value.y }
+  const point = isVictoriaDisposalMode.value
+    ? projectMelbourneRegionCoordinates(marker.longitude, marker.latitude)
+    : marker.point
+
+  return { x: point.x * zoom.value + pan.value.x, y: point.y * zoom.value + pan.value.y }
 }
 
 function stateScreenPoint(stateFeature) {
@@ -223,6 +244,8 @@ function selectMarker(marker) {
 }
 
 function toggleState(stateCode) {
+  if (isVictoriaDisposalMode.value) return
+
   selectedState.value = selectedState.value === stateCode ? '' : stateCode
 
   if (selectedFacilityId.value && !filterFacilities(facilityMarkers.value, {
@@ -235,7 +258,7 @@ function toggleState(stateCode) {
 }
 
 function clearFilters() {
-  selectedState.value = ''
+  selectedState.value = resourceType.value === 'disposal' ? 'VIC' : ''
   searchTerm.value = ''
   suburb.value = ''
   brand.value = ''
@@ -246,15 +269,20 @@ function clearFilters() {
 }
 
 function stateFill(stateCode) {
+  if (isVictoriaDisposalMode.value) {
+    return 'rgba(204, 107, 73, 0.28)'
+  }
   return stateFillSummary.value.get(stateCode)?.fill || 'rgba(231, 221, 199, 0.92)'
 }
 
 function stateOpacity(stateCode) {
+  if (isVictoriaDisposalMode.value) return 0.88
   if (selectedState.value && selectedState.value !== stateCode) return 0.5
   return hoveredStateCode.value === stateCode || selectedState.value === stateCode ? 0.92 : 0.76
 }
 
 function stateStrokeWidth(stateCode) {
+  if (isVictoriaDisposalMode.value) return hoveredStateCode.value === stateCode ? 2.8 : 1.5
   return hoveredStateCode.value === stateCode || selectedState.value === stateCode ? 4 : 2.6
 }
 
@@ -282,6 +310,12 @@ function detailsRows(marker) {
   ].filter((entry) => entry.value)
 }
 
+function markerPoint(marker) {
+  return isVictoriaDisposalMode.value
+    ? projectMelbourneRegionCoordinates(marker.longitude, marker.latitude)
+    : marker.point
+}
+
 watch(resourceType, (nextType) => {
   selectedFacilityId.value = ''
   selectedCategory.value = ''
@@ -289,8 +323,10 @@ watch(resourceType, (nextType) => {
   loadError.value = ''
 
   if (nextType === 'repair') {
+    selectedState.value = ''
     suburb.value = suburb.value || 'Sydney'
   } else {
+    selectedState.value = 'VIC'
     brand.value = ''
     suburb.value = ''
   }
@@ -350,7 +386,7 @@ onBeforeUnmount(() => {
             </label>
             <label>
               <span>State</span>
-              <select v-model="selectedState">
+              <select v-model="selectedState" :disabled="resourceType === 'disposal'">
                 <option value="">All states</option>
                 <option v-for="state in stateOptions" :key="state" :value="state">{{ state }}</option>
               </select>
@@ -401,7 +437,7 @@ onBeforeUnmount(() => {
             class="map-svg"
             :viewBox="`0 0 ${mapViewport.width} ${mapViewport.height}`"
             role="img"
-            aria-label="Australia e-waste facility map"
+            :aria-label="resourceType === 'repair' ? 'Australia repair facility map' : 'Victoria e-waste facility map'"
             @pointerdown="beginDrag"
             @pointermove="updateDrag"
             @pointerup="endDrag"
@@ -432,7 +468,7 @@ onBeforeUnmount(() => {
                 />
 
                 <text
-                  v-for="state in geoFeatures.filter((feature) => feature.code !== 'ACT' && feature.labelPoint)"
+                  v-for="state in geoFeatures.filter((feature) => !isVictoriaDisposalMode && feature.code !== 'ACT' && feature.labelPoint)"
                   :key="`${state.code}-label`"
                   :x="state.labelPoint.x"
                   :y="state.labelPoint.y"
@@ -442,15 +478,15 @@ onBeforeUnmount(() => {
                   {{ state.code }}
                 </text>
 
-                <line :x1="projectedAct.centroid.x" :y1="projectedAct.centroid.y" :x2="projectedAct.lineEnd.x" :y2="projectedAct.lineEnd.y" class="act-line" />
-                <text :x="projectedAct.lineEnd.x + 10" :y="projectedAct.lineEnd.y - 6" text-anchor="start" class="state-code act-code" @click.stop="toggleState('ACT')">ACT</text>
+                <line v-if="!isVictoriaDisposalMode" :x1="projectedAct.centroid.x" :y1="projectedAct.centroid.y" :x2="projectedAct.lineEnd.x" :y2="projectedAct.lineEnd.y" class="act-line" />
+                <text v-if="!isVictoriaDisposalMode" :x="projectedAct.lineEnd.x + 10" :y="projectedAct.lineEnd.y - 6" text-anchor="start" class="state-code act-code" @click.stop="toggleState('ACT')">ACT</text>
               </g>
 
               <g v-for="marker in visibleMarkers" :key="marker.id">
-                <circle :cx="marker.point.x" :cy="marker.point.y" :r="markerRadius(marker) + 8" :fill="`${marker.categoryColor}22`" />
+                <circle :cx="markerPoint(marker).x" :cy="markerPoint(marker).y" :r="markerRadius(marker) + 8" :fill="`${marker.categoryColor}22`" />
                 <circle
-                  :cx="marker.point.x"
-                  :cy="marker.point.y"
+                  :cx="markerPoint(marker).x"
+                  :cy="markerPoint(marker).y"
                   :r="markerRadius(marker)"
                   :fill="marker.categoryColor"
                   :stroke="selectedFacilityId === marker.id ? '#102a43' : 'white'"
@@ -472,7 +508,7 @@ onBeforeUnmount(() => {
               </template>
             </g>
 
-            <g v-if="hoveredState && hoveredStateSummary">
+            <g v-if="!isVictoriaDisposalMode && hoveredState && hoveredStateSummary">
               <template v-for="screenPoint in [stateScreenPoint(hoveredState)]" :key="hoveredState.code">
                 <rect :x="Math.min(screenPoint.x + 16, mapViewport.width - 260)" :y="Math.max(screenPoint.y - 62, 18)" width="240" height="56" rx="16" fill="rgba(16, 42, 67, 0.88)" />
                 <text :x="Math.min(screenPoint.x + 30, mapViewport.width - 246)" :y="Math.max(screenPoint.y - 36, 44)" class="tooltip-title">{{ hoveredState.code }} facilities</text>
@@ -482,7 +518,7 @@ onBeforeUnmount(() => {
           </svg>
 
           <div class="map-notes">
-            <p>Drag to pan. Use mouse wheel or controls to zoom. Click a state to filter and click a marker to load details.</p>
+            <p>{{ resourceType === 'repair' ? 'Drag to pan. Use mouse wheel or controls to zoom. Click a state to filter and click a marker to load details.' : 'Drag to pan. Use mouse wheel or controls to zoom. Disposal mode is fixed to Victoria, only shows facilities where state is VIC, and focuses on the main serviced region rather than remote areas.' }}</p>
           </div>
         </div>
 

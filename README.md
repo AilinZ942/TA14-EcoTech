@@ -224,3 +224,8 @@ Or call the interpreter directly:
 - Define response schemas or TypeScript types for backend contracts
 - Add loading, error, and empty-state handling in `AIChat.vue`
 - Document or import the backend service source so frontend-backend integration is easier to maintain
+
+
+## quiz start up
+cd D:\26年课程\5120\project\group_repo\TA14-EcoTech
+npm.cmd run dev

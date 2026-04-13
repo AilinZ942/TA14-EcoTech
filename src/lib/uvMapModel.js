@@ -5,6 +5,20 @@ const AUSTRALIA_BOUNDS = {
   maxLatitude: -10,
 }
 
+export const VIC_BOUNDS = {
+  minLongitude: 140.8,
+  maxLongitude: 150.1,
+  minLatitude: -39.3,
+  maxLatitude: -33.9,
+}
+
+export const MELBOURNE_REGION_BOUNDS = {
+  minLongitude: 143.6,
+  maxLongitude: 146.3,
+  minLatitude: -39.2,
+  maxLatitude: -37.0,
+}
+
 export const mapViewport = {
   width: 980,
   height: 760,
@@ -38,18 +52,23 @@ export function stateCodeFromName(name) {
   return STATE_NAME_TO_CODE[String(name).trim().toUpperCase()] || ''
 }
 
-export function projectCoordinates(longitude, latitude) {
-  const xSpan = AUSTRALIA_BOUNDS.maxLongitude - AUSTRALIA_BOUNDS.minLongitude
-  const ySpan = AUSTRALIA_BOUNDS.maxLatitude - AUSTRALIA_BOUNDS.minLatitude
+export function createProjector(bounds = AUSTRALIA_BOUNDS) {
+  const xSpan = bounds.maxLongitude - bounds.minLongitude
+  const ySpan = bounds.maxLatitude - bounds.minLatitude
   const drawableWidth = mapViewport.width - mapViewport.padding * 2
   const drawableHeight = mapViewport.height - mapViewport.padding * 2
 
-  const x = ((Number(longitude) - AUSTRALIA_BOUNDS.minLongitude) / xSpan) * drawableWidth + mapViewport.padding
-  const y =
-    (1 - (Number(latitude) - AUSTRALIA_BOUNDS.minLatitude) / ySpan) * drawableHeight + mapViewport.padding
+  return (longitude, latitude) => {
+    const x = ((Number(longitude) - bounds.minLongitude) / xSpan) * drawableWidth + mapViewport.padding
+    const y = (1 - (Number(latitude) - bounds.minLatitude) / ySpan) * drawableHeight + mapViewport.padding
 
-  return { x, y }
+    return { x, y }
+  }
 }
+
+export const projectCoordinates = createProjector()
+export const projectVictoriaCoordinates = createProjector(VIC_BOUNDS)
+export const projectMelbourneRegionCoordinates = createProjector(MELBOURNE_REGION_BOUNDS)
 
 function collectRingPoints(coordinates = []) {
   const points = []
@@ -65,12 +84,12 @@ function collectRingPoints(coordinates = []) {
   return points
 }
 
-function polygonPath(coordinates = []) {
+function polygonPath(coordinates = [], projector = projectCoordinates) {
   return coordinates
     .map((ring) =>
       (ring || [])
         .map((coordinate, index) => {
-          const point = projectCoordinates(coordinate[0], coordinate[1])
+          const point = projector(coordinate[0], coordinate[1])
           return `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`
         })
         .concat('Z')
@@ -79,7 +98,7 @@ function polygonPath(coordinates = []) {
     .join(' ')
 }
 
-function centroidFromPoints(points) {
+function centroidFromPoints(points, projector = projectCoordinates) {
   if (!points.length) {
     return null
   }
@@ -96,23 +115,26 @@ function centroidFromPoints(points) {
     maxY = Math.max(maxY, latitude)
   }
 
-  return projectCoordinates((minX + maxX) / 2, (minY + maxY) / 2)
+  return projector((minX + maxX) / 2, (minY + maxY) / 2)
 }
 
-export function buildGeoFeaturePaths(geoJson) {
+export function buildGeoFeaturePaths(geoJson, options = {}) {
   const features = Array.isArray(geoJson?.features) ? geoJson.features : []
+  const projector = options.projector || projectCoordinates
+  const getName = options.getName || ((properties) => properties.STATE_NAME || properties.name || '')
+  const getCode = options.getCode || ((properties) => stateCodeFromName(properties.STATE_NAME || properties.name || properties.code || ''))
 
-  return features.map((feature) => {
+  return features.map((feature, index) => {
     const geometry = feature?.geometry || {}
     const properties = feature?.properties || {}
     const polygons = geometry.type === 'MultiPolygon' ? geometry.coordinates || [] : [geometry.coordinates || []]
     const points = polygons.flatMap((polygon) => collectRingPoints(polygon))
 
     return {
-      name: properties.STATE_NAME || properties.name || '',
-      code: stateCodeFromName(properties.STATE_NAME || properties.name || properties.code || ''),
-      path: polygons.map((polygon) => polygonPath(polygon)).join(' '),
-      labelPoint: centroidFromPoints(points),
+      name: getName(properties, feature, index),
+      code: getCode(properties, feature, index),
+      path: polygons.map((polygon) => polygonPath(polygon, projector)).join(' '),
+      labelPoint: centroidFromPoints(points, projector),
       geometry,
       properties,
     }

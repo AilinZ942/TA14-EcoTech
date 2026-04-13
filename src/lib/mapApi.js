@@ -141,7 +141,7 @@ async function loadStaticDisposalRows() {
 
 async function searchStaticDisposalFacilities(payload = {}) {
   const rows = await loadStaticDisposalRows()
-  const state = normalizeText(payload.state)
+  const state = normalizeText(payload.state || 'VIC')
   const category = normalizeText(payload.category)
   const limit = Number(payload.limit) > 0 ? Number(payload.limit) : rows.length
 
