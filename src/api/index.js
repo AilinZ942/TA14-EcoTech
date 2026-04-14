@@ -1,6 +1,8 @@
 const BASE = "https://ta14-ecotech-backend-ecf9e5hca9fpf7da.australiaeast-01.azurewebsites.net/api"
 
 export const api = {
+
+  // write your functions here, for example:
   getPerson: async () => {
     const response = await fetch(`${BASE}/GetPerson`)
     if (!response.ok) {
@@ -8,4 +10,7 @@ export const api = {
     }
     return response.json()
   }
+
+
+  
 }
