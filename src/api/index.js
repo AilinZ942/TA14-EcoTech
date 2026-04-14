@@ -3,6 +3,10 @@ const BASE = "https://ta14-ecotech-backend-ecf9e5hca9fpf7da.australiaeast-01.azu
 export const api = {
 
   // write your functions here, for example:
+
+  //GetPerson
+  //iput//
+  
   getPerson: async () => {
     const response = await fetch(`${BASE}/GetPerson`)
     if (!response.ok) {
@@ -12,5 +16,5 @@ export const api = {
   }
 
 
-  
+
 }
