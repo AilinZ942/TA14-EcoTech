@@ -40,3 +40,9 @@ __screenshots__/
 
 #.env files
 .env.local
+
+database/
+
+sql/
+
+mssql_geojson_loader/
