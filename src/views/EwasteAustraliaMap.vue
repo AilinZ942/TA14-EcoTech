@@ -66,6 +66,62 @@ const visibleMarkers = computed(() =>
 
 const visibleCategorySummary = computed(() => buildCategorySummary(visibleMarkers.value))
 const visibleStateSummary = computed(() => buildStateSummary(visibleMarkers.value))
+const importantSuburbLabels = computed(() => {
+  if (!isVictoriaDisposalMode.value) return []
+
+  const grouped = new Map()
+
+  for (const marker of visibleMarkers.value) {
+    const suburbName = String(marker?.suburb || '').trim()
+    if (!suburbName) continue
+
+    const key = suburbName.toUpperCase()
+    const point = markerPoint(marker)
+    const existing = grouped.get(key)
+
+    if (existing) {
+      existing.count += 1
+      existing.sumX += point.x
+      existing.sumY += point.y
+      continue
+    }
+
+    grouped.set(key, {
+      key,
+      label: titleCase(suburbName),
+      count: 1,
+      sumX: point.x,
+      sumY: point.y,
+    })
+  }
+
+  const ranked = Array.from(grouped.values())
+    .map((entry) => ({
+      ...entry,
+      x: entry.sumX / entry.count,
+      y: entry.sumY / entry.count,
+    }))
+    .sort((left, right) => right.count - left.count || left.label.localeCompare(right.label))
+
+  const selected = []
+  const minDistance = 44
+  const maxLabels = 10
+
+  for (const entry of ranked) {
+    const overlaps = selected.some((item) => {
+      const dx = item.x - entry.x
+      const dy = item.y - entry.y
+      return Math.hypot(dx, dy) < minDistance
+    })
+
+    if (overlaps) continue
+
+    selected.push(entry)
+    if (selected.length >= maxLabels) break
+  }
+
+  return selected
+})
 
 const stateFillSummary = computed(() => {
   const counts = new Map(visibleStateSummary.value.map((entry) => [entry.key, entry.count]))
@@ -292,6 +348,20 @@ function markerRadius(marker) {
   return 8.5
 }
 
+function titleCase(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/\b\w/g, (match) => match.toUpperCase())
+}
+
+function markerTooltipAddress(marker) {
+  if (!marker) return 'Address not provided'
+  if (resourceType.value === 'disposal') {
+    return [marker.address, marker.suburb, marker.postcode].filter(Boolean).join(', ') || 'Address not provided'
+  }
+  return `${marker.suburb || marker.state || ''} ${marker.postcode || ''}`.trim()
+}
+
 function detailsRows(marker) {
   if (!marker) return []
   const row = marker.row || {}
@@ -497,13 +567,20 @@ onBeforeUnmount(() => {
                   @click.stop="selectMarker(marker)"
                 />
               </g>
+
+              <g v-if="importantSuburbLabels.length" class="suburb-label-layer">
+                <g v-for="label in importantSuburbLabels" :key="label.key" class="suburb-label-group">
+                  <text :x="label.x + 12" :y="label.y - 14" class="suburb-label-shadow">{{ label.label }}</text>
+                  <text :x="label.x + 12" :y="label.y - 14" class="suburb-label">{{ label.label }}</text>
+                </g>
+              </g>
             </g>
 
             <g v-if="hoveredMarker && hoveredMarker.id !== selectedFacilityId">
               <template v-for="screenPoint in [markerScreenPoint(hoveredMarker)]" :key="hoveredMarker.id">
                 <rect :x="Math.min(screenPoint.x + 16, mapViewport.width - 270)" :y="Math.max(screenPoint.y - 72, 18)" width="250" height="68" rx="16" fill="rgba(16, 42, 67, 0.9)" />
                 <text :x="Math.min(screenPoint.x + 30, mapViewport.width - 256)" :y="Math.max(screenPoint.y - 44, 42)" class="tooltip-title">{{ hoveredMarker.facilityName }}</text>
-                <text :x="Math.min(screenPoint.x + 30, mapViewport.width - 256)" :y="Math.max(screenPoint.y - 22, 64)" class="tooltip-copy">{{ hoveredMarker.suburb || hoveredMarker.state }} {{ hoveredMarker.postcode }}</text>
+                <text :x="Math.min(screenPoint.x + 30, mapViewport.width - 256)" :y="Math.max(screenPoint.y - 22, 64)" class="tooltip-copy">{{ markerTooltipAddress(hoveredMarker) }}</text>
                 <text :x="Math.min(screenPoint.x + 30, mapViewport.width - 256)" :y="Math.max(screenPoint.y, 86)" class="tooltip-copy">{{ hoveredMarker.categoryLabel }}</text>
               </template>
             </g>
@@ -642,6 +719,9 @@ button{border:0;padding:.72rem 1rem;background:#102a43;color:#fff;font-weight:70
 .act-code{font-size:18px}
 .act-line{stroke:rgba(16,42,67,.74);stroke-width:3;pointer-events:none}
 .marker{cursor:pointer;transition:r .18s ease,stroke-width .18s ease}
+.suburb-label-layer{pointer-events:none}
+.suburb-label{fill:#224b5f;font-size:18px;font-weight:800;letter-spacing:.01em}
+.suburb-label-shadow{fill:rgba(255,251,246,.95);font-size:18px;font-weight:800;stroke:rgba(255,251,246,.95);stroke-width:5;stroke-linejoin:round}
 .tooltip-title{fill:#fff;font-size:18px;font-weight:700}
 .tooltip-copy{fill:rgba(255,255,255,.82);font-size:15px}
 .map-notes{padding:.9rem 1.2rem 1.2rem}

@@ -200,3 +200,37 @@ export function buildStateSummary(rows = []) {
     .map(([state, count]) => ({ key: state, label: state, count }))
     .sort((left, right) => right.count - left.count || left.label.localeCompare(right.label))
 }
+
+export function getFacilityBounds(rows = []) {
+  const coordinates = rows
+    .map((row) => {
+      const latitude = Number(row?.latitude)
+      const longitude = Number(row?.longitude)
+
+      if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+        return null
+      }
+
+      return [longitude, latitude]
+    })
+    .filter(Boolean)
+
+  if (!coordinates.length) return null
+
+  const [firstLongitude, firstLatitude] = coordinates[0]
+  const bounds = {
+    minLongitude: firstLongitude,
+    maxLongitude: firstLongitude,
+    minLatitude: firstLatitude,
+    maxLatitude: firstLatitude,
+  }
+
+  for (const [longitude, latitude] of coordinates.slice(1)) {
+    bounds.minLongitude = Math.min(bounds.minLongitude, longitude)
+    bounds.maxLongitude = Math.max(bounds.maxLongitude, longitude)
+    bounds.minLatitude = Math.min(bounds.minLatitude, latitude)
+    bounds.maxLatitude = Math.max(bounds.maxLatitude, latitude)
+  }
+
+  return bounds
+}
