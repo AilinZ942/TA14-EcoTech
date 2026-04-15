@@ -79,24 +79,59 @@ def search_disposal_locations(req: HttpRequest, ewaste_rows: SqlRowList) -> Http
         )
 
     rows = [json.loads(row.to_json()) for row in ewaste_rows]
-    for row in rows:
-        print(row)
     items = [_row_to_disposal_item(row) for row in rows]
-
-
-
-    response_body = {
-        "items": items,
-        "meta": {
-            "pipeline": "azure",
-            "source": "api",
-        },
-    }
 
     logger.info("Returning %s disposal locations for postcode %s", len(items), postcode)
 
     return HttpResponse(
-        json.dumps(response_body),
+        json.dumps({
+            "items": items,
+            "meta": {
+                "pipeline": "azure",
+                "source": "api",
+            },
+        }),
+        status_code=200,
+        mimetype="application/json",
+    )
+
+
+@app.function_name(name="SearchAllDisposalLocations")
+@app.route(route="map/disposal-locations/search", methods=["POST"])
+@app.sql_input(
+    arg_name="ewaste_rows",
+    command_text="""
+        SELECT
+            facility_name,
+            address,
+            suburb,
+            postcode,
+            state,
+            latitude,
+            longitude
+        FROM dbo.clean_ewaste_facilities_geocoded
+        WHERE latitude IS NOT NULL
+          AND longitude IS NOT NULL
+        ORDER BY suburb, facility_name
+    """,
+    command_type="Text",
+    connection_string_setting="SqlConnectionString",
+)
+def search_all_disposal_locations(req: HttpRequest, ewaste_rows: SqlRowList) -> HttpResponse:
+
+   
+    rows = [json.loads(row.to_json()) for row in ewaste_rows]
+    items = [_row_to_disposal_item(row) for row in rows]
+
+
+    return HttpResponse(
+        json.dumps({
+            "items": items,
+            "meta": {
+                "pipeline": "azure",
+                "source": "sql-db",
+            },
+        }),
         status_code=200,
         mimetype="application/json",
     )

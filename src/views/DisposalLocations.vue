@@ -3,7 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { searchMapFacilities } from '../lib/mapApi'
+import { api } from '@/api'
 import {
   buildCategorySummary,
   buildFacilityMarkers,
@@ -13,8 +13,6 @@ import {
 } from '../lib/ewasteMapModel'
 
 const mapboxAccessToken = String(import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || '').trim()
-const mapDataMode = String(import.meta.env.VITE_MAP_DATA_MODE || 'auto').trim().toLowerCase() || 'auto'
-
 const mapContainerRef = ref(null)
 const isLoading = ref(false)
 const loadError = ref('')
@@ -23,9 +21,8 @@ const selectedCategory = ref('')
 const facilityRows = ref([])
 const facilityMarkers = ref([])
 const selectedMarkerId = ref('')
-const activePipeline = ref('local')
-const activeSource = ref('csv')
-const fallbackReason = ref('')
+const activePipeline = ref('api')
+const activeSource = ref('api')
 
 let map = null
 let mapReady = false
@@ -75,8 +72,7 @@ const tokenHelpText = computed(() =>
 )
 const pipelineLabel = computed(() => {
   if (activePipeline.value === 'azure') return 'Azure API'
-  if (activePipeline.value === 'legacy-geojson') return 'Legacy GeoJSON'
-  return 'Local CSV'
+  return activePipeline.value || 'Unknown'
 })
 
 function buildRequestPayload() {
@@ -248,22 +244,21 @@ async function loadFacilities() {
     activeRequestController.abort()
   }
 
-  const controller = new AbortController()
-  activeRequestController = controller
-  isLoading.value = true
-  loadError.value = ''
+    const controller = new AbortController()
+    activeRequestController = controller
+    isLoading.value = true
+    loadError.value = ''
 
-  try {
-    const response = await searchMapFacilities(buildRequestPayload(), {
+    try {
+    const response = await api.searchDisposalLocations(buildRequestPayload(), {
       signal: controller.signal,
     })
     const rows = Array.isArray(response?.items) ? response.items : []
 
     facilityRows.value = rows
     facilityMarkers.value = buildFacilityMarkers(rows)
-    activePipeline.value = response?.meta?.pipeline || 'local'
-    activeSource.value = response?.meta?.source || 'csv'
-    fallbackReason.value = response?.meta?.fallbackReason || ''
+    activePipeline.value = response?.meta?.pipeline || 'api'
+    activeSource.value = response?.meta?.source || 'api'
 
     if (
       selectedMarkerId.value &&
@@ -283,9 +278,8 @@ async function loadFacilities() {
     facilityRows.value = []
     facilityMarkers.value = []
     selectedMarkerId.value = ''
-    activePipeline.value = 'local'
-    activeSource.value = 'csv'
-    fallbackReason.value = ''
+    activePipeline.value = 'api'
+    activeSource.value = 'api'
     removeRenderedMarkers()
     closePopup()
   } finally {
@@ -368,9 +362,8 @@ onBeforeUnmount(() => {
         <p class="eyebrow">Disposal Locations</p>
         <h1>Mapbox disposal site map</h1>
         <p class="hero-copy">
-          This page now uses a Mapbox GL JS embedded map and consumes disposal rows through the
-          unified `{ items: [...] }` pipeline. In `auto` mode it prefers Azure when available and
-          falls back to the local cleaned CSV.
+          This page uses a Mapbox GL JS embedded map and loads disposal rows through the
+          `src/api` layer backed by your deployed Function.
         </p>
       </div>
 
@@ -382,10 +375,6 @@ onBeforeUnmount(() => {
         <article>
           <span>Pipeline</span>
           <strong>{{ pipelineLabel }}</strong>
-        </article>
-        <article>
-          <span>Mode</span>
-          <strong>{{ mapDataMode }}</strong>
         </article>
         <article>
           <span>Source</span>
@@ -439,16 +428,11 @@ onBeforeUnmount(() => {
           <div v-else-if="loadError" class="map-overlay map-overlay--error">
             <h2>Unable to load disposal data</h2>
             <p>{{ loadError }}</p>
-            <p v-if="fallbackReason">{{ fallbackReason }}</p>
           </div>
 
           <div ref="mapContainerRef" class="map-container" />
         </div>
 
-        <p v-if="fallbackReason && !loadError" class="support-copy">
-          Azure disposal data was unavailable, so the page automatically fell back to the local CSV.
-          Reason: {{ fallbackReason }}
-        </p>
       </section>
 
       <aside class="side-panel">
@@ -476,7 +460,6 @@ onBeforeUnmount(() => {
               <div class="detail-row"><span>Rows loaded</span><strong>{{ facilityRows.length }}</strong></div>
               <div class="detail-row"><span>Markers shown</span><strong>{{ visibleMarkers.length }}</strong></div>
               <div class="detail-row"><span>Pipeline</span><strong>{{ pipelineLabel }}</strong></div>
-              <div class="detail-row"><span>Mode</span><strong>{{ mapDataMode }}</strong></div>
             </div>
           </template>
         </section>
