@@ -13,8 +13,26 @@ export const api = {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     return response.json()
+  },
+
+
+  //GetMapLocation
+  /**
+ * 获取地图位置信息
+ * @param {string} postcode - 邮政编码
+ * @returns {Promise<any>} 位置信息
+ */
+
+  getMapLocation: async (postcode) => {
+    if (typeof postcode !== 'string') {
+    throw new Error("Parameter must be a string");
   }
 
-
+    const response = await fetch(`${BASE}/map/disposal-locations/${postcode}`)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    return response.json()
+  }
 
 }
