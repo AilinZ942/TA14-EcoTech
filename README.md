@@ -1,231 +1,147 @@
 # TA14-EcoTech
 
-EcoTech is a frontend-focused e-waste awareness application built with Vue 3 and Vite. The current repository contains the web client, route structure, and a thin API layer that connects to a separately hosted backend service on Azure.
+EcoTech is a Vue 3 + Vite frontend project for e-waste awareness, repair guidance, and disposal location discovery. The repository is no longer just a simple SPA shell: it now also contains a frontend-side map data integration layer with a dual-track disposal data pipeline.
 
-## Overview
-
-The project is organized as a single-page application (SPA):
-
-- `Vue 3` provides the component model and page rendering.
-- `Vue Router` handles client-side navigation between feature pages.
-- `Vite` handles local development, bundling, and module resolution.
-- A small frontend API wrapper in `src/api/index.js` communicates with an external backend.
-
-At the moment, the repository is frontend-heavy. Most feature pages are scaffolded as placeholders, while the `AI Chat` page is the only page that actively calls the backend API.
-
-## Tech Stack
-
-### Frontend
-
-- Node.js `>=20.19.0`
-- Vue `3.5.31`
-- Vue Router `5.0.4`
-- Vite `8.0.3`
-- `@vitejs/plugin-vue` `6.0.5`
-
-### Python Environment
-
-- Python `>=3.10`
-- `requests==2.32.3`
-
-The Python virtual environment is local to the repo at `.venv/`. It is not used by the frontend app directly right now, but it is available for backend-related scripts, testing helpers, or future service integration work.
-
-## Current Architecture
-
-### High-level flow
-
-1. The browser loads the Vite-built Vue application from `index.html`.
-2. `src/main.js` creates the Vue app and installs the router.
-3. `src/App.vue` renders the top navigation bar and the current route view.
-4. `src/router/index.js` maps route paths to page-level Vue components.
-5. Individual views render static content or call the shared API wrapper.
-6. `src/api/index.js` sends HTTP requests to the external Azure backend.
-
-### Text-based architecture graph
-
-See [architecture.txt](/d:/26年课程/5120/project/group_repo/TA14-EcoTech/architecture.txt) for the standalone text graph. A copy is included below for convenience:
-
-```text
-Browser
-  |
-  v
-index.html
-  |
-  v
-src/main.js
-  |
-  v
-Vue App (src/App.vue)
-  |
-  +--> Top Navigation
-  |
-  +--> Vue Router (src/router/index.js)
-         |
-         +--> /                   -> Home.vue
-         +--> /dashboard          -> Dashboard.vue
-         +--> /repair-check       -> RepairCheck.vue
-         +--> /extend-usage       -> ExtendUsage.vue
-         +--> /ai-chat            -> AIChat.vue
-         +--> /safe-guidance      -> SafeGuidance.vue
-         +--> /disposal-locations -> DisposalLocations.vue
-                                       |
-                                       v
-                                  Shared API layer
-                                  (src/api/index.js)
-                                       |
-                                       v
-          Azure-hosted backend: /api/GetPerson
-```
-
-## Frontend Structure
-
-### App shell
-
-- `src/main.js`: application bootstrap
-- `src/App.vue`: global navigation shell and route outlet
-- `src/router/index.js`: route registry
-
-### Views
-
-- `Home.vue`: landing page with hero section and links to core feature areas
-- `Dashboard.vue`: placeholder page
-- `RepairCheck.vue`: placeholder page
-- `ExtendUsage.vue`: placeholder page
-- `AIChat.vue`: active integration page that fetches backend data on mount
-- `SafeGuidance.vue`: placeholder page
-- `DisposalLocations.vue`: placeholder page
-
-### API layer
-
-- `src/api/index.js`: shared API wrapper with a fixed backend base URL
-
-This is currently a very thin abstraction. There is no request interceptor, no global error handling layer, no schema validation, and no environment-based API configuration yet.
-
-## Backend Architecture Status
-
-The backend implementation is not present in this repository.
-
-What we can confirm from the frontend code:
-
-- The frontend expects a backend hosted at:
-  `https://ta14-ecotech-backend-ecf9e5hca9fpf7da.australiaeast-01.azurewebsites.net/api`
-- The currently used endpoint is `GET /GetPerson`
-- The API is called with the browser `fetch()` API
-- The response is expected to be JSON
-
-What we cannot confirm from this repo alone:
-
-- Backend framework or language
-- Data model definitions
-- Authentication and authorization rules
-- Database/storage design
-- Input validation rules
-- Rate limiting, logging, or deployment pipeline details
-
-## Interface Design
-
-### Implemented frontend-to-backend interface
-
-Current shared API wrapper:
-
-- Module: `src/api/index.js`
-- Base URL: `/api` namespace on the Azure backend
-- Style: plain async functions returning parsed JSON
-
-Implemented operation:
-
-| Frontend method | HTTP method | Backend path | Called from | Expected result |
-| --- | --- | --- | --- | --- |
-| `api.getPerson()` | `GET` | `/GetPerson` | `src/views/AIChat.vue` | JSON payload rendered directly in the page |
-
-### Request/response behavior
-
-- The frontend sends a simple `GET` request.
-- No request body is included.
-- No custom headers are added.
-- Non-2xx responses throw an error in `src/api/index.js`.
-- The success payload is passed straight to the Vue component without transformation.
-
-### Current interface design characteristics
-
-- Tight coupling to a hard-coded production-like backend URL
-- No environment-specific configuration such as `.env`
-- No typed response contract
-- No retry, timeout, or loading-state abstraction
-- No centralized error UI
-
-This means the current interface layer is sufficient for a prototype, but still minimal for a production-grade frontend-backend contract.
-
-## Architectural Assessment
-
-### Strengths
-
-- Simple and easy to understand structure
-- Clear separation between routing, views, and API wrapper
-- Good starting point for rapid feature iteration
-- External backend integration is already wired into the frontend
-
-### Current limitations
-
-- Backend source code is not colocated with the frontend
-- Most feature pages are placeholders and not yet connected to real logic
-- API base URL is hard-coded instead of environment-driven
-- No shared state management for cross-page data
-- No API contract documentation beyond the single wrapper function
-- No visible test coverage in the repository
-
-## Local Development
-
-### Install frontend dependencies
+## Quick Start
 
 ```sh
 npm install
-```
-
-### Run the frontend
-
-```sh
 npm run dev
 ```
 
-### Build for production
+Build and lint:
 
 ```sh
 npm run build
-```
-
-### Lint
-
-```sh
 npm run lint
 ```
 
-### Use the local Python virtual environment
+## Repository Map
 
-PowerShell:
-
-```powershell
-cd d:\26年课程\5120\project\group_repo\TA14-EcoTech
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\.venv\Scripts\Activate.ps1
+```text
+TA14-EcoTech/
+├─ public/
+│  └─ clean_ewaste_facilities.geojson        # legacy fallback disposal dataset
+├─ src/
+│  ├─ api/
+│  │  └─ index.js                            # thin Azure API wrapper for AI chat
+│  ├─ assets/                               # global styles and static images
+│  ├─ lib/
+│  │  ├─ mapApi.js                           # unified map data gateway
+│  │  ├─ ewasteMapModel.js                   # row normalization, categories, filtering, markers
+│  │  ├─ uvMapModel.js                       # SVG map projection helpers
+│  │  ├─ australiaStatesGeoJson.js           # Australia basemap geometry
+│  │  ├─ vic_lga_gda2020.geojson             # Victoria LGA geometry
+│  │  ├─ vic_loc_gda2020.geojson             # Victoria locality geometry
+│  │  └─ VIC_postcodes.geojson               # postcode geometry reference
+│  ├─ public/
+│  │  ├─ clean_ewaste_facilities_geocoded.csv
+│  │  └─ maptiler_geocode_cache.json
+│  ├─ router/
+│  │  └─ index.js                            # active route registry
+│  └─ views/
+│     ├─ DisposalLocations.vue               # Mapbox disposal page
+│     ├─ EwasteAustraliaMap.vue              # custom SVG national/Victoria map
+│     └─ *.vue                               # other pages
+├─ tmp_vic_*                                # shapefile extraction scratch data
+├─ architecture.txt                         # text architecture graph
+└─ README.md
 ```
 
-Or call the interpreter directly:
+## Current Product Surface
 
-```powershell
-.\.venv\Scripts\python.exe --version
-.\.venv\Scripts\python.exe -m pip show requests
+- `src/views/AIChat.vue` uses `src/api/index.js` and talks to the Azure backend.
+- `src/views/DisposalLocations.vue` is the active routed disposal map page.
+- `src/views/EwasteAustraliaMap.vue` contains a richer custom SVG map that supports both `disposal` and `repair` resource types, but it is not currently wired into `src/router/index.js`.
+
+That last point matters: some of the most important pipeline logic exists in the repo, but not every view using it is currently exposed in navigation.
+
+## Dual-Track Data Pipeline
+
+The disposal map uses a unified frontend contract:
+
+```text
+UI view
+  -> buildRequestPayload()
+  -> searchMapFacilities(payload)
+  -> choose pipeline by VITE_MAP_DATA_MODE
+     -> Azure disposal API
+     -> or local cleaned CSV
+     -> optionally legacy GeoJSON fallback
+  -> normalize rows
+  -> build markers / filter / render
 ```
 
-## Suggested Next Steps
+### Main idea
 
-- Move the backend base URL into environment variables
-- Expand the API layer to cover each feature page with named domain methods
-- Define response schemas or TypeScript types for backend contracts
-- Add loading, error, and empty-state handling in `AIChat.vue`
-- Document or import the backend service source so frontend-backend integration is easier to maintain
+There are two primary disposal data tracks:
 
+1. `Azure API track`
+   `src/lib/mapApi.js` posts disposal search payloads to `VITE_API_BASE_URL + VITE_DISPOSAL_API_PATH`
+2. `Local CSV track`
+   the same module loads `src/public/clean_ewaste_facilities_geocoded.csv` and filters it in-browser
 
-## quiz start up
-cd D:\26年课程\5120\project\group_repo\TA14-EcoTech
-npm.cmd run dev
+There is also one optional legacy rescue path:
+
+3. `Legacy GeoJSON fallback`
+   when enabled by `VITE_ENABLE_LEGACY_GEOJSON_FALLBACK=true`, the code can fall back to `public/clean_ewaste_facilities.geojson`
+
+This means the repo is effectively operating with a "dual-track pipeline" for normal operation and a third legacy compatibility layer for failure recovery.
+
+See [docs/data-pipeline.md](/d:/26年课程/5120/project/group_repo/TA14-EcoTech/docs/data-pipeline.md) for the full data-flow breakdown.
+
+## Key Files For The Pipeline
+
+- [src/lib/mapApi.js](/d:/26年课程/5120/project/group_repo/TA14-EcoTech/src/lib/mapApi.js): pipeline switchboard, CSV parser, Azure request layer, fallback behavior
+- [src/lib/ewasteMapModel.js](/d:/26年课程/5120/project/group_repo/TA14-EcoTech/src/lib/ewasteMapModel.js): shared normalization, categorization, filtering, marker shaping
+- [src/views/DisposalLocations.vue](/d:/26年课程/5120/project/group_repo/TA14-EcoTech/src/views/DisposalLocations.vue): routed Mapbox map, shows pipeline state and fallback reason
+- [src/views/EwasteAustraliaMap.vue](/d:/26年课程/5120/project/group_repo/TA14-EcoTech/src/views/EwasteAustraliaMap.vue): custom SVG map using the same unified search entry
+
+## Environment Variables
+
+The map stack currently depends on:
+
+- `VITE_MAPBOX_ACCESS_TOKEN`: required by `DisposalLocations.vue`
+- `VITE_MAP_DATA_MODE=local|azure|auto`: selects disposal data strategy
+- `VITE_API_BASE_URL`: Azure backend base URL
+- `VITE_DISPOSAL_API_PATH`: disposal search path, defaults to `/api/map/disposal-locations/search`
+- `VITE_ENABLE_LEGACY_GEOJSON_FALLBACK=true|false`: optional legacy fallback
+
+Typical local development setup:
+
+```env
+VITE_MAPBOX_ACCESS_TOKEN=your_token_here
+VITE_MAP_DATA_MODE=local
+# VITE_API_BASE_URL=https://your-api-base-url
+# VITE_DISPOSAL_API_PATH=/api/map/disposal-locations/search
+# VITE_ENABLE_LEGACY_GEOJSON_FALLBACK=true
+```
+
+## Architectural Notes
+
+### What is clean
+
+- The map UI reads through one entry point: `searchMapFacilities(payload)`
+- Local and remote disposal data are normalized into the same row shape
+- Marker/category/filter logic is centralized in `ewasteMapModel.js`
+
+### What is still messy
+
+- Disposal data assets are split across `src/public/` and root `public/`
+- `EwasteAustraliaMap.vue` is important but currently not routed
+- The repo keeps temporary shapefile extraction directories alongside app source
+- `README.md` previously focused on the old SPA shape and under-described the data layer
+
+## Suggested Next Cleanup Pass
+
+If we continue organizing this repo, the next high-value changes would be:
+
+1. Move raw and generated map datasets into a dedicated top-level `data/` or `docs/data/` structure with provenance notes.
+2. Separate temporary shapefile extraction artifacts from committed application assets.
+3. Decide whether `EwasteAustraliaMap.vue` is the future primary map page or an experiment, then either route it or archive it.
+4. Split `src/lib/mapApi.js` into smaller modules once backend contracts stabilize.
+
+## Additional Docs
+
+- [architecture.txt](/d:/26年课程/5120/project/group_repo/TA14-EcoTech/architecture.txt)
+- [docs/data-pipeline.md](/d:/26年课程/5120/project/group_repo/TA14-EcoTech/docs/data-pipeline.md)
