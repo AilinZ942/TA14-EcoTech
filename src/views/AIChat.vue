@@ -9,7 +9,7 @@ import { ref, onMounted } from 'vue'
 import { api } from '@/api'
 const products = ref(null);
 onMounted(async () => {
-  products.value = await api.getPerson();
+  products.value = await api.getMapLocation('2361');
   console.log(products.value)
 })
 
