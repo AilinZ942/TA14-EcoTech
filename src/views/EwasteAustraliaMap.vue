@@ -10,15 +10,14 @@ import {
   filterFacilities,
   getCategoryLabel,
   getCategoryOptions,
-  normalizeStateCode,
 } from '../lib/ewasteMapModel'
-import { searchMapFacilities } from '../lib/mapApi'
 import {
   buildGeoFeaturePaths,
   mapViewport,
   projectCoordinates,
   projectMelbourneRegionCoordinates,
 } from '../lib/uvMapModel'
+import { api } from '@/api'
 
 const svgRef = ref(null)
 const hoveredFacilityId = ref('')
@@ -161,7 +160,7 @@ const pageTitle = computed(() => (resourceType.value === 'repair' ? 'Australia r
 const pageDescription = computed(() =>
   resourceType.value === 'repair'
     ? 'Search for repair agencies by suburb and optional brand, then inspect the returned locations on the same custom SVG basemap.'
-    : 'Explore cleaned facility records across Victoria, with disposal sites restricted to rows where state is VIC. The disposal map is zoomed to the main serviced region so remote areas do not dominate the view.',
+    : 'Explore cleaned facility records from the API, with disposal sites filtered on the frontend. The disposal map is zoomed to the main serviced region so remote areas do not dominate the view.',
 )
 const activeMapTitle = computed(() => (resourceType.value === 'repair' ? 'Repair agency overview' : 'Victoria facility overview'))
 const activeLegendTitle = computed(() => (resourceType.value === 'repair' ? 'Repair legend' : 'Facility legend'))
@@ -192,7 +191,7 @@ async function loadFacilities() {
   loadError.value = ''
 
   try {
-    const response = await searchMapFacilities(buildRequestPayload(), { signal: controller.signal })
+    const response = await api.searchDisposalLocations(buildRequestPayload(), { signal: controller.signal })
     const rows = Array.isArray(response?.items) ? response.items : []
 
     facilityRows.value = rows
@@ -595,7 +594,7 @@ onBeforeUnmount(() => {
           </svg>
 
           <div class="map-notes">
-            <p>{{ resourceType === 'repair' ? 'Drag to pan. Use mouse wheel or controls to zoom. Click a state to filter and click a marker to load details.' : 'Drag to pan. Use mouse wheel or controls to zoom. Disposal mode is fixed to Victoria, only shows facilities where state is VIC, and focuses on the main serviced region rather than remote areas.' }}</p>
+            <p>{{ resourceType === 'repair' ? 'Drag to pan. Use mouse wheel or controls to zoom. Click a state to filter and click a marker to load details.' : 'Drag to pan. Use mouse wheel or controls to zoom. Disposal mode uses API data and focuses on the main serviced region rather than remote areas.' }}</p>
           </div>
         </div>
 
