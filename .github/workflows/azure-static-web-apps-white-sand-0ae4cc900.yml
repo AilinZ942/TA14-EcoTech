@@ -1,5 +1,8 @@
 name: Azure Static Web Apps CI/CD
 
+env:
+  VITE_MAPBOX_ACCESS_TOKEN: ${{ secrets.VITE_MAPBOX_ACCESS_TOKEN }}
+
 on:
   push:
     branches:
