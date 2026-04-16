@@ -1,7 +1,6 @@
 <template>
-  <h1>Extend Usage Page</h1>
-
   <section class="extend-hero">
+    <h1 class="page-title">Extend Usage Page</h1>
     <div class="extend-hero-left">
       <h1>Content for this page is coming soon.</h1>
     </div>
@@ -802,10 +801,13 @@
 <style>
 .extend-hero {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+
   gap: 40px;
   padding: 60px 80px;
+  text-align: center;
 }
 
 .extend-hero-left {
@@ -864,5 +866,10 @@ svg#freepik_stories-fast-loading.animated #freepik--Car--inject-32 {
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
+}
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 1000;
+  text-align: center;
 }
 </style>

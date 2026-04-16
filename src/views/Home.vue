@@ -6,7 +6,7 @@
       <div class="overlay"></div>
 
       <div class="hero-text">
-        <h1>Welcome to EcoTech</h1>
+        <h1>Smarter E-Waste Solutions in Victoria</h1>
         <p>
           We are dedicated to reducing electronic waste and promoting sustainable technology
           practices.
@@ -115,8 +115,10 @@ import heroImg from '@/assets/e-waste.png'
 
 .hero-text {
   position: absolute;
-  bottom: 30px;
-  left: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
   color: white;
 }
 
