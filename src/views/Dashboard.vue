@@ -21,13 +21,29 @@ let casesChart = null
 let deathsChart = null
 let fatalityChart = null
 
+const allowedCancerTypes = [
+  'Lung cancer',
+  'Liver cancer',
+  'Kidney cancer',
+  'Bladder cancer',
+  'Acute lymphoblastic leukaemia',
+  'Acute myeloid leukaemia',
+  'Chronic lymphocytic leukaemia',
+  'Chronic myeloid leukaemia',
+  'Non-Hodgkin lymphoma',
+]
+
+const allowedCancerSet = new Set(allowedCancerTypes)
+
 async function loadHealthData() {
   try {
     loading.value = true
     error.value = ''
 
     const res = await api.getHealthAll()
-    healthData.value = Array.isArray(res.items) ? res.items : []
+    const items = Array.isArray(res.items) ? res.items : []
+
+    healthData.value = items.filter((item) => allowedCancerSet.has(item.cancer_type))
   } catch (err) {
     console.error(err)
     error.value = err.message || 'Failed to load health data.'
@@ -49,10 +65,7 @@ const sexOptions = computed(() => {
 })
 
 const cancerTypeOptions = computed(() => {
-  const values = [
-    ...new Set(healthData.value.map((item) => item.cancer_type).filter(Boolean)),
-  ].sort()
-  return ['All', ...values]
+  return ['All', ...allowedCancerTypes]
 })
 
 const trendData = computed(() => {
@@ -360,8 +373,8 @@ onBeforeUnmount(() => {
   <div class="dashboard-page">
     <div class="hero-section">
       <div>
-        <p class="dashboard-tag">Health Analytics</p>
-        <h1>Cancer Trends & Fatality Dashboard</h1>
+        <p class="dashboard-tag">Health Risk Context</p>
+        <h1>Exposure-Related Cancer Trends Dashboard</h1>
       </div>
     </div>
 
@@ -369,13 +382,22 @@ onBeforeUnmount(() => {
       <div class="intro-top">
         <div class="intro-text">
           <p class="intro-tag">Why this matters</p>
-          <h2>Understanding Health Risks of E-waste</h2>
+          <h2>Understanding the Health Context of E-waste</h2>
           <p>
-            Improper e-waste disposal can release hazardous substances into the environment,
-            increasing potential long-term health risks. This dashboard uses cancer-related data to
-            provide a data-informed view of why safe disposal and recycling practices matter.
+            E-waste contains hazardous materials such as lead, cadmium, mercury, and chromium.
+            According to the World Health Organization (WHO), exposure to toxic substances in
+            e-waste is associated with increased risk of serious health conditions, including
+            certain cancers. This dashboard uses Australian cancer and mortality data as a
+            contextual public health view to highlight why safe disposal and recycling matter.
           </p>
         </div>
+      </div>
+
+      <div class="source-box">
+        <strong>Data Sources:</strong>
+        Australian Institute of Health and Welfare (AIHW) cancer and mortality statistics. Health
+        risk context supported by the World Health Organization (WHO) and International Agency for
+        Research on Cancer (IARC).
       </div>
 
       <div class="intro-points horizontal">
@@ -383,15 +405,17 @@ onBeforeUnmount(() => {
           <span class="point-icon">⚠️</span>
           <div>
             <strong>Toxic Exposure</strong>
-            <p>Unsafe disposal may release harmful substances into the environment.</p>
+            <p>E-waste can release heavy metals and hazardous chemicals into the environment.</p>
           </div>
         </div>
 
         <div class="point-box">
-          <span class="point-icon">🧠</span>
+          <span class="point-icon">🧪</span>
           <div>
-            <strong>Health Risks</strong>
-            <p>Long-term exposure may increase serious health concerns over time.</p>
+            <strong>Health Context</strong>
+            <p>
+              This page focuses on selected cancers associated with long-term toxic exposure risks.
+            </p>
           </div>
         </div>
 
@@ -399,7 +423,7 @@ onBeforeUnmount(() => {
           <span class="point-icon">📊</span>
           <div>
             <strong>Data Insight</strong>
-            <p>Health data helps make the impact of e-waste easier to understand.</p>
+            <p>Health data helps explain why responsible e-waste disposal is important.</p>
           </div>
         </div>
       </div>
@@ -426,7 +450,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="filter-item">
-          <label for="cancerType">Cancer Type</label>
+          <label for="cancerType">Exposure-related Cancer Type</label>
           <select id="cancerType" v-model="selectedCancerType">
             <option v-for="type in cancerTypeOptions" :key="type" :value="type">
               {{ type }}
@@ -437,7 +461,7 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="filter-section-title">
-      Explore cancer cases and deaths by year, sex, and cancer type.
+      Explore selected exposure-related cancers by year, sex, and cancer type.
     </div>
 
     <p v-if="loading" class="state-text">Loading dashboard data...</p>
@@ -470,35 +494,35 @@ onBeforeUnmount(() => {
         <div class="chart-header">
           <h2>Cases and Deaths Over Time</h2>
           <p>
-            This trend chart follows all filters, including the selected cancer type, so you can
-            inspect a specific pattern in more detail.
+            This trend chart follows all filters, including the selected exposure-related cancer
+            type, so you can inspect a specific pattern in more detail.
           </p>
         </div>
         <div ref="trendChartRef" class="chart"></div>
       </div>
 
       <div class="analysis-section-title">
-        Top 10 Cancer Types: Cases, Deaths, and Fatality Rates
+        Selected Exposure-Related Cancers: Cases, Deaths, and Fatality Rates
       </div>
 
       <div class="overview-note">
-        These charts compare the top cancer types across three different indicators. They are based
-        on the selected year and sex, but are not affected by the cancer type filter.
+        These charts compare the selected exposure-related cancers across three indicators. They are
+        based on the selected year and sex, but are not affected by the cancer type filter.
       </div>
 
       <div class="chart-grid">
         <div class="chart-card">
           <div class="chart-header">
-            <h2>Top 10 Cancer Types by Cases</h2>
-            <p>Most common cancer types in the selected year and sex view</p>
+            <h2>Selected Cancers by Cases</h2>
+            <p>Most common selected exposure-related cancers in the chosen view</p>
           </div>
           <div ref="casesChartRef" class="chart small-chart"></div>
         </div>
 
         <div class="chart-card">
           <div class="chart-header">
-            <h2>Top 10 Cancer Types by Deaths</h2>
-            <p>Most severe cancer burden by deaths</p>
+            <h2>Selected Cancers by Deaths</h2>
+            <p>Selected cancers with the highest death burden in the chosen view</p>
           </div>
           <div ref="deathsChartRef" class="chart small-chart"></div>
         </div>
@@ -507,8 +531,8 @@ onBeforeUnmount(() => {
       <div class="chart-grid single-chart-row">
         <div class="chart-card">
           <div class="chart-header">
-            <h2>Top 10 Cancer Types by Fatality Ratio</h2>
-            <p>Average fatality ratio by cancer type</p>
+            <h2>Selected Cancers by Fatality Ratio</h2>
+            <p>Average fatality ratio across selected exposure-related cancers</p>
           </div>
           <div ref="fatalityChartRef" class="chart small-chart"></div>
         </div>
@@ -516,10 +540,10 @@ onBeforeUnmount(() => {
 
       <div class="analysis-description">
         <p>
-          Together, these charts show that cancer burden is multidimensional. Some cancer types
-          appear frequently in total case numbers, while others contribute more heavily to deaths or
-          show higher fatality ratios. This comparison helps distinguish between cancers that are
-          more common and those that may be associated with more severe outcomes.
+          This dashboard does not claim that the displayed cancer cases are directly caused by
+          e-waste. Instead, it uses official national health data to provide public health context
+          around diseases associated with long-term toxic exposure risks, reinforcing the importance
+          of safe e-waste handling and disposal.
         </p>
       </div>
     </template>
@@ -628,6 +652,22 @@ onBeforeUnmount(() => {
   font-size: 16px;
   line-height: 1.75;
   color: #557260;
+}
+
+.source-box {
+  margin-top: 18px;
+  margin-bottom: 10px;
+  padding: 14px 16px;
+  background: #f7fbf7;
+  border: 1px solid #dcebdc;
+  border-radius: 16px;
+  color: #456654;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.source-box strong {
+  color: #173a29;
 }
 
 .intro-points {
