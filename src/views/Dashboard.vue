@@ -186,8 +186,8 @@ function formatCompactNumber(value) {
 
 function tooltipStyle() {
   return {
-    backgroundColor: 'rgba(9, 24, 17, 0.96)',
-    borderColor: 'rgba(129, 199, 132, 0.26)',
+    backgroundColor: 'rgba(7, 20, 14, 0.97)',
+    borderColor: 'rgba(129, 199, 132, 0.30)',
     borderWidth: 1,
     textStyle: {
       color: '#f4fff5',
@@ -196,8 +196,8 @@ function tooltipStyle() {
     padding: [12, 14],
     extraCssText: `
       border-radius: 18px;
-      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
-      backdrop-filter: blur(12px);
+      box-shadow: 0 22px 52px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(14px);
     `,
   }
 }
@@ -230,7 +230,7 @@ function updateCharts() {
 
   trendChart?.setOption({
     backgroundColor: 'transparent',
-    animationDuration: 1000,
+    animationDuration: 1200,
     animationEasing: 'cubicOut',
     tooltip: {
       trigger: 'axis',
@@ -238,10 +238,10 @@ function updateCharts() {
       axisPointer: {
         type: 'line',
         lineStyle: {
-          color: 'rgba(129, 199, 132, 0.72)',
+          color: 'rgba(129, 199, 132, 0.74)',
           width: 2,
-          shadowBlur: 10,
-          shadowColor: 'rgba(129, 199, 132, 0.32)',
+          shadowBlur: 14,
+          shadowColor: 'rgba(129, 199, 132, 0.38)',
         },
       },
       formatter(params) {
@@ -251,7 +251,7 @@ function updateCharts() {
           .map(
             (item) => `
               <div style="margin-top:7px; display:flex; align-items:center; gap:8px;">
-                <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:${item.color};"></span>
+                <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:${item.color}; box-shadow:0 0 12px ${item.color};"></span>
                 <span>${item.seriesName}: <strong>${formatCompactNumber(item.data)}</strong></span>
               </div>
             `,
@@ -286,7 +286,7 @@ function updateCharts() {
     yAxis: {
       type: 'value',
       axisLine: { show: false },
-      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.72)' } },
+      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.74)' } },
       axisLabel: { color: '#274833' },
     },
     series: [
@@ -295,7 +295,7 @@ function updateCharts() {
         type: 'line',
         smooth: true,
         symbol: 'circle',
-        symbolSize: 8,
+        symbolSize: 9,
         showSymbol: false,
         emphasis: {
           focus: 'series',
@@ -303,21 +303,21 @@ function updateCharts() {
           itemStyle: {
             borderWidth: 3,
             borderColor: '#ffffff',
-            shadowBlur: 16,
-            shadowColor: 'rgba(67,160,71,0.55)',
+            shadowBlur: 20,
+            shadowColor: 'rgba(67,160,71,0.62)',
           },
         },
         data: yearData.map((item) => item.cases),
         lineStyle: {
           width: 4,
           color: '#43a047',
-          shadowBlur: 12,
-          shadowColor: 'rgba(67,160,71,0.24)',
+          shadowBlur: 16,
+          shadowColor: 'rgba(67,160,71,0.30)',
         },
         itemStyle: { color: '#43a047' },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(67,160,71,0.28)' },
+            { offset: 0, color: 'rgba(67,160,71,0.34)' },
             { offset: 1, color: 'rgba(67,160,71,0.03)' },
           ]),
         },
@@ -327,7 +327,7 @@ function updateCharts() {
         type: 'line',
         smooth: true,
         symbol: 'circle',
-        symbolSize: 8,
+        symbolSize: 9,
         showSymbol: false,
         emphasis: {
           focus: 'series',
@@ -335,21 +335,21 @@ function updateCharts() {
           itemStyle: {
             borderWidth: 3,
             borderColor: '#ffffff',
-            shadowBlur: 16,
-            shadowColor: 'rgba(27,94,32,0.52)',
+            shadowBlur: 20,
+            shadowColor: 'rgba(27,94,32,0.58)',
           },
         },
         data: yearData.map((item) => item.deaths),
         lineStyle: {
           width: 4,
           color: '#1b5e20',
-          shadowBlur: 12,
-          shadowColor: 'rgba(27,94,32,0.24)',
+          shadowBlur: 16,
+          shadowColor: 'rgba(27,94,32,0.30)',
         },
         itemStyle: { color: '#1b5e20' },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(27,94,32,0.18)' },
+            { offset: 0, color: 'rgba(27,94,32,0.22)' },
             { offset: 1, color: 'rgba(27,94,32,0.02)' },
           ]),
         },
@@ -359,7 +359,7 @@ function updateCharts() {
 
   casesChart?.setOption({
     backgroundColor: 'transparent',
-    animationDuration: 900,
+    animationDuration: 1000,
     animationEasing: 'cubicOut',
     tooltip: {
       trigger: 'axis',
@@ -375,14 +375,14 @@ function updateCharts() {
       },
     },
     grid: {
-      left: 230,
+      left: 240,
       right: 30,
       top: 24,
       bottom: 30,
     },
     xAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.72)' } },
+      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.74)' } },
       axisLabel: { color: '#274833' },
     },
     yAxis: {
@@ -406,16 +406,16 @@ function updateCharts() {
         itemStyle: {
           borderRadius: [0, 10, 10, 0],
           color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-            { offset: 0, color: '#7fd685' },
+            { offset: 0, color: '#8be292' },
             { offset: 1, color: '#43a047' },
           ]),
-          shadowBlur: 12,
-          shadowColor: 'rgba(67,160,71,0.22)',
+          shadowBlur: 14,
+          shadowColor: 'rgba(67,160,71,0.26)',
         },
         emphasis: {
           itemStyle: {
-            shadowBlur: 18,
-            shadowColor: 'rgba(67,160,71,0.35)',
+            shadowBlur: 20,
+            shadowColor: 'rgba(67,160,71,0.40)',
           },
         },
       },
@@ -424,7 +424,7 @@ function updateCharts() {
 
   deathsChart?.setOption({
     backgroundColor: 'transparent',
-    animationDuration: 900,
+    animationDuration: 1000,
     animationEasing: 'cubicOut',
     tooltip: {
       trigger: 'axis',
@@ -440,14 +440,14 @@ function updateCharts() {
       },
     },
     grid: {
-      left: 230,
+      left: 240,
       right: 30,
       top: 24,
       bottom: 30,
     },
     xAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.72)' } },
+      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.74)' } },
       axisLabel: { color: '#274833' },
     },
     yAxis: {
@@ -471,16 +471,16 @@ function updateCharts() {
         itemStyle: {
           borderRadius: [0, 10, 10, 0],
           color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-            { offset: 0, color: '#51ab61' },
+            { offset: 0, color: '#5ab36a' },
             { offset: 1, color: '#1b5e20' },
           ]),
-          shadowBlur: 12,
-          shadowColor: 'rgba(27,94,32,0.22)',
+          shadowBlur: 14,
+          shadowColor: 'rgba(27,94,32,0.26)',
         },
         emphasis: {
           itemStyle: {
-            shadowBlur: 18,
-            shadowColor: 'rgba(27,94,32,0.35)',
+            shadowBlur: 20,
+            shadowColor: 'rgba(27,94,32,0.40)',
           },
         },
       },
@@ -489,7 +489,7 @@ function updateCharts() {
 
   fatalityChart?.setOption({
     backgroundColor: 'transparent',
-    animationDuration: 900,
+    animationDuration: 1000,
     animationEasing: 'cubicOut',
     tooltip: {
       trigger: 'axis',
@@ -505,14 +505,14 @@ function updateCharts() {
       },
     },
     grid: {
-      left: 230,
+      left: 240,
       right: 30,
       top: 24,
       bottom: 30,
     },
     xAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.72)' } },
+      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.74)' } },
       axisLabel: {
         color: '#274833',
         formatter: (value) => Number(value).toFixed(2),
@@ -539,16 +539,16 @@ function updateCharts() {
         itemStyle: {
           borderRadius: [0, 10, 10, 0],
           color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-            { offset: 0, color: '#4f8b6a' },
+            { offset: 0, color: '#5b9875' },
             { offset: 1, color: '#1b4332' },
           ]),
-          shadowBlur: 12,
-          shadowColor: 'rgba(27,67,50,0.22)',
+          shadowBlur: 14,
+          shadowColor: 'rgba(27,67,50,0.26)',
         },
         emphasis: {
           itemStyle: {
-            shadowBlur: 18,
-            shadowColor: 'rgba(27,67,50,0.35)',
+            shadowBlur: 20,
+            shadowColor: 'rgba(27,67,50,0.40)',
           },
         },
       },
@@ -574,9 +574,26 @@ function setupRevealAnimations() {
     takeawayRef.value,
   ].filter(Boolean)
 
-  sections.forEach((section) => {
+  sections.forEach((section, index) => {
     section.classList.add('reveal-section')
+    section.style.setProperty('--reveal-delay', `${index * 0.08}s`)
   })
+
+  if (summaryRef.value) {
+    const cards = summaryRef.value.querySelectorAll('.summary-card')
+    cards.forEach((card, index) => {
+      card.classList.add('reveal-child')
+      card.style.setProperty('--child-delay', `${0.12 + index * 0.08}s`)
+    })
+  }
+
+  if (compareSectionRef.value) {
+    const compareCards = compareSectionRef.value.querySelectorAll('.chart-card')
+    compareCards.forEach((card, index) => {
+      card.classList.add('reveal-child')
+      card.style.setProperty('--child-delay', `${0.15 + index * 0.10}s`)
+    })
+  }
 
   observer = new IntersectionObserver(
     (entries) => {
@@ -588,8 +605,8 @@ function setupRevealAnimations() {
       })
     },
     {
-      threshold: 0.16,
-      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.12,
+      rootMargin: '0px 0px -20px 0px',
     },
   )
 
@@ -625,6 +642,7 @@ onBeforeUnmount(() => {
     <section ref="heroRef" class="hero-section">
       <div class="hero-orb hero-orb-one"></div>
       <div class="hero-orb hero-orb-two"></div>
+      <div class="hero-grid-lines"></div>
 
       <div class="hero-content">
         <div class="hero-copy">
@@ -846,10 +864,10 @@ onBeforeUnmount(() => {
 <style scoped>
 .dashboard-page {
   min-height: 100vh;
-  padding: 32px;
+  padding: 34px;
   background:
-    radial-gradient(circle at 85% 6%, rgba(129, 199, 132, 0.18), transparent 18%),
-    radial-gradient(circle at 14% 92%, rgba(67, 160, 71, 0.10), transparent 20%),
+    radial-gradient(circle at 86% 5%, rgba(129, 199, 132, 0.20), transparent 18%),
+    radial-gradient(circle at 12% 92%, rgba(67, 160, 71, 0.12), transparent 21%),
     linear-gradient(180deg, #f8fbf8 0%, #eef4ef 100%);
   color: #1f3b2d;
   overflow: hidden;
@@ -857,14 +875,32 @@ onBeforeUnmount(() => {
 
 .reveal-section {
   opacity: 0;
-  transform: translateY(38px);
+  transform: translateY(70px) scale(0.985);
+  filter: blur(10px);
   transition:
-    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform, filter;
 }
 
 .reveal-section.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.reveal-child {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--child-delay, 0s);
+}
+
+.revealed .reveal-child {
   opacity: 1;
   transform: translateY(0);
 }
@@ -873,15 +909,15 @@ onBeforeUnmount(() => {
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(220, 235, 220, 0.95);
-  border-radius: 34px;
-  padding: 36px;
-  margin-bottom: 26px;
+  border-radius: 36px;
+  padding: 40px;
+  margin-bottom: 28px;
   background:
     linear-gradient(135deg, rgba(244, 251, 244, 0.82) 0%, rgba(237, 247, 238, 0.78) 100%);
   box-shadow:
-    0 18px 40px rgba(27, 67, 50, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(14px);
+    0 22px 48px rgba(27, 67, 50, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(15px);
 }
 
 .hero-orb {
@@ -892,47 +928,50 @@ onBeforeUnmount(() => {
 }
 
 .hero-orb-one {
-  top: -80px;
+  top: -90px;
   right: -20px;
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, rgba(129, 199, 132, 0.24) 0%, rgba(129, 199, 132, 0) 72%);
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(129, 199, 132, 0.26) 0%, rgba(129, 199, 132, 0) 72%);
   animation: floatOrbOne 12s ease-in-out infinite;
 }
 
 .hero-orb-two {
-  bottom: -110px;
+  bottom: -120px;
   left: 8%;
-  width: 240px;
-  height: 240px;
-  background: radial-gradient(circle, rgba(67, 160, 71, 0.16) 0%, rgba(67, 160, 71, 0) 72%);
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(67, 160, 71, 0.18) 0%, rgba(67, 160, 71, 0) 72%);
   animation: floatOrbTwo 14s ease-in-out infinite;
 }
 
+.hero-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.20), transparent 90%);
+  pointer-events: none;
+}
+
 @keyframes floatOrbOne {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(-10px, 16px, 0);
-  }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-14px, 18px, 0); }
 }
 
 @keyframes floatOrbTwo {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(14px, -12px, 0);
-  }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(18px, -14px, 0); }
 }
 
 .hero-content {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(270px, 0.78fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.78fr);
+  gap: 26px;
   align-items: stretch;
 }
 
@@ -951,17 +990,17 @@ onBeforeUnmount(() => {
   padding: 8px 14px;
   font-size: 13px;
   color: #2e7d32;
-  background: rgba(232, 245, 233, 0.88);
+  background: rgba(232, 245, 233, 0.90);
   border: 1px solid rgba(207, 232, 209, 0.98);
 }
 
 .hero-copy h1 {
   margin: 0 0 14px;
-  font-size: 54px;
-  line-height: 1.02;
+  font-size: 58px;
+  line-height: 1.0;
   font-weight: 800;
-  color: #153526;
-  letter-spacing: -1.2px;
+  color: #143324;
+  letter-spacing: -1.35px;
   max-width: 940px;
 }
 
@@ -969,7 +1008,7 @@ onBeforeUnmount(() => {
   margin: 0;
   max-width: 780px;
   font-size: 16px;
-  line-height: 1.85;
+  line-height: 1.9;
   color: #557260;
 }
 
@@ -977,14 +1016,14 @@ onBeforeUnmount(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 22px;
 }
 
 .hero-chip {
   padding: 8px 12px;
   font-size: 12px;
   color: #2d6544;
-  background: rgba(255, 255, 255, 0.56);
+  background: rgba(255, 255, 255, 0.58);
   border: 1px solid rgba(207, 232, 209, 0.95);
   box-shadow: 0 8px 18px rgba(27, 67, 50, 0.04);
 }
@@ -994,14 +1033,14 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 24px;
-  border-radius: 26px;
+  padding: 26px;
+  border-radius: 28px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.70) 0%, rgba(247, 251, 247, 0.78) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(247, 251, 247, 0.80) 100%);
   border: 1px solid rgba(220, 235, 220, 0.95);
   box-shadow:
-    0 18px 34px rgba(27, 67, 50, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    0 20px 36px rgba(27, 67, 50, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76);
   backdrop-filter: blur(14px);
 }
 
@@ -1017,14 +1056,14 @@ onBeforeUnmount(() => {
   display: block;
   margin-bottom: 8px;
   font-size: 20px;
-  line-height: 1.4;
+  line-height: 1.45;
   color: #173a29;
 }
 
 .hero-side-card p {
   margin: 0;
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.7;
   color: #557260;
 }
 
@@ -1032,24 +1071,36 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: repeat(3, minmax(220px, 1fr));
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 26px;
 }
 
 .glass-card {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.70) 0%, rgba(251, 253, 251, 0.78) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(251, 253, 251, 0.80) 100%);
   border: 1px solid rgba(226, 238, 227, 0.98);
   box-shadow:
-    0 14px 30px rgba(27, 67, 50, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(14px);
+    0 16px 32px rgba(27, 67, 50, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(15px);
 }
 
 .info-strip-item {
   display: flex;
   gap: 12px;
-  padding: 18px;
+  padding: 20px;
   border-radius: 22px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.info-strip-item:hover {
+  transform: translateY(-5px);
+  border-color: rgba(129, 199, 132, 0.52);
+  box-shadow:
+    0 18px 34px rgba(27, 67, 50, 0.07),
+    0 0 0 1px rgba(129, 199, 132, 0.12);
 }
 
 .info-strip-icon {
@@ -1069,14 +1120,14 @@ onBeforeUnmount(() => {
   margin: 0;
   color: #557260;
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .filter-sticky-wrap {
   position: sticky;
   top: 14px;
   z-index: 40;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 }
 
 .filter-bar {
@@ -1084,22 +1135,22 @@ onBeforeUnmount(() => {
   grid-template-columns: repeat(3, minmax(220px, 1fr));
   gap: 18px;
   padding: 12px;
-  background: rgba(248, 251, 248, 0.68);
-  backdrop-filter: blur(16px);
+  background: rgba(248, 251, 248, 0.72);
+  backdrop-filter: blur(18px);
   border: 1px solid rgba(220, 235, 220, 0.96);
-  border-radius: 26px;
+  border-radius: 28px;
   box-shadow:
-    0 14px 28px rgba(27, 67, 50, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    0 16px 30px rgba(27, 67, 50, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .filter-item {
   border-radius: 22px;
   padding: 16px 18px;
   transition:
-    transform 0.28s ease,
-    box-shadow 0.28s ease,
-    border-color 0.28s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .filter-item:hover {
@@ -1133,14 +1184,14 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   align-items: end;
   gap: 16px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .section-heading h2 {
   margin: 0;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 800;
-  letter-spacing: -0.45px;
+  letter-spacing: -0.5px;
   color: #173a29;
 }
 
@@ -1148,55 +1199,55 @@ onBeforeUnmount(() => {
   margin: 0;
   color: #647f6d;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(180px, 1fr));
   gap: 18px;
-  margin-bottom: 32px;
+  margin-bottom: 34px;
 }
 
 .summary-card {
   position: relative;
   overflow: hidden;
-  border-radius: 26px;
+  border-radius: 28px;
   padding: 24px;
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+    transform 0.34s ease,
+    box-shadow 0.34s ease,
+    border-color 0.34s ease;
 }
 
 .summary-card::before {
   content: '';
   position: absolute;
-  top: -30px;
-  right: -20px;
-  width: 140px;
-  height: 140px;
+  top: -34px;
+  right: -22px;
+  width: 150px;
+  height: 150px;
   background: radial-gradient(circle, rgba(129, 199, 132, 0.18) 0%, transparent 72%);
   pointer-events: none;
 }
 
 .summary-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-9px) scale(1.01);
   border-color: rgba(129, 199, 132, 0.58);
   box-shadow:
-    0 20px 38px rgba(27, 67, 50, 0.08),
+    0 22px 40px rgba(27, 67, 50, 0.09),
     0 0 0 1px rgba(129, 199, 132, 0.15);
 }
 
 .summary-icon {
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   display: grid;
   place-items: center;
   margin-bottom: 14px;
   border-radius: 16px;
   background: linear-gradient(180deg, #eff8f0 0%, #e7f4e8 100%);
-  font-size: 20px;
+  font-size: 21px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
 }
 
@@ -1220,25 +1271,25 @@ onBeforeUnmount(() => {
 .card-footnote {
   display: block;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.55;
   color: #5f7967;
 }
 
 .chart-card {
-  border-radius: 28px;
-  padding: 24px;
-  margin-bottom: 26px;
+  border-radius: 30px;
+  padding: 26px;
+  margin-bottom: 28px;
   transition:
-    transform 0.32s ease,
-    box-shadow 0.32s ease,
-    border-color 0.32s ease;
+    transform 0.36s ease,
+    box-shadow 0.36s ease,
+    border-color 0.36s ease;
 }
 
 .interactive-chart-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-9px) scale(1.003);
   border-color: rgba(129, 199, 132, 0.58);
   box-shadow:
-    0 24px 42px rgba(27, 67, 50, 0.09),
+    0 26px 44px rgba(27, 67, 50, 0.10),
     0 0 0 1px rgba(129, 199, 132, 0.14);
 }
 
@@ -1251,10 +1302,10 @@ onBeforeUnmount(() => {
 
 .chart-header h3 {
   margin: 6px 0 0;
-  font-size: 26px;
+  font-size: 27px;
   font-weight: 800;
   color: #173a29;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.42px;
 }
 
 .chart-header p {
@@ -1262,14 +1313,14 @@ onBeforeUnmount(() => {
   margin: 0;
   color: #647f6d;
   font-size: 14px;
-  line-height: 1.75;
+  line-height: 1.8;
 }
 
 .mini-tag {
   padding: 7px 12px;
   font-size: 12px;
   color: #2e7d32;
-  background: rgba(236, 247, 237, 0.88);
+  background: rgba(236, 247, 237, 0.90);
   border: 1px solid rgba(212, 236, 214, 0.98);
 }
 
@@ -1280,19 +1331,19 @@ onBeforeUnmount(() => {
 }
 
 .trend-chart {
-  height: 490px;
+  height: 510px;
 }
 
 .small-chart {
-  height: 430px;
+  height: 440px;
 }
 
 .insight-banner {
   display: flex;
   gap: 12px;
-  margin-top: -4px;
-  margin-bottom: 28px;
-  padding: 18px 22px;
+  margin-top: -2px;
+  margin-bottom: 30px;
+  padding: 20px 24px;
   border-radius: 24px;
 }
 
@@ -1306,7 +1357,7 @@ onBeforeUnmount(() => {
 .insight-banner p {
   margin: 0;
   color: #557260;
-  line-height: 1.7;
+  line-height: 1.8;
   font-size: 14px;
 }
 
@@ -1314,7 +1365,7 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: repeat(2, minmax(320px, 1fr));
   gap: 20px;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 }
 
 .single-chart-row {
@@ -1323,8 +1374,8 @@ onBeforeUnmount(() => {
 
 .analysis-description {
   margin-bottom: 28px;
-  padding: 24px 26px;
-  border-radius: 28px;
+  padding: 26px 28px;
+  border-radius: 30px;
 }
 
 .analysis-description h3 {
@@ -1337,7 +1388,7 @@ onBeforeUnmount(() => {
 .analysis-description p {
   margin: 0;
   font-size: 15px;
-  line-height: 1.85;
+  line-height: 1.9;
   color: #557260;
 }
 
@@ -1393,7 +1444,7 @@ onBeforeUnmount(() => {
   }
 
   .hero-copy h1 {
-    font-size: 38px;
+    font-size: 40px;
   }
 
   .chart-header h3 {
@@ -1405,7 +1456,7 @@ onBeforeUnmount(() => {
   }
 
   .trend-chart {
-    height: 430px;
+    height: 440px;
   }
 }
 
