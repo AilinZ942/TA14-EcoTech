@@ -30,19 +30,3 @@ onMounted(() => {
   loadHealthData()
 })
 </script>
-
-<template>
-  <div>
-    <p v-if="loading">Loading...</p>
-    <p v-else-if="error">{{ error }}</p>
-    <div v-else>
-      <p>Total rows: {{ healthData.length }}</p>
-      <ul>
-        <li v-for="(item, index) in healthData.slice(0, 5)" :key="index">
-          {{ item.year }} - {{ item.sex }} - {{ item.cancer_type }} - {{ item.cases }} -
-          {{ item.deaths }}
-        </li>
-      </ul>
-    </div>
-  </div>
-</template>
