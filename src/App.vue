@@ -1,11 +1,10 @@
 <template>
   <nav class="navbar">
-    <div class="logo">
+    <!-- FULL logo clickable -->
+    <router-link to="/" class="logo">
       <img src="@/assets/Logo.png" alt="EcoTech Logo" class="logo-img" />
-      <router-link to="/" class="logo-link">
-  EcoTech
-</router-link>
-    </div>
+      <span class="logo-text">EcoTech</span>
+    </router-link>
 
     <div class="links">
       <router-link to="/">Home</router-link>
@@ -33,11 +32,19 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+/* FIXED LOGO */
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-shrink: 0;
+  text-decoration: none;   /* remove underline */
+  color: inherit;          /* keep normal text color */
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
 }
 
 .logo-img {
@@ -48,7 +55,7 @@
 
 .logo-text {
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 700;
   color: #2f4054;
   line-height: 1;
 }
