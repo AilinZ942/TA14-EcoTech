@@ -1,7 +1,9 @@
 const apiSiteBaseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_SITE || '')
 
 function normalizeApiBaseUrl(value) {
-  let normalized = String(value || '').trim().replace(/\/$/, '')
+  let normalized = String(value || '')
+    .trim()
+    .replace(/\/$/, '')
   if (!normalized) return ''
 
   if (normalized.endsWith('/api')) {
@@ -45,7 +47,6 @@ async function requestJson(path, options = {}) {
 }
 
 export const api = {
-
   getMapLocation: async (postcode) => {
     if (typeof postcode !== 'string') {
       throw new Error('Parameter must be a string')
@@ -63,5 +64,9 @@ export const api = {
       body: JSON.stringify(payload),
       signal: options.signal,
     })
+  },
+
+  getHealthAll: async () => {
+    return requestJson('/api/health/all')
   },
 }
