@@ -20,7 +20,13 @@ let map = null
 let markersLayer = null
 let userMarker = null
 
-const allowedCategories = ['All', 'E-waste recycling', 'Drop-off point', 'Other']
+const allowedCategories = [
+  'All',
+  'E-waste recycling',
+  'Battery recycling',
+  'Drop-off point',
+  'Other',
+]
 
 function normalizeCategory(value) {
   const raw = String(value || '').trim().toLowerCase()
@@ -182,7 +188,6 @@ const filteredSites = computed(() => {
     const matchQuery = !query || searchableText.includes(query)
 
     const excluded =
-      site.category === 'Battery recycling' ||
       site.category === 'Transfer station' ||
       site.category === 'Repair and reuse'
 
@@ -190,7 +195,15 @@ const filteredSites = computed(() => {
   })
 
   if (nearestOnly.value && userLocation.value) {
-    results = results
+    const within100Km = results
+      .filter((site) => site.distanceKm !== null && site.distanceKm <= 100)
+      .sort((a, b) => a.distanceKm - b.distanceKm)
+
+    if (within100Km.length >= 5) {
+      return within100Km.slice(0, 5)
+    }
+
+    return results
       .filter((site) => site.distanceKm !== null)
       .sort((a, b) => a.distanceKm - b.distanceKm)
       .slice(0, 5)
@@ -228,6 +241,13 @@ function createUserMarkerIcon() {
   })
 }
 
+function refreshMapSize() {
+  if (!map) return
+  setTimeout(() => {
+    map.invalidateSize()
+  }, 200)
+}
+
 function initMap() {
   if (!mapRef.value || map) return
 
@@ -242,6 +262,8 @@ function initMap() {
   }).addTo(map)
 
   markersLayer = L.layerGroup().addTo(map)
+
+  refreshMapSize()
 }
 
 function updateUserMarker() {
@@ -339,6 +361,7 @@ function useMyLocation() {
       nextTick(() => {
         selectFirstSiteIfNeeded()
         renderMarkers()
+        refreshMapSize()
       })
     },
     (geoError) => {
@@ -360,6 +383,7 @@ function clearNearestFilter() {
   nextTick(() => {
     selectFirstSiteIfNeeded()
     renderMarkers()
+    refreshMapSize()
   })
 }
 
@@ -373,6 +397,7 @@ watch(filteredSites, async () => {
   selectFirstSiteIfNeeded()
   await nextTick()
   renderMarkers()
+  refreshMapSize()
 })
 
 watch(selectedSite, async () => {
@@ -386,6 +411,7 @@ onMounted(async () => {
   await nextTick()
   selectFirstSiteIfNeeded()
   renderMarkers()
+  refreshMapSize()
 })
 
 onBeforeUnmount(() => {
