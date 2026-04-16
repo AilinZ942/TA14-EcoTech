@@ -655,13 +655,7 @@ onBeforeUnmount(() => {
             to help users understand why safe disposal matters.
           </p>
 
-          <div class="current-view-inline">
-            <span class="side-card-label">Current view</span>
-            <strong>{{ selectedFiltersSummary }}</strong>
-            <p>
-              Use the filters below to explore changes by year, sex, or a selected health condition.
-            </p>
-          </div>
+    
         </div>
       </div>
     </section>
