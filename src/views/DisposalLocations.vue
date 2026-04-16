@@ -12,8 +12,13 @@ const selectedCategory = ref('All')
 const selectedSite = ref(null)
 const allSites = ref([])
 
+const userLocation = ref(null)
+const locatingUser = ref(false)
+const nearestOnly = ref(false)
+
 let map = null
 let markersLayer = null
+let userMarker = null
 
 const allowedCategories = ['All', 'E-waste recycling', 'Drop-off point', 'Other']
 
@@ -76,8 +81,24 @@ function normalizeSite(raw, index) {
     website: raw.website || '',
     latitude: lat,
     longitude: lng,
+    distanceKm: null,
     raw,
   }
+}
+
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const toRad = (deg) => (deg * Math.PI) / 180
+  const R = 6371
+
+  const dLat = toRad(lat2 - lat1)
+  const dLon = toRad(lon2 - lon1)
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  return R * c
 }
 
 async function fetchSites() {
@@ -91,21 +112,17 @@ async function fetchSites() {
       limit: 500,
     }
 
-    let data = null
+    const res = await fetch('/api/map/disposal-locations/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
 
-    if (typeof window !== 'undefined' && window.location) {
-      const res = await fetch('/api/map/disposal-locations/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-
-      if (!res.ok) {
-        throw new Error(`Failed to load disposal locations (${res.status})`)
-      }
-
-      data = await res.json()
+    if (!res.ok) {
+      throw new Error(`Failed to load disposal locations (${res.status})`)
     }
+
+    const data = await res.json()
 
     const items = Array.isArray(data?.items)
       ? data.items
@@ -124,10 +141,30 @@ async function fetchSites() {
   }
 }
 
+const processedSites = computed(() => {
+  return allSites.value.map((site) => {
+    let distanceKm = null
+
+    if (userLocation.value) {
+      distanceKm = haversineDistance(
+        userLocation.value.latitude,
+        userLocation.value.longitude,
+        site.latitude,
+        site.longitude,
+      )
+    }
+
+    return {
+      ...site,
+      distanceKm,
+    }
+  })
+})
+
 const filteredSites = computed(() => {
   const query = searchQuery.value.trim().toLowerCase()
 
-  return allSites.value.filter((site) => {
+  let results = processedSites.value.filter((site) => {
     const matchCategory =
       selectedCategory.value === 'All' || site.category === selectedCategory.value
 
@@ -151,6 +188,15 @@ const filteredSites = computed(() => {
 
     return matchCategory && matchQuery && !excluded
   })
+
+  if (nearestOnly.value && userLocation.value) {
+    results = results
+      .filter((site) => site.distanceKm !== null)
+      .sort((a, b) => a.distanceKm - b.distanceKm)
+      .slice(0, 5)
+  }
+
+  return results
 })
 
 const visibleCount = computed(() => filteredSites.value.length)
@@ -166,6 +212,19 @@ function createMarkerIcon(isSelected = false) {
     iconSize: [24, 24],
     iconAnchor: [12, 24],
     popupAnchor: [0, -20],
+  })
+}
+
+function createUserMarkerIcon() {
+  return L.divIcon({
+    className: 'custom-user-marker-wrapper',
+    html: `
+      <div class="custom-user-marker">
+        <span></span>
+      </div>
+    `,
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
   })
 }
 
@@ -185,12 +244,34 @@ function initMap() {
   markersLayer = L.layerGroup().addTo(map)
 }
 
+function updateUserMarker() {
+  if (!map) return
+
+  if (userMarker) {
+    map.removeLayer(userMarker)
+    userMarker = null
+  }
+
+  if (userLocation.value) {
+    userMarker = L.marker([userLocation.value.latitude, userLocation.value.longitude], {
+      icon: createUserMarkerIcon(),
+    }).addTo(map)
+
+    userMarker.bindPopup('<strong>Your current location</strong>')
+  }
+}
+
 function renderMarkers() {
   if (!map || !markersLayer) return
 
   markersLayer.clearLayers()
+  updateUserMarker()
 
   const bounds = []
+
+  if (userLocation.value) {
+    bounds.push([userLocation.value.latitude, userLocation.value.longitude])
+  }
 
   filteredSites.value.forEach((site) => {
     const isSelected = selectedSite.value?.id === site.id
@@ -201,17 +282,16 @@ function renderMarkers() {
 
     marker.on('click', () => {
       selectedSite.value = site
-      map.flyTo([site.latitude, site.longitude], 13, {
-        duration: 1.2,
-      })
+      map.flyTo([site.latitude, site.longitude], 13, { duration: 1.2 })
       nextTick(() => renderMarkers())
     })
 
     marker.bindPopup(`
-      <div style="min-width: 180px;">
+      <div style="min-width: 190px;">
         <strong>${site.name}</strong><br/>
         <span>${site.category}</span><br/>
         <span>${formatAddress(site)}</span>
+        ${site.distanceKm !== null ? `<br/><span><strong>${site.distanceKm.toFixed(2)} km away</strong></span>` : ''}
       </div>
     `)
 
@@ -222,7 +302,7 @@ function renderMarkers() {
   if (bounds.length) {
     map.fitBounds(bounds, {
       padding: [40, 40],
-      maxZoom: filteredSites.value.length === 1 ? 14 : 11,
+      maxZoom: filteredSites.value.length <= 1 ? 14 : 11,
     })
   }
 }
@@ -237,6 +317,56 @@ function selectFirstSiteIfNeeded() {
   if (!stillVisible) {
     selectedSite.value = filteredSites.value[0]
   }
+}
+
+function useMyLocation() {
+  if (!navigator.geolocation) {
+    error.value = 'Geolocation is not supported in this browser.'
+    return
+  }
+
+  locatingUser.value = true
+  error.value = ''
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      userLocation.value = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      }
+      nearestOnly.value = true
+      locatingUser.value = false
+      nextTick(() => {
+        selectFirstSiteIfNeeded()
+        renderMarkers()
+      })
+    },
+    (geoError) => {
+      console.error(geoError)
+      locatingUser.value = false
+      error.value = 'Could not access your location. Please allow location access and try again.'
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    },
+  )
+}
+
+function clearNearestFilter() {
+  nearestOnly.value = false
+  userLocation.value = null
+  nextTick(() => {
+    selectFirstSiteIfNeeded()
+    renderMarkers()
+  })
+}
+
+function openNavigation(site) {
+  if (!site) return
+  const url = `https://www.google.com/maps/dir/?api=1&destination=${site.latitude},${site.longitude}`
+  window.open(url, '_blank')
 }
 
 watch(filteredSites, async () => {
@@ -302,8 +432,24 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
+        <div class="action-row">
+          <button class="action-btn primary" @click="useMyLocation" :disabled="locatingUser">
+            {{ locatingUser ? 'Getting location...' : 'Use My Location' }}
+          </button>
+
+          <button
+            v-if="nearestOnly"
+            class="action-btn secondary"
+            @click="clearNearestFilter"
+          >
+            Show All Locations
+          </button>
+        </div>
+
         <div class="search-meta">
-          <span class="meta-pill">{{ visibleCount }} locations found</span>
+          <span class="meta-pill">
+            {{ visibleCount }} {{ nearestOnly ? 'nearest' : '' }} locations found
+          </span>
           <span class="meta-note">Interactive map powered by OpenStreetMap</span>
         </div>
       </div>
@@ -339,6 +485,9 @@ onBeforeUnmount(() => {
           <div v-if="selectedSite" class="details-card">
             <div class="site-badge-row">
               <span class="category-badge">{{ selectedSite.category }}</span>
+              <span v-if="selectedSite.distanceKm !== null" class="distance-badge">
+                {{ selectedSite.distanceKm.toFixed(2) }} km away
+              </span>
             </div>
 
             <h3>{{ selectedSite.name }}</h3>
@@ -365,28 +514,15 @@ onBeforeUnmount(() => {
               </a>
             </div>
 
-            <div class="detail-item" v-if="selectedSite.coordinate_source">
-              <span class="detail-label">Coordinate source</span>
-              <p>{{ selectedSite.coordinate_source }}</p>
-            </div>
-
-            <div class="detail-item" v-if="selectedSite.source_file">
-              <span class="detail-label">Source file</span>
-              <p>{{ selectedSite.source_file }}</p>
+            <div class="nav-action-row">
+              <button class="navigate-btn" @click="openNavigation(selectedSite)">
+                Navigate
+              </button>
             </div>
           </div>
 
           <div v-else class="empty-card">
             <p>No matching disposal location found.</p>
-          </div>
-
-          <div class="help-card">
-            <strong>What can I do here?</strong>
-            <ul>
-              <li>Search by suburb, postcode, or facility name</li>
-              <li>Click a marker to open location details</li>
-              <li>Use the category filter to narrow results</li>
-            </ul>
           </div>
         </div>
       </section>
@@ -395,7 +531,7 @@ onBeforeUnmount(() => {
         <div class="panel-header small">
           <div>
             <p class="panel-tag">Available Locations</p>
-            <h2>Browse all visible results</h2>
+            <h2>{{ nearestOnly ? 'Top 5 nearest results' : 'Browse all visible results' }}</h2>
           </div>
         </div>
 
@@ -411,7 +547,13 @@ onBeforeUnmount(() => {
               <h3>{{ site.name }}</h3>
               <span class="mini-badge">{{ site.category }}</span>
             </div>
+
             <p>{{ formatAddress(site) }}</p>
+
+            <div class="result-bottom" v-if="site.distanceKm !== null">
+              <span class="distance-text">{{ site.distanceKm.toFixed(2) }} km away</span>
+              <span class="navigate-text">Tap to view</span>
+            </div>
           </button>
         </div>
       </section>
@@ -521,16 +663,50 @@ onBeforeUnmount(() => {
   color: #173a29;
   font-size: 15px;
   outline: none;
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
 }
 
-.field-group input:focus,
-.field-group select:focus {
-  border-color: rgba(129, 199, 132, 0.9);
-  box-shadow: 0 0 0 4px rgba(129, 199, 132, 0.14);
+.action-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.action-btn,
+.navigate-btn {
+  min-height: 46px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.action-btn:hover,
+.navigate-btn:hover {
+  transform: translateY(-2px);
+}
+
+.action-btn.primary,
+.navigate-btn {
+  background: #2e7d32;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(46, 125, 50, 0.22);
+}
+
+.action-btn.secondary {
+  background: rgba(236, 247, 237, 0.95);
+  color: #2e7d32;
+  border: 1px solid rgba(212, 236, 214, 0.98);
+}
+
+.action-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .search-meta {
@@ -578,16 +754,11 @@ onBeforeUnmount(() => {
   margin-bottom: 18px;
 }
 
-.panel-header.small {
-  margin-bottom: 16px;
-}
-
 .panel-header h2 {
   margin: 0;
   font-size: 28px;
   font-weight: 800;
   color: #173a29;
-  letter-spacing: -0.4px;
 }
 
 .panel-header p {
@@ -606,8 +777,7 @@ onBeforeUnmount(() => {
 }
 
 .details-card,
-.empty-card,
-.help-card {
+.empty-card {
   padding: 20px;
   border-radius: 22px;
   background: rgba(245, 250, 246, 0.92);
@@ -622,11 +792,15 @@ onBeforeUnmount(() => {
 }
 
 .site-badge-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
   margin-bottom: 14px;
 }
 
 .category-badge,
-.mini-badge {
+.mini-badge,
+.distance-badge {
   display: inline-flex;
   padding: 7px 12px;
   border-radius: 999px;
@@ -664,22 +838,8 @@ onBeforeUnmount(() => {
   text-decoration: none;
 }
 
-.help-card {
-  margin-top: 16px;
-}
-
-.help-card strong {
-  display: block;
-  margin-bottom: 10px;
-  color: #173a29;
-  font-size: 16px;
-}
-
-.help-card ul {
-  margin: 0;
-  padding-left: 18px;
-  color: #557260;
-  line-height: 1.8;
+.nav-action-row {
+  margin-top: 20px;
 }
 
 .results-list {
@@ -732,6 +892,20 @@ onBeforeUnmount(() => {
   color: #557260;
 }
 
+.result-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.distance-text,
+.navigate-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
 .state-text,
 .error-text {
   margin-top: 20px;
@@ -747,8 +921,8 @@ onBeforeUnmount(() => {
   font-weight: 600;
 }
 
-/* Leaflet custom marker */
-:deep(.custom-marker-wrapper) {
+:deep(.custom-marker-wrapper),
+:deep(.custom-user-marker-wrapper) {
   background: transparent;
   border: none;
 }
@@ -776,6 +950,24 @@ onBeforeUnmount(() => {
 :deep(.custom-marker.selected) {
   background: #1b5e20;
   box-shadow: 0 12px 24px rgba(27, 94, 32, 0.35);
+}
+
+:deep(.custom-user-marker) {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #1565c0;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 8px rgba(21, 101, 192, 0.16);
+  display: grid;
+  place-items: center;
+}
+
+:deep(.custom-user-marker span) {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #ffffff;
 }
 
 @media (max-width: 1200px) {
@@ -831,7 +1023,9 @@ onBeforeUnmount(() => {
     height: 380px;
   }
 
-  .search-meta {
+  .search-meta,
+  .action-row,
+  .result-bottom {
     flex-direction: column;
     align-items: flex-start;
   }
