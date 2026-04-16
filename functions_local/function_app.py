@@ -145,8 +145,9 @@ def search_all_disposal_locations(req: HttpRequest, ewaste_rows: SqlRowList) -> 
             year,
             sex,
             cancer_type,
-            cases,
-            deaths
+            cancer_cases,
+            cancer_deaths,
+            fatality_ratio
         FROM dbo.health_merged
         ORDER BY year, sex, cancer_type
     """,
