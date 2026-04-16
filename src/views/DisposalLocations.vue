@@ -1,1063 +1,606 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
 
-const mapRef = ref(null)
+<<<<<<< HEAD
+import { api } from '@/api'
+=======
+import { searchMapFacilities } from '../lib/mapApi'
+>>>>>>> dad8642 (health)
+import {
+  buildCategorySummary,
+  buildFacilityMarkers,
+  getCategoryLabel,
+  getCategoryOptions,
+  getFacilityBounds,
+} from '../lib/ewasteMapModel'
 
-const loading = ref(true)
-const error = ref('')
-const searchQuery = ref('')
-const selectedCategory = ref('All')
-const selectedSite = ref(null)
-const allSites = ref([])
+const mapboxAccessToken = String(import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || '').trim()
+<<<<<<< HEAD
+=======
+const mapDataMode = String(import.meta.env.VITE_MAP_DATA_MODE || 'auto').trim().toLowerCase() || 'auto'
 
-const userLocation = ref(null)
-const locatingUser = ref(false)
-const nearestOnly = ref(false)
+>>>>>>> dad8642 (health)
+const mapContainerRef = ref(null)
+const isLoading = ref(false)
+const loadError = ref('')
+const searchTerm = ref('')
+const selectedCategory = ref('')
+const facilityRows = ref([])
+const facilityMarkers = ref([])
+const selectedMarkerId = ref('')
+<<<<<<< HEAD
+const activePipeline = ref('api')
+const activeSource = ref('api')
+=======
+const activePipeline = ref('local')
+const activeSource = ref('csv')
+const fallbackReason = ref('')
+>>>>>>> dad8642 (health)
 
 let map = null
-let markersLayer = null
-let userMarker = null
+let mapReady = false
+let activePopup = null
+let activeRequestController = null
+let requestTimer = null
+let renderedMarkers = []
 
-const allowedCategories = [
-  'All',
-  'E-waste recycling',
-  'Battery recycling',
-  'Drop-off point',
-  'Other',
-]
+const categoryOptions = getCategoryOptions()
+const hasToken = computed(() => Boolean(mapboxAccessToken))
+const visibleMarkers = computed(() => {
+  const needle = searchTerm.value.trim().toLowerCase()
 
-function normalizeCategory(value) {
-  const raw = String(value || '').trim().toLowerCase()
-
-  if (raw.includes('battery')) return 'Battery recycling'
-  if (raw.includes('transfer')) return 'Transfer station'
-  if (raw.includes('repair') || raw.includes('reuse')) return 'Repair and reuse'
-  if (raw.includes('drop')) return 'Drop-off point'
-  if (raw.includes('e-waste') || raw.includes('ewaste') || raw.includes('electronic')) {
-    return 'E-waste recycling'
-  }
-
-  return 'Other'
-}
-
-function parseCoordinate(value) {
-  const num = Number(value)
-  return Number.isFinite(num) ? num : null
-}
-
-function formatAddress(site) {
-  const parts = [
-    site.address_line_1 || site.address || '',
-    site.suburb || '',
-    site.state || '',
-    site.postcode || '',
-  ].filter(Boolean)
-
-  return parts.join(', ')
-}
-
-function normalizeSite(raw, index) {
-  const lat =
-    parseCoordinate(raw.latitude) ??
-    parseCoordinate(raw.lat) ??
-    parseCoordinate(raw.y) ??
-    parseCoordinate(raw.geom_lat)
-
-  const lng =
-    parseCoordinate(raw.longitude) ??
-    parseCoordinate(raw.lng) ??
-    parseCoordinate(raw.lon) ??
-    parseCoordinate(raw.x) ??
-    parseCoordinate(raw.geom_lng)
-
-  return {
-    id: raw.id || raw.site_id || raw.facility_id || `site-${index}`,
-    name: raw.facility_name || raw.name || raw.site_name || 'Unknown facility',
-    category: normalizeCategory(raw.category || raw.site_category || raw.type),
-    address_line_1: raw.address_line_1 || raw.address || '',
-    suburb: raw.suburb || raw.city || '',
-    state: raw.state || '',
-    postcode: raw.postcode || '',
-    source_file: raw.source_file || '',
-    coordinate_source: raw.coordinate_source || '',
-    accepted_items: raw.accepted_items || '',
-    phone: raw.phone || '',
-    website: raw.website || '',
-    latitude: lat,
-    longitude: lng,
-    distanceKm: null,
-    raw,
-  }
-}
-
-function haversineDistance(lat1, lon1, lat2, lon2) {
-  const toRad = (deg) => (deg * Math.PI) / 180
-  const R = 6371
-
-  const dLat = toRad(lat2 - lat1)
-  const dLon = toRad(lon2 - lon1)
-
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  return R * c
-}
-
-async function fetchSites() {
-  loading.value = true
-  error.value = ''
-
-  try {
-    const payload = {
-      query: '',
-      category: '',
-      limit: 500,
+  return facilityMarkers.value.filter((marker) => {
+    if (selectedCategory.value && marker.category !== selectedCategory.value) {
+      return false
     }
 
-    const res = await fetch('/api/map/disposal-locations/search', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-
-    if (!res.ok) {
-      throw new Error(`Failed to load disposal locations (${res.status})`)
+    if (!needle) {
+      return true
     }
 
-    const data = await res.json()
-
-    const items = Array.isArray(data?.items)
-      ? data.items
-      : Array.isArray(data)
-        ? data
-        : []
-
-    allSites.value = items
-      .map((item, index) => normalizeSite(item, index))
-      .filter((site) => site.latitude !== null && site.longitude !== null)
-  } catch (err) {
-    console.error(err)
-    error.value = err.message || 'Failed to load disposal locations.'
-  } finally {
-    loading.value = false
-  }
-}
-
-const processedSites = computed(() => {
-  return allSites.value.map((site) => {
-    let distanceKm = null
-
-    if (userLocation.value) {
-      distanceKm = haversineDistance(
-        userLocation.value.latitude,
-        userLocation.value.longitude,
-        site.latitude,
-        site.longitude,
-      )
-    }
-
-    return {
-      ...site,
-      distanceKm,
-    }
-  })
-})
-
-const filteredSites = computed(() => {
-  const query = searchQuery.value.trim().toLowerCase()
-
-  let results = processedSites.value.filter((site) => {
-    const matchCategory =
-      selectedCategory.value === 'All' || site.category === selectedCategory.value
-
-    const searchableText = [
-      site.name,
-      site.address_line_1,
-      site.suburb,
-      site.state,
-      site.postcode,
-      site.category,
+    const haystack = [
+      marker.facilityName,
+      marker.address,
+      marker.suburb,
+      marker.postcode,
+      marker.state,
+      marker.categoryLabel,
+      marker.source,
     ]
+      .filter(Boolean)
       .join(' ')
       .toLowerCase()
 
-    const matchQuery = !query || searchableText.includes(query)
-
-    const excluded =
-      site.category === 'Transfer station' ||
-      site.category === 'Repair and reuse'
-
-    return matchCategory && matchQuery && !excluded
+    return haystack.includes(needle)
   })
-
-  if (nearestOnly.value && userLocation.value) {
-    const within100Km = results
-      .filter((site) => site.distanceKm !== null && site.distanceKm <= 100)
-      .sort((a, b) => a.distanceKm - b.distanceKm)
-
-    if (within100Km.length >= 5) {
-      return within100Km.slice(0, 5)
-    }
-
-    return results
-      .filter((site) => site.distanceKm !== null)
-      .sort((a, b) => a.distanceKm - b.distanceKm)
-      .slice(0, 5)
-  }
-
-  return results
+})
+const selectedMarker = computed(
+  () => visibleMarkers.value.find((marker) => marker.id === selectedMarkerId.value) || null,
+)
+const categorySummary = computed(() => buildCategorySummary(visibleMarkers.value))
+const tokenHelpText = computed(() =>
+  hasToken.value
+    ? ''
+    : 'Set VITE_MAPBOX_ACCESS_TOKEN in .env.local, then restart the Vite dev server.',
+)
+const pipelineLabel = computed(() => {
+  if (activePipeline.value === 'azure') return 'Azure API'
+<<<<<<< HEAD
+  return activePipeline.value || 'Unknown'
+=======
+  if (activePipeline.value === 'legacy-geojson') return 'Legacy GeoJSON'
+  return 'Local CSV'
+>>>>>>> dad8642 (health)
 })
 
-const visibleCount = computed(() => filteredSites.value.length)
-
-function createMarkerIcon(isSelected = false) {
-  return L.divIcon({
-    className: 'custom-marker-wrapper',
-    html: `
-      <div class="custom-marker ${isSelected ? 'selected' : ''}">
-        <span></span>
-      </div>
-    `,
-    iconSize: [24, 24],
-    iconAnchor: [12, 24],
-    popupAnchor: [0, -20],
-  })
+function buildRequestPayload() {
+  return {
+    resourceType: 'disposal',
+    state: '',
+    category: '',
+    searchText: '',
+    limit: 1000,
+  }
 }
 
-function createUserMarkerIcon() {
-  return L.divIcon({
-    className: 'custom-user-marker-wrapper',
-    html: `
-      <div class="custom-user-marker">
-        <span></span>
-      </div>
-    `,
-    iconSize: [20, 20],
-    iconAnchor: [10, 10],
-  })
+function removeRenderedMarkers() {
+  renderedMarkers.forEach((entry) => entry.remove())
+  renderedMarkers = []
 }
 
-function refreshMapSize() {
+function closePopup() {
+  if (activePopup) {
+    activePopup.remove()
+    activePopup = null
+  }
+}
+
+function popupHtml(marker) {
+  const rows = [
+    ['Address', marker.address || 'Not provided'],
+    ['Suburb', marker.suburb || 'Not provided'],
+    ['Postcode', marker.postcode || 'Not provided'],
+    ['State', marker.state || 'Not provided'],
+    ['Category', marker.categoryLabel || getCategoryLabel(marker.category)],
+    ['Coord source', marker.coordSource || 'Not provided'],
+    ['Source file', marker.sourceFile || 'Not provided'],
+  ]
+
+  return `
+    <article class="map-popup">
+      <p class="map-popup__eyebrow">Disposal Site</p>
+      <h3>${escapeHtml(marker.facilityName)}</h3>
+      ${rows
+        .map(
+          ([label, value]) => `
+            <div class="map-popup__row">
+              <span>${escapeHtml(label)}</span>
+              <strong>${escapeHtml(value)}</strong>
+            </div>
+          `,
+        )
+        .join('')}
+    </article>
+  `
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;')
+}
+
+function selectMarker(marker, options = {}) {
+  selectedMarkerId.value = marker.id
+
   if (!map) return
-  setTimeout(() => {
-    map.invalidateSize()
-  }, 200)
-}
 
-function initMap() {
-  if (!mapRef.value || map) return
+  closePopup()
 
-  map = L.map(mapRef.value, {
-    zoomControl: true,
-    scrollWheelZoom: true,
-  }).setView([-37.8136, 144.9631], 6)
+  const popup = new mapboxgl.Popup({
+    offset: 18,
+    maxWidth: '320px',
+    closeButton: true,
+  })
+    .setLngLat([marker.longitude, marker.latitude])
+    .setHTML(popupHtml(marker))
+    .addTo(map)
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors',
-  }).addTo(map)
-
-  markersLayer = L.layerGroup().addTo(map)
-
-  refreshMapSize()
-}
-
-function updateUserMarker() {
-  if (!map) return
-
-  if (userMarker) {
-    map.removeLayer(userMarker)
-    userMarker = null
-  }
-
-  if (userLocation.value) {
-    userMarker = L.marker([userLocation.value.latitude, userLocation.value.longitude], {
-      icon: createUserMarkerIcon(),
-    }).addTo(map)
-
-    userMarker.bindPopup('<strong>Your current location</strong>')
-  }
-}
-
-function renderMarkers() {
-  if (!map || !markersLayer) return
-
-  markersLayer.clearLayers()
-  updateUserMarker()
-
-  const bounds = []
-
-  if (userLocation.value) {
-    bounds.push([userLocation.value.latitude, userLocation.value.longitude])
-  }
-
-  filteredSites.value.forEach((site) => {
-    const isSelected = selectedSite.value?.id === site.id
-
-    const marker = L.marker([site.latitude, site.longitude], {
-      icon: createMarkerIcon(isSelected),
-    })
-
-    marker.on('click', () => {
-      selectedSite.value = site
-      map.flyTo([site.latitude, site.longitude], 13, { duration: 1.2 })
-      nextTick(() => renderMarkers())
-    })
-
-    marker.bindPopup(`
-      <div style="min-width: 190px;">
-        <strong>${site.name}</strong><br/>
-        <span>${site.category}</span><br/>
-        <span>${formatAddress(site)}</span>
-        ${site.distanceKm !== null ? `<br/><span><strong>${site.distanceKm.toFixed(2)} km away</strong></span>` : ''}
-      </div>
-    `)
-
-    markersLayer.addLayer(marker)
-    bounds.push([site.latitude, site.longitude])
+  popup.on('close', () => {
+    if (activePopup === popup) {
+      activePopup = null
+    }
   })
 
-  if (bounds.length) {
-    map.fitBounds(bounds, {
-      padding: [40, 40],
-      maxZoom: filteredSites.value.length <= 1 ? 14 : 11,
+  activePopup = popup
+
+  if (!options.skipFlyTo) {
+    map.flyTo({
+      center: [marker.longitude, marker.latitude],
+      zoom: Math.max(map.getZoom(), 8.2),
+      speed: 0.9,
+      essential: true,
     })
   }
 }
 
-function selectFirstSiteIfNeeded() {
-  if (!filteredSites.value.length) {
-    selectedSite.value = null
+function fitMapToMarkers(markers) {
+  if (!map || !markers.length) return
+
+  const bounds = getFacilityBounds(markers)
+  if (!bounds) return
+
+  if (
+    bounds.minLongitude === bounds.maxLongitude &&
+    bounds.minLatitude === bounds.maxLatitude
+  ) {
+    map.easeTo({
+      center: [bounds.minLongitude, bounds.minLatitude],
+      zoom: 8.5,
+      duration: 700,
+    })
     return
   }
 
-  const stillVisible = filteredSites.value.find((site) => site.id === selectedSite.value?.id)
-  if (!stillVisible) {
-    selectedSite.value = filteredSites.value[0]
-  }
-}
-
-function useMyLocation() {
-  if (!navigator.geolocation) {
-    error.value = 'Geolocation is not supported in this browser.'
-    return
-  }
-
-  locatingUser.value = true
-  error.value = ''
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      userLocation.value = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      }
-      nearestOnly.value = true
-      locatingUser.value = false
-      nextTick(() => {
-        selectFirstSiteIfNeeded()
-        renderMarkers()
-        refreshMapSize()
-      })
-    },
-    (geoError) => {
-      console.error(geoError)
-      locatingUser.value = false
-      error.value = 'Could not access your location. Please allow location access and try again.'
-    },
+  map.fitBounds(
+    [
+      [bounds.minLongitude, bounds.minLatitude],
+      [bounds.maxLongitude, bounds.maxLatitude],
+    ],
     {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0,
+      padding: 56,
+      maxZoom: 9.5,
+      duration: 700,
     },
   )
 }
 
-function clearNearestFilter() {
-  nearestOnly.value = false
-  userLocation.value = null
-  nextTick(() => {
-    selectFirstSiteIfNeeded()
+function renderMarkers() {
+  if (!map || !mapReady) return
+
+  removeRenderedMarkers()
+  closePopup()
+
+  renderedMarkers = visibleMarkers.value.map((marker) => {
+    const element = document.createElement('button')
+    element.type = 'button'
+    element.className = 'facility-marker'
+    element.style.backgroundColor = marker.categoryColor
+    element.setAttribute('aria-label', marker.facilityName)
+    element.addEventListener('click', () => {
+      selectMarker(marker)
+    })
+
+    return new mapboxgl.Marker({
+      element,
+      anchor: 'center',
+    })
+      .setLngLat([marker.longitude, marker.latitude])
+      .addTo(map)
+  })
+
+  if (selectedMarker.value) {
+    selectMarker(selectedMarker.value, { skipFlyTo: true })
+    return
+  }
+
+  fitMapToMarkers(visibleMarkers.value)
+}
+
+async function loadFacilities() {
+  if (!hasToken.value) {
+    loadError.value = ''
+    facilityRows.value = []
+    facilityMarkers.value = []
+    return
+  }
+
+  if (activeRequestController) {
+    activeRequestController.abort()
+  }
+
+<<<<<<< HEAD
+    const controller = new AbortController()
+    activeRequestController = controller
+    isLoading.value = true
+    loadError.value = ''
+
+    try {
+    const response = await api.searchDisposalLocations(buildRequestPayload(), {
+=======
+  const controller = new AbortController()
+  activeRequestController = controller
+  isLoading.value = true
+  loadError.value = ''
+
+  try {
+    const response = await searchMapFacilities(buildRequestPayload(), {
+>>>>>>> dad8642 (health)
+      signal: controller.signal,
+    })
+    const rows = Array.isArray(response?.items) ? response.items : []
+
+    facilityRows.value = rows
+    facilityMarkers.value = buildFacilityMarkers(rows)
+<<<<<<< HEAD
+    activePipeline.value = response?.meta?.pipeline || 'api'
+    activeSource.value = response?.meta?.source || 'api'
+=======
+    activePipeline.value = response?.meta?.pipeline || 'local'
+    activeSource.value = response?.meta?.source || 'csv'
+    fallbackReason.value = response?.meta?.fallbackReason || ''
+>>>>>>> dad8642 (health)
+
+    if (
+      selectedMarkerId.value &&
+      !facilityMarkers.value.some((marker) => marker.id === selectedMarkerId.value)
+    ) {
+      selectedMarkerId.value = ''
+    }
+
+    await nextTick()
     renderMarkers()
-    refreshMapSize()
+  } catch (error) {
+    if (error?.name === 'AbortError') return
+
+    console.error('[DisposalLocations] failed to load disposal facilities:', error)
+    loadError.value =
+      error instanceof Error ? error.message : 'Failed to load disposal facilities'
+    facilityRows.value = []
+    facilityMarkers.value = []
+    selectedMarkerId.value = ''
+<<<<<<< HEAD
+    activePipeline.value = 'api'
+    activeSource.value = 'api'
+=======
+    activePipeline.value = 'local'
+    activeSource.value = 'csv'
+    fallbackReason.value = ''
+>>>>>>> dad8642 (health)
+    removeRenderedMarkers()
+    closePopup()
+  } finally {
+    if (activeRequestController === controller) {
+      activeRequestController = null
+      isLoading.value = false
+    }
+  }
+}
+
+function queueMarkerRefresh() {
+  if (requestTimer) {
+    window.clearTimeout(requestTimer)
+  }
+
+  requestTimer = window.setTimeout(() => {
+    requestTimer = null
+    renderMarkers()
+  }, 80)
+}
+
+function initialiseMap() {
+  if (!hasToken.value || map || !mapContainerRef.value) return
+
+  mapboxgl.accessToken = mapboxAccessToken
+  map = new mapboxgl.Map({
+    container: mapContainerRef.value,
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: [144.9631, -37.8136],
+    zoom: 5.4,
+  })
+
+  map.addControl(new mapboxgl.NavigationControl(), 'top-right')
+
+  map.on('load', () => {
+    mapReady = true
+    renderMarkers()
   })
 }
 
-function openNavigation(site) {
-  if (!site) return
-  const url = `https://www.google.com/maps/dir/?api=1&destination=${site.latitude},${site.longitude}`
-  window.open(url, '_blank')
+function resetFilters() {
+  selectedCategory.value = ''
+  searchTerm.value = ''
 }
 
-watch(filteredSites, async () => {
-  selectFirstSiteIfNeeded()
-  await nextTick()
-  renderMarkers()
-  refreshMapSize()
-})
-
-watch(selectedSite, async () => {
-  await nextTick()
-  renderMarkers()
+watch(visibleMarkers, () => {
+  queueMarkerRefresh()
 })
 
 onMounted(async () => {
-  initMap()
-  await fetchSites()
-  await nextTick()
-  selectFirstSiteIfNeeded()
-  renderMarkers()
-  refreshMapSize()
+  initialiseMap()
+  await loadFacilities()
 })
 
 onBeforeUnmount(() => {
+  if (requestTimer) {
+    window.clearTimeout(requestTimer)
+  }
+
+  if (activeRequestController) {
+    activeRequestController.abort()
+  }
+
+  removeRenderedMarkers()
+  closePopup()
+
   if (map) {
     map.remove()
     map = null
   }
+
+  mapReady = false
 })
 </script>
 
 <template>
-  <div class="disposal-page">
-    <section class="hero-section">
-      <div class="hero-copy">
-        <p class="page-tag">Disposal Locations</p>
-        <h1>Find a Safe Place to Dispose of E-waste</h1>
-        <p class="hero-text">
-          Search by suburb, postcode, facility name, or address to find safe places where you can
-          dispose of electronic waste responsibly.
+  <section class="disposal-page">
+    <header class="hero-card">
+      <div>
+        <p class="eyebrow">Disposal Locations</p>
+        <h1>Mapbox disposal site map</h1>
+        <p class="hero-copy">
+<<<<<<< HEAD
+          This page uses a Mapbox GL JS embedded map and loads disposal rows through the
+          `src/api` layer backed by your deployed Function.
+=======
+          This page now uses a Mapbox GL JS embedded map and consumes disposal rows through the
+          unified `{ items: [...] }` pipeline. In `auto` mode it prefers Azure when available and
+          falls back to the local cleaned CSV.
+>>>>>>> dad8642 (health)
         </p>
       </div>
-    </section>
 
-    <section class="search-panel">
-      <div class="search-bar-card">
-        <div class="search-grid">
-          <div class="field-group search-field">
-            <label for="searchQuery">Search location or facility</label>
+      <div class="hero-stats">
+        <article>
+          <span>Visible sites</span>
+          <strong>{{ visibleMarkers.length }}</strong>
+        </article>
+        <article>
+          <span>Pipeline</span>
+          <strong>{{ pipelineLabel }}</strong>
+        </article>
+        <article>
+<<<<<<< HEAD
+=======
+          <span>Mode</span>
+          <strong>{{ mapDataMode }}</strong>
+        </article>
+        <article>
+>>>>>>> dad8642 (health)
+          <span>Source</span>
+          <strong>{{ activeSource }}</strong>
+        </article>
+      </div>
+    </header>
+
+    <div class="content-grid">
+      <section class="map-panel">
+        <div class="toolbar-card">
+          <label>
+            <span>Search</span>
             <input
-              id="searchQuery"
-              v-model="searchQuery"
-              type="text"
-              placeholder="Try Melbourne, 3000, Carlton, or facility name"
+              v-model.trim="searchTerm"
+              type="search"
+              placeholder="Facility, suburb, address, postcode"
             />
-          </div>
+          </label>
 
-          <div class="field-group category-field">
-            <label for="categoryFilter">Category</label>
-            <select id="categoryFilter" v-model="selectedCategory">
-              <option v-for="category in allowedCategories" :key="category" :value="category">
-                {{ category }}
+          <label>
+            <span>Category</span>
+            <select v-model="selectedCategory">
+              <option value="">All categories</option>
+              <option
+                v-for="category in categoryOptions"
+                :key="category.value"
+                :value="category.value"
+              >
+                {{ category.label }}
               </option>
             </select>
+          </label>
+
+          <div class="toolbar-actions">
+            <button type="button" class="ghost" @click="resetFilters">Clear filters</button>
           </div>
         </div>
 
-        <div class="action-row">
-          <button class="action-btn primary" @click="useMyLocation" :disabled="locatingUser">
-            {{ locatingUser ? 'Getting location...' : 'Use My Location' }}
-          </button>
+        <div class="map-frame">
+          <div v-if="!hasToken" class="map-overlay map-overlay--warning">
+            <h2>Mapbox token required</h2>
+            <p>{{ tokenHelpText }}</p>
+            <code>VITE_MAPBOX_ACCESS_TOKEN=your_token_here</code>
+          </div>
 
-          <button
-            v-if="nearestOnly"
-            class="action-btn secondary"
-            @click="clearNearestFilter"
-          >
-            Show All Locations
-          </button>
+          <div v-else-if="isLoading" class="map-overlay">
+            <p>Loading disposal facilities...</p>
+          </div>
+
+          <div v-else-if="loadError" class="map-overlay map-overlay--error">
+            <h2>Unable to load disposal data</h2>
+            <p>{{ loadError }}</p>
+<<<<<<< HEAD
+=======
+            <p v-if="fallbackReason">{{ fallbackReason }}</p>
+>>>>>>> dad8642 (health)
+          </div>
+
+          <div ref="mapContainerRef" class="map-container" />
         </div>
 
-        <div class="search-meta">
-          <span class="meta-pill">
-            {{ visibleCount }} {{ nearestOnly ? 'nearest' : '' }} locations found
-          </span>
-          <span class="meta-note">Interactive map powered by OpenStreetMap</span>
-        </div>
-      </div>
-    </section>
+<<<<<<< HEAD
+=======
+        <p v-if="fallbackReason && !loadError" class="support-copy">
+          Azure disposal data was unavailable, so the page automatically fell back to the local CSV.
+          Reason: {{ fallbackReason }}
+        </p>
+>>>>>>> dad8642 (health)
+      </section>
 
-    <p v-if="loading" class="state-text">Loading disposal locations...</p>
-    <p v-else-if="error" class="error-text">{{ error }}</p>
-
-    <template v-else>
-      <section class="content-grid">
-        <div class="map-panel">
-          <div class="panel-header">
-            <div>
-              <p class="panel-tag">Live Map</p>
-              <h2>Explore nearby disposal points</h2>
+      <aside class="side-panel">
+        <section class="panel-card">
+          <p class="eyebrow">Selection</p>
+          <template v-if="selectedMarker">
+            <h2>{{ selectedMarker.facilityName }}</h2>
+            <div class="detail-list">
+              <div class="detail-row"><span>Address</span><strong>{{ selectedMarker.address || 'Not provided' }}</strong></div>
+              <div class="detail-row"><span>Suburb</span><strong>{{ selectedMarker.suburb || 'Not provided' }}</strong></div>
+              <div class="detail-row"><span>Postcode</span><strong>{{ selectedMarker.postcode || 'Not provided' }}</strong></div>
+              <div class="detail-row"><span>State</span><strong>{{ selectedMarker.state || 'Not provided' }}</strong></div>
+              <div class="detail-row"><span>Category</span><strong>{{ selectedMarker.categoryLabel }}</strong></div>
+              <div class="detail-row"><span>Coord source</span><strong>{{ selectedMarker.coordSource || 'Not provided' }}</strong></div>
+              <div class="detail-row"><span>Source file</span><strong>{{ selectedMarker.sourceFile || 'Not provided' }}</strong></div>
             </div>
-            <p>
-              Click any marker to view more details about the location.
+          </template>
+          <template v-else>
+            <h2>Map summary</h2>
+            <p class="support-copy">
+              Click a marker to inspect a disposal site. The summary updates from the current visible
+              marker set.
+            </p>
+            <div class="detail-list">
+              <div class="detail-row"><span>Rows loaded</span><strong>{{ facilityRows.length }}</strong></div>
+              <div class="detail-row"><span>Markers shown</span><strong>{{ visibleMarkers.length }}</strong></div>
+              <div class="detail-row"><span>Pipeline</span><strong>{{ pipelineLabel }}</strong></div>
+<<<<<<< HEAD
+=======
+              <div class="detail-row"><span>Mode</span><strong>{{ mapDataMode }}</strong></div>
+>>>>>>> dad8642 (health)
+            </div>
+          </template>
+        </section>
+
+        <section class="panel-card">
+          <p class="eyebrow">Categories</p>
+          <h2>Visible breakdown</h2>
+          <div class="category-list">
+            <div
+              v-for="entry in categorySummary"
+              :key="entry.key"
+              class="category-row"
+            >
+              <span class="category-label">
+                <span class="category-dot" :style="{ backgroundColor: entry.color }" />
+                {{ entry.label }}
+              </span>
+              <strong>{{ entry.count }}</strong>
+            </div>
+            <p v-if="!categorySummary.length" class="support-copy">
+              No disposal sites match the current filters.
             </p>
           </div>
-
-          <div ref="mapRef" class="actual-map"></div>
-        </div>
-
-        <div class="details-panel">
-          <div class="panel-header small">
-            <div>
-              <p class="panel-tag">Selected Location</p>
-              <h2>Location details</h2>
-            </div>
-          </div>
-
-          <div v-if="selectedSite" class="details-card">
-            <div class="site-badge-row">
-              <span class="category-badge">{{ selectedSite.category }}</span>
-              <span v-if="selectedSite.distanceKm !== null" class="distance-badge">
-                {{ selectedSite.distanceKm.toFixed(2) }} km away
-              </span>
-            </div>
-
-            <h3>{{ selectedSite.name }}</h3>
-
-            <div class="detail-item">
-              <span class="detail-label">Address</span>
-              <p>{{ formatAddress(selectedSite) }}</p>
-            </div>
-
-            <div class="detail-item" v-if="selectedSite.accepted_items">
-              <span class="detail-label">Accepted items</span>
-              <p>{{ selectedSite.accepted_items }}</p>
-            </div>
-
-            <div class="detail-item" v-if="selectedSite.phone">
-              <span class="detail-label">Phone</span>
-              <p>{{ selectedSite.phone }}</p>
-            </div>
-
-            <div class="detail-item" v-if="selectedSite.website">
-              <span class="detail-label">Website</span>
-              <a :href="selectedSite.website" target="_blank" rel="noopener noreferrer">
-                {{ selectedSite.website }}
-              </a>
-            </div>
-
-            <div class="nav-action-row">
-              <button class="navigate-btn" @click="openNavigation(selectedSite)">
-                Navigate
-              </button>
-            </div>
-          </div>
-
-          <div v-else class="empty-card">
-            <p>No matching disposal location found.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="results-section">
-        <div class="panel-header small">
-          <div>
-            <p class="panel-tag">Available Locations</p>
-            <h2>{{ nearestOnly ? 'Top 5 nearest results' : 'Browse all visible results' }}</h2>
-          </div>
-        </div>
-
-        <div class="results-list">
-          <button
-            v-for="site in filteredSites"
-            :key="site.id"
-            class="result-card"
-            :class="{ active: selectedSite?.id === site.id }"
-            @click="selectedSite = site"
-          >
-            <div class="result-top">
-              <h3>{{ site.name }}</h3>
-              <span class="mini-badge">{{ site.category }}</span>
-            </div>
-
-            <p>{{ formatAddress(site) }}</p>
-
-            <div class="result-bottom" v-if="site.distanceKm !== null">
-              <span class="distance-text">{{ site.distanceKm.toFixed(2) }} km away</span>
-              <span class="navigate-text">Tap to view</span>
-            </div>
-          </button>
-        </div>
-      </section>
-    </template>
-  </div>
+        </section>
+      </aside>
+    </div>
+  </section>
 </template>
 
 <style scoped>
-.disposal-page {
-  min-height: 100vh;
-  padding: 32px;
-  background:
-    radial-gradient(circle at 86% 6%, rgba(129, 199, 132, 0.16), transparent 18%),
-    radial-gradient(circle at 12% 90%, rgba(67, 160, 71, 0.10), transparent 22%),
-    linear-gradient(180deg, #f8fbf8 0%, #eef4ef 100%);
-  color: #173a29;
-}
-
-.hero-section {
-  margin-bottom: 24px;
-  padding: 36px 40px;
-  border-radius: 32px;
-  background:
-    linear-gradient(135deg, rgba(244, 251, 244, 0.88) 0%, rgba(237, 247, 238, 0.84) 100%);
-  border: 1px solid rgba(220, 235, 220, 0.96);
-  box-shadow:
-    0 18px 40px rgba(27, 67, 50, 0.07),
-    inset 0 1px 0 rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(12px);
-}
-
-.page-tag,
-.panel-tag {
-  display: inline-flex;
-  margin: 0 0 14px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(232, 245, 233, 0.9);
-  border: 1px solid rgba(207, 232, 209, 0.98);
-  color: #2e7d32;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.hero-copy h1 {
-  margin: 0 0 14px;
-  font-size: 52px;
-  line-height: 1.02;
-  font-weight: 800;
-  letter-spacing: -1.2px;
-  color: #143324;
-  max-width: 900px;
-}
-
-.hero-text {
-  margin: 0;
-  max-width: 760px;
-  font-size: 17px;
-  line-height: 1.85;
-  color: #557260;
-}
-
-.search-panel {
-  margin-bottom: 24px;
-}
-
-.search-bar-card,
-.map-panel,
-.details-panel,
-.results-section {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(251, 253, 251, 0.84) 100%);
-  border: 1px solid rgba(226, 238, 227, 0.98);
-  box-shadow:
-    0 16px 32px rgba(27, 67, 50, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.74);
-  backdrop-filter: blur(14px);
-  border-radius: 28px;
-}
-
-.search-bar-card {
-  padding: 20px;
-}
-
-.search-grid {
-  display: grid;
-  grid-template-columns: 1.8fr 0.8fr;
-  gap: 18px;
-}
-
-.field-group label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #3f8f46;
-}
-
-.field-group input,
-.field-group select {
-  width: 100%;
-  min-height: 54px;
-  padding: 0 16px;
-  border-radius: 18px;
-  border: 1px solid rgba(210, 226, 213, 0.95);
-  background: rgba(255, 255, 255, 0.9);
-  color: #173a29;
-  font-size: 15px;
-  outline: none;
-}
-
-.action-row {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.action-btn,
-.navigate-btn {
-  min-height: 46px;
-  padding: 0 18px;
-  border: none;
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    opacity 0.25s ease;
-}
-
-.action-btn:hover,
-.navigate-btn:hover {
-  transform: translateY(-2px);
-}
-
-.action-btn.primary,
-.navigate-btn {
-  background: #2e7d32;
-  color: #ffffff;
-  box-shadow: 0 12px 24px rgba(46, 125, 50, 0.22);
-}
-
-.action-btn.secondary {
-  background: rgba(236, 247, 237, 0.95);
-  color: #2e7d32;
-  border: 1px solid rgba(212, 236, 214, 0.98);
-}
-
-.action-btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-.search-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
-  gap: 12px;
-}
-
-.meta-pill {
-  display: inline-flex;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(236, 247, 237, 0.9);
-  border: 1px solid rgba(212, 236, 214, 0.98);
-  color: #2e7d32;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.meta-note {
-  font-size: 13px;
-  color: #5f7967;
-}
-
-.content-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(340px, 0.75fr);
-  gap: 20px;
-  margin-bottom: 24px;
-}
-
-.map-panel,
-.details-panel,
-.results-section {
-  padding: 24px;
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 16px;
-  margin-bottom: 18px;
-}
-
-.panel-header h2 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 800;
-  color: #173a29;
-}
-
-.panel-header p {
-  margin: 0;
-  max-width: 320px;
-  color: #647f6d;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.actual-map {
-  height: 620px;
-  border-radius: 24px;
-  overflow: hidden;
-  border: 1px solid rgba(218, 232, 220, 0.95);
-}
-
-.details-card,
-.empty-card {
-  padding: 20px;
-  border-radius: 22px;
-  background: rgba(245, 250, 246, 0.92);
-  border: 1px solid rgba(220, 235, 222, 0.96);
-}
-
-.details-card h3 {
-  margin: 0 0 18px;
-  font-size: 28px;
-  line-height: 1.2;
-  color: #173a29;
-}
-
-.site-badge-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-
-.category-badge,
-.mini-badge,
-.distance-badge {
-  display: inline-flex;
-  padding: 7px 12px;
-  border-radius: 999px;
-  background: rgba(236, 247, 237, 0.95);
-  border: 1px solid rgba(212, 236, 214, 0.98);
-  color: #2e7d32;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.detail-item + .detail-item {
-  margin-top: 16px;
-}
-
-.detail-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #5c7465;
-}
-
-.detail-item p,
-.detail-item a,
-.empty-card p {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.7;
-  color: #557260;
-  word-break: break-word;
-}
-
-.detail-item a {
-  color: #2e7d32;
-  text-decoration: none;
-}
-
-.nav-action-row {
-  margin-top: 20px;
-}
-
-.results-list {
-  display: grid;
-  gap: 14px;
-}
-
-.result-card {
-  text-align: left;
-  width: 100%;
-  padding: 18px 20px;
-  border-radius: 22px;
-  border: 1px solid rgba(220, 235, 222, 0.96);
-  background: rgba(245, 250, 246, 0.92);
-  cursor: pointer;
-  transition:
-    transform 0.28s ease,
-    box-shadow 0.28s ease,
-    border-color 0.28s ease;
-}
-
-.result-card:hover,
-.result-card.active {
-  transform: translateY(-3px);
-  border-color: rgba(129, 199, 132, 0.62);
-  box-shadow:
-    0 14px 28px rgba(27, 67, 50, 0.08),
-    0 0 0 1px rgba(129, 199, 132, 0.12);
-}
-
-.result-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.result-card h3 {
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.25;
-  color: #173a29;
-}
-
-.result-card p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #557260;
-}
-
-.result-bottom {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  gap: 10px;
-}
-
-.distance-text,
-.navigate-text {
-  font-size: 13px;
-  font-weight: 700;
-  color: #2e7d32;
-}
-
-.state-text,
-.error-text {
-  margin-top: 20px;
-  font-size: 16px;
-}
-
-.state-text {
-  color: #557260;
-}
-
-.error-text {
-  color: #c62828;
-  font-weight: 600;
-}
-
-:deep(.custom-marker-wrapper),
-:deep(.custom-user-marker-wrapper) {
-  background: transparent;
-  border: none;
-}
-
-:deep(.custom-marker) {
-  width: 24px;
-  height: 24px;
-  border-radius: 999px 999px 999px 0;
-  transform: rotate(-45deg);
-  background: #43a047;
-  border: 2px solid #ffffff;
-  box-shadow: 0 10px 20px rgba(27, 67, 50, 0.22);
-  display: grid;
-  place-items: center;
-}
-
-:deep(.custom-marker span) {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: #ffffff;
-  transform: rotate(45deg);
-}
-
-:deep(.custom-marker.selected) {
-  background: #1b5e20;
-  box-shadow: 0 12px 24px rgba(27, 94, 32, 0.35);
-}
-
-:deep(.custom-user-marker) {
-  width: 20px;
-  height: 20px;
-  border-radius: 999px;
-  background: #1565c0;
-  border: 3px solid #ffffff;
-  box-shadow: 0 0 0 8px rgba(21, 101, 192, 0.16);
-  display: grid;
-  place-items: center;
-}
-
-:deep(.custom-user-marker span) {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: #ffffff;
-}
-
-@media (max-width: 1200px) {
-  .content-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .actual-map {
-    height: 500px;
-  }
-}
-
-@media (max-width: 900px) {
-  .disposal-page {
-    padding: 20px;
-  }
-
-  .hero-copy h1 {
-    font-size: 40px;
-  }
-
-  .search-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .panel-header {
-    flex-direction: column;
-  }
-
-  .panel-header p {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 640px) {
-  .disposal-page {
-    padding: 16px;
-  }
-
-  .hero-section,
-  .search-bar-card,
-  .map-panel,
-  .details-panel,
-  .results-section {
-    padding: 20px;
-  }
-
-  .hero-copy h1 {
-    font-size: 32px;
-  }
-
-  .actual-map {
-    height: 380px;
-  }
-
-  .search-meta,
-  .action-row,
-  .result-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .result-top {
-    flex-direction: column;
-  }
-}
+.disposal-page{min-height:100vh;padding:2rem;background:linear-gradient(180deg,#f6f4ef 0%,#ece6db 100%);color:#102a43}
+.hero-card,.toolbar-card,.panel-card{border:1px solid rgba(16,42,67,.12);border-radius:28px;background:rgba(255,252,247,.94);box-shadow:0 20px 60px rgba(16,42,67,.08)}
+.hero-card{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.9fr);gap:1.25rem;padding:1.5rem;margin-bottom:1.5rem}
+.eyebrow{margin:0 0 .35rem;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#9b4b1e}
+h1,h2,p{margin-top:0}
+h1{margin-bottom:.75rem;font-size:clamp(2rem,3vw,3.1rem);line-height:1.05}
+.hero-copy,.support-copy{margin-bottom:0;color:#486581;line-height:1.6}
+.hero-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}
+.hero-stats article{padding:1rem;border-radius:22px;background:#102a43;color:#fff}
+.hero-stats span{display:block;margin-bottom:.35rem;color:rgba(255,255,255,.68);font-size:.82rem}
+.hero-stats strong{font-size:1.05rem}
+.content-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,.85fr);gap:1.5rem;align-items:start}
+.map-panel,.side-panel{display:grid;gap:1rem}
+.toolbar-card,.panel-card{padding:1.2rem}
+.toolbar-card{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(180px,.7fr) auto;gap:1rem;align-items:end}
+label{display:grid;gap:.45rem;font-size:.92rem;font-weight:700;color:#334e68}
+input,select{min-height:46px;border:1px solid rgba(16,42,67,.14);border-radius:16px;padding:.85rem 1rem;background:#fffdfa;color:#102a43;font:inherit}
+button{min-height:44px;border:0;border-radius:999px;padding:.72rem 1rem;background:#102a43;color:#fff;font-weight:700;cursor:pointer}
+.ghost{background:rgba(16,42,67,.1);color:#102a43}
+.map-frame{position:relative;min-height:640px;border:1px solid rgba(16,42,67,.14);border-radius:30px;overflow:hidden;background:#dfe8e8}
+.map-container{width:100%;height:640px}
+.map-overlay{position:absolute;inset:18px auto auto 18px;z-index:2;max-width:340px;padding:1rem 1.1rem;border-radius:18px;background:rgba(16,42,67,.9);color:#fff}
+.map-overlay h2,.map-overlay p{margin-bottom:.55rem}
+.map-overlay code{display:block;padding:.7rem .8rem;border-radius:12px;background:rgba(255,255,255,.08);font-size:.86rem;word-break:break-all}
+.map-overlay--warning{background:rgba(122,72,21,.94)}
+.map-overlay--error{background:rgba(122,29,29,.94)}
+.detail-list,.category-list{display:grid;gap:.7rem}
+.detail-row,.category-row{display:flex;gap:1rem;justify-content:space-between;align-items:start}
+.detail-row span,.category-row span{color:#486581}
+.detail-row strong,.category-row strong{text-align:right}
+.category-label{display:inline-flex;align-items:center;gap:.55rem}
+.category-dot{width:12px;height:12px;border-radius:999px;flex:0 0 auto}
+:deep(.facility-marker){width:18px;height:18px;border:3px solid #fff;border-radius:999px;box-shadow:0 8px 18px rgba(16,42,67,.28);cursor:pointer;padding:0}
+:deep(.mapboxgl-popup-content){padding:0;border-radius:18px;box-shadow:0 18px 36px rgba(16,42,67,.18)}
+:deep(.mapboxgl-popup-close-button){padding:.45rem .55rem;font-size:1.1rem}
+:deep(.map-popup){padding:1rem 1rem .95rem;min-width:240px;color:#102a43}
+:deep(.map-popup__eyebrow){margin:0 0 .3rem;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9b4b1e}
+:deep(.map-popup h3){margin:0 0 .7rem;font-size:1rem;line-height:1.35}
+:deep(.map-popup__row){display:flex;gap:.8rem;justify-content:space-between;align-items:start;padding:.18rem 0}
+:deep(.map-popup__row span){color:#627d98}
+:deep(.map-popup__row strong){max-width:160px;text-align:right}
+@media (max-width:1100px){.hero-card,.content-grid{grid-template-columns:1fr}}
+@media (max-width:760px){.disposal-page{padding:1rem}.toolbar-card{grid-template-columns:1fr}.hero-stats{grid-template-columns:1fr}.map-frame,.map-container{min-height:520px;height:520px}}
 </style>
