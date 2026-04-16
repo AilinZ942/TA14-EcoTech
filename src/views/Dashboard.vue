@@ -405,37 +405,39 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <div class="filter-section-title">
-      Explore cancer cases and deaths by year, sex, and cancer type.
+    <div class="filter-sticky-wrap">
+      <div class="filter-bar">
+        <div class="filter-item">
+          <label for="year">Year</label>
+          <select id="year" v-model="selectedYear">
+            <option v-for="year in yearOptions" :key="year" :value="year">
+              {{ year }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="sex">Sex</label>
+          <select id="sex" v-model="selectedSex">
+            <option v-for="sex in sexOptions" :key="sex" :value="sex">
+              {{ sex }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="cancerType">Cancer Type</label>
+          <select id="cancerType" v-model="selectedCancerType">
+            <option v-for="type in cancerTypeOptions" :key="type" :value="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+      </div>
     </div>
 
-    <div class="filter-bar">
-      <div class="filter-item">
-        <label for="year">Year</label>
-        <select id="year" v-model="selectedYear">
-          <option v-for="year in yearOptions" :key="year" :value="year">
-            {{ year }}
-          </option>
-        </select>
-      </div>
-
-      <div class="filter-item">
-        <label for="sex">Sex</label>
-        <select id="sex" v-model="selectedSex">
-          <option v-for="sex in sexOptions" :key="sex" :value="sex">
-            {{ sex }}
-          </option>
-        </select>
-      </div>
-
-      <div class="filter-item">
-        <label for="cancerType">Cancer Type</label>
-        <select id="cancerType" v-model="selectedCancerType">
-          <option v-for="type in cancerTypeOptions" :key="type" :value="type">
-            {{ type }}
-          </option>
-        </select>
-      </div>
+    <div class="filter-section-title">
+      Explore cancer cases and deaths by year, sex, and cancer type.
     </div>
 
     <p v-if="loading" class="state-text">Loading dashboard data...</p>
@@ -684,13 +686,6 @@ onBeforeUnmount(() => {
   margin-top: 12px;
 }
 
-.filter-bar {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(220px, 1fr));
-  gap: 18px;
-  margin-bottom: 20px;
-}
-
 .filter-item {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);
@@ -716,6 +711,25 @@ onBeforeUnmount(() => {
   color: #173a29;
   font-size: 16px;
   font-weight: 500;
+}
+
+.filter-sticky-wrap {
+  position: sticky;
+  top: 16px;
+  z-index: 30;
+  margin-bottom: 20px;
+}
+
+.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 18px;
+  padding: 12px;
+  background: rgba(248, 251, 248, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid #dcebdc;
+  border-radius: 22px;
+  box-shadow: 0 8px 20px rgba(27, 67, 50, 0.06);
 }
 
 .overview-note {
