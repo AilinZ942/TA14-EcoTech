@@ -56,7 +56,7 @@
             </div>
             <h3>E-Waste Impact</h3>
           </div>
-          <p class="card-text">Understand environmental impact of e-waste.</p>
+          <p class="card-text">Understand the health impact of e-waste.</p>
         </div>
       </router-link>
     </section>
