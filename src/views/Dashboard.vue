@@ -644,7 +644,7 @@ onBeforeUnmount(() => {
       <div class="hero-orb hero-orb-two"></div>
       <div class="hero-grid-lines"></div>
 
-      <div class="hero-content">
+      <div class="hero-content single-column-hero">
         <div class="hero-copy">
           <p class="dashboard-tag">Health Risk Context</p>
           <h1>Understand Why Safe E-waste Disposal Matters</h1>
@@ -659,14 +659,14 @@ onBeforeUnmount(() => {
             <span class="hero-chip">Simple health view</span>
             <span class="hero-chip">Trusted public data</span>
           </div>
-        </div>
 
-        <div class="hero-side-card">
-          <span class="side-card-label">Current view</span>
-          <strong>{{ selectedFiltersSummary }}</strong>
-          <p>
-            Use the filters below to explore changes by year, sex, or a selected health condition.
-          </p>
+          <div class="current-view-inline">
+            <span class="side-card-label">Current view</span>
+            <strong>{{ selectedFiltersSummary }}</strong>
+            <p>
+              Use the filters below to explore changes by year, sex, or a selected health condition.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -786,6 +786,19 @@ onBeforeUnmount(() => {
             </p>
           </div>
           <div ref="trendChartRef" class="chart trend-chart"></div>
+
+          <div class="graph-explainer">
+            <div class="axis-box">
+              <strong>X-axis:</strong> Year
+            </div>
+            <div class="axis-box">
+              <strong>Y-axis:</strong> Number of reported cases and deaths
+            </div>
+            <p class="graph-note">
+              This graph helps users see how the selected health condition changes over time.
+              The lighter green line shows total cases. The darker green line shows total deaths.
+            </p>
+          </div>
         </div>
 
         <div class="insight-banner glass-card">
@@ -818,6 +831,18 @@ onBeforeUnmount(() => {
               <p>Shows which selected conditions appear most often in the chosen view.</p>
             </div>
             <div ref="casesChartRef" class="chart small-chart"></div>
+
+            <div class="graph-explainer">
+              <div class="axis-box">
+                <strong>X-axis:</strong> Number of cases
+              </div>
+              <div class="axis-box">
+                <strong>Y-axis:</strong> Health conditions
+              </div>
+              <p class="graph-note">
+                Longer bars mean that condition has more reported cases in the selected filter view.
+              </p>
+            </div>
           </div>
 
           <div class="chart-card glass-card interactive-chart-card">
@@ -829,6 +854,18 @@ onBeforeUnmount(() => {
               <p>Shows which selected conditions contribute most to recorded deaths.</p>
             </div>
             <div ref="deathsChartRef" class="chart small-chart"></div>
+
+            <div class="graph-explainer">
+              <div class="axis-box">
+                <strong>X-axis:</strong> Number of deaths
+              </div>
+              <div class="axis-box">
+                <strong>Y-axis:</strong> Health conditions
+              </div>
+              <p class="graph-note">
+                Longer bars mean that condition is linked to a higher death burden in the selected view.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -844,6 +881,18 @@ onBeforeUnmount(() => {
               </p>
             </div>
             <div ref="fatalityChartRef" class="chart small-chart"></div>
+
+            <div class="graph-explainer">
+              <div class="axis-box">
+                <strong>X-axis:</strong> Severity ratio
+              </div>
+              <div class="axis-box">
+                <strong>Y-axis:</strong> Health conditions
+              </div>
+              <p class="graph-note">
+                A higher severity ratio suggests a condition is more serious relative to the number of total cases.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -969,10 +1018,10 @@ onBeforeUnmount(() => {
 .hero-content {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.78fr);
-  gap: 26px;
-  align-items: stretch;
+}
+
+.single-column-hero {
+  display: block;
 }
 
 .dashboard-tag,
@@ -1006,7 +1055,7 @@ onBeforeUnmount(() => {
 
 .hero-subtext {
   margin: 0;
-  max-width: 780px;
+  max-width: 860px;
   font-size: 16px;
   line-height: 1.9;
   color: #557260;
@@ -1028,20 +1077,9 @@ onBeforeUnmount(() => {
   box-shadow: 0 8px 18px rgba(27, 67, 50, 0.04);
 }
 
-.hero-side-card {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 26px;
-  border-radius: 28px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(247, 251, 247, 0.80) 100%);
-  border: 1px solid rgba(220, 235, 220, 0.95);
-  box-shadow:
-    0 20px 36px rgba(27, 67, 50, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.76);
-  backdrop-filter: blur(14px);
+.current-view-inline {
+  margin-top: 28px;
+  max-width: 900px;
 }
 
 .side-card-label {
@@ -1052,15 +1090,16 @@ onBeforeUnmount(() => {
   color: #5c7465;
 }
 
-.hero-side-card strong {
+.current-view-inline strong {
   display: block;
-  margin-bottom: 8px;
-  font-size: 20px;
-  line-height: 1.45;
+  margin-bottom: 10px;
+  font-size: 28px;
+  line-height: 1.4;
   color: #173a29;
+  font-weight: 700;
 }
 
-.hero-side-card p {
+.current-view-inline p {
   margin: 0;
   font-size: 14px;
   line-height: 1.7;
@@ -1338,6 +1377,33 @@ onBeforeUnmount(() => {
   height: 440px;
 }
 
+.graph-explainer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(210, 226, 213, 0.9);
+}
+
+.axis-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 12px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #254433;
+  background: rgba(240, 247, 241, 0.9);
+  border: 1px solid rgba(216, 232, 218, 0.95);
+  border-radius: 999px;
+}
+
+.graph-note {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #557260;
+}
+
 .insight-banner {
   display: flex;
   gap: 12px;
@@ -1408,10 +1474,6 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 1280px) {
-  .hero-content {
-    grid-template-columns: 1fr;
-  }
-
   .summary-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1445,6 +1507,10 @@ onBeforeUnmount(() => {
 
   .hero-copy h1 {
     font-size: 40px;
+  }
+
+  .current-view-inline strong {
+    font-size: 22px;
   }
 
   .chart-header h3 {
@@ -1481,6 +1547,10 @@ onBeforeUnmount(() => {
     font-size: 15px;
   }
 
+  .current-view-inline strong {
+    font-size: 20px;
+  }
+
   .chart,
   .trend-chart,
   .small-chart {
@@ -1489,6 +1559,11 @@ onBeforeUnmount(() => {
 
   .chart-header p {
     max-width: 100%;
+  }
+
+  .axis-box {
+    display: flex;
+    margin-right: 0;
   }
 }
 </style>
