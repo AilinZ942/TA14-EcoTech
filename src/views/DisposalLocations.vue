@@ -22,7 +22,6 @@ const facilityRows = ref([])
 const facilityMarkers = ref([])
 const selectedMarkerId = ref('')
 const activePipeline = ref('api')
-const activeSource = ref('api')
 
 let map = null
 let mapReady = false
@@ -31,12 +30,22 @@ let activeRequestController = null
 let requestTimer = null
 let renderedMarkers = []
 
-const categoryOptions = getCategoryOptions()
+const categoryOptions = computed(() => {
+  return getCategoryOptions().filter(
+    (c) => c.value !== 'transfer_station' && c.value !== 'repair_reuse',
+  )
+})
+
 const hasToken = computed(() => Boolean(mapboxAccessToken))
+
 const visibleMarkers = computed(() => {
   const needle = searchTerm.value.trim().toLowerCase()
 
   return facilityMarkers.value.filter((marker) => {
+    if (marker.category === 'transfer_station' || marker.category === 'repair_reuse') {
+      return false
+    }
+
     if (selectedCategory.value && marker.category !== selectedCategory.value) {
       return false
     }
@@ -61,15 +70,21 @@ const visibleMarkers = computed(() => {
     return haystack.includes(needle)
   })
 })
+
 const selectedMarker = computed(
   () => visibleMarkers.value.find((marker) => marker.id === selectedMarkerId.value) || null,
 )
+
 const categorySummary = computed(() => buildCategorySummary(visibleMarkers.value))
+
 const tokenHelpText = computed(() =>
   hasToken.value
     ? ''
     : 'Set VITE_MAPBOX_ACCESS_TOKEN in .env.local, then restart the Vite dev server.',
 )
+
+const visibleCount = computed(() => visibleMarkers.value.length)
+
 const pipelineLabel = computed(() => {
   if (activePipeline.value === 'azure') return 'Azure API'
   return activePipeline.value || 'Unknown'
@@ -104,8 +119,6 @@ function popupHtml(marker) {
     ['Postcode', marker.postcode || 'Not provided'],
     ['State', marker.state || 'Not provided'],
     ['Category', marker.categoryLabel || getCategoryLabel(marker.category)],
-    ['Coord source', marker.coordSource || 'Not provided'],
-    ['Source file', marker.sourceFile || 'Not provided'],
   ]
 
   return `
@@ -255,7 +268,6 @@ async function loadFacilities() {
     facilityRows.value = rows
     facilityMarkers.value = buildFacilityMarkers(rows)
     activePipeline.value = response?.meta?.pipeline || 'api'
-    activeSource.value = response?.meta?.source || 'api'
 
     if (
       selectedMarkerId.value &&
@@ -275,7 +287,6 @@ async function loadFacilities() {
     facilityMarkers.value = []
     selectedMarkerId.value = ''
     activePipeline.value = 'api'
-    activeSource.value = 'api'
     removeRenderedMarkers()
     closePopup()
   } finally {
@@ -321,6 +332,14 @@ function resetFilters() {
   searchTerm.value = ''
 }
 
+function openDirections() {
+  if (!selectedMarker.value) return
+
+  const { longitude, latitude } = selectedMarker.value
+  const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
+  window.open(url, '_blank', 'noopener,noreferrer')
+}
+
 watch(visibleMarkers, () => {
   queueMarkerRefresh()
 })
@@ -354,15 +373,19 @@ onBeforeUnmount(() => {
 <template>
   <section class="disposal-page">
     <header class="hero-card">
-      <div>
-        <p class="eyebrow">Disposal Map</p>
-        <h1>Find Disposal Locations</h1>
+      <div class="hero-copy">
+        <p class="eyebrow">Disposal Locations</p>
+        <h1>Find a safe place to dispose of e-waste</h1>
+        <p class="hero-text">
+          Search by suburb, postcode, address, or facility name to find disposal locations near you.
+        </p>
       </div>
 
       <div class="hero-stats">
         <article>
-          <span>Visible sites</span>
-          <strong>{{ visibleMarkers.length }}</strong>
+          <span>Visible locations</span>
+          <strong>{{ visibleCount }}</strong>
+          <small>Source: {{ pipelineLabel }}</small>
         </article>
       </div>
     </header>
@@ -406,7 +429,7 @@ onBeforeUnmount(() => {
           </div>
 
           <div v-else-if="isLoading" class="map-overlay">
-            <p>Loading disposal facilities...</p>
+            <p>Loading disposal locations...</p>
           </div>
 
           <div v-else-if="loadError" class="map-overlay map-overlay--error">
@@ -420,56 +443,55 @@ onBeforeUnmount(() => {
 
       <aside class="side-panel">
         <section class="panel-card">
-          <p class="section-label">Selection</p>
+          <p class="section-label">Selected location</p>
+
           <template v-if="selectedMarker">
             <h2>{{ selectedMarker.facilityName }}</h2>
+            <p class="support-copy selected-copy">
+              Review the details below, then open directions to navigate there.
+            </p>
+
             <div class="detail-list">
               <div class="detail-row">
-                <span>Address</span><strong>{{ selectedMarker.address || 'Not provided' }}</strong>
+                <span>Address</span>
+                <strong>{{ selectedMarker.address || 'Not provided' }}</strong>
               </div>
               <div class="detail-row">
-                <span>Suburb</span><strong>{{ selectedMarker.suburb || 'Not provided' }}</strong>
+                <span>Suburb</span>
+                <strong>{{ selectedMarker.suburb || 'Not provided' }}</strong>
               </div>
               <div class="detail-row">
-                <span>Postcode</span
-                ><strong>{{ selectedMarker.postcode || 'Not provided' }}</strong>
+                <span>Postcode</span>
+                <strong>{{ selectedMarker.postcode || 'Not provided' }}</strong>
               </div>
               <div class="detail-row">
-                <span>State</span><strong>{{ selectedMarker.state || 'Not provided' }}</strong>
+                <span>State</span>
+                <strong>{{ selectedMarker.state || 'Not provided' }}</strong>
               </div>
               <div class="detail-row">
-                <span>Category</span><strong>{{ selectedMarker.categoryLabel }}</strong>
+                <span>Category</span>
+                <strong>{{ selectedMarker.categoryLabel }}</strong>
               </div>
-              <div class="detail-row">
-                <span>Coord source</span
-                ><strong>{{ selectedMarker.coordSource || 'Not provided' }}</strong>
-              </div>
-              <div class="detail-row">
-                <span>Source file</span
-                ><strong>{{ selectedMarker.sourceFile || 'Not provided' }}</strong>
-              </div>
+            </div>
+
+            <div class="panel-actions">
+              <button type="button" class="primary-action" @click="openDirections">
+                Navigate
+              </button>
             </div>
           </template>
+
           <template v-else>
-            <h2>Map summary</h2>
+            <h2>Select a location</h2>
             <p class="support-copy">
-              Click a marker to inspect a disposal site. The summary updates from the current
-              visible marker set.
+              Click any point on the map to see details and navigate.
             </p>
-            <div class="detail-list">
-              <div class="detail-row">
-                <span>Rows loaded</span><strong>{{ facilityRows.length }}</strong>
-              </div>
-              <div class="detail-row">
-                <span>Markers shown</span><strong>{{ visibleMarkers.length }}</strong>
-              </div>
-            </div>
           </template>
         </section>
 
         <section class="panel-card">
-          <p class="section-label">Categories</p>
-          <h2>Visible breakdown</h2>
+          <p class="section-label">Visible categories</p>
+          <h2>What is currently shown</h2>
           <div class="category-list">
             <div v-for="entry in categorySummary" :key="entry.key" class="category-row">
               <span class="category-label">
@@ -479,7 +501,7 @@ onBeforeUnmount(() => {
               <strong>{{ entry.count }}</strong>
             </div>
             <p v-if="!categorySummary.length" class="support-copy">
-              No disposal sites match the current filters.
+              No disposal locations match the current filters.
             </p>
           </div>
         </section>
@@ -532,15 +554,6 @@ onBeforeUnmount(() => {
   pointer-events: none;
 }
 
-.toolbar-card,
-.panel-card {
-  background: linear-gradient(180deg, #ffffff 0%, #fbfdfb 100%);
-  border: 1px solid #e2eee3;
-  border-radius: 24px;
-  padding: 22px;
-  box-shadow: 0 8px 24px rgba(27, 67, 50, 0.05);
-}
-
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -582,12 +595,16 @@ h2 {
   letter-spacing: -0.2px;
 }
 
-.hero-copy,
+.hero-text,
 .support-copy {
   margin: 0;
   font-size: 16px;
   line-height: 1.75;
   color: #557260;
+}
+
+.selected-copy {
+  margin-bottom: 16px;
 }
 
 .hero-stats {
@@ -625,6 +642,13 @@ h2 {
   letter-spacing: -0.3px;
 }
 
+.hero-stats small {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6b8a74;
+}
+
 .content-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.85fr);
@@ -636,6 +660,15 @@ h2 {
 .side-panel {
   display: grid;
   gap: 20px;
+}
+
+.toolbar-card,
+.panel-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfb 100%);
+  border: 1px solid #e2eee3;
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(27, 67, 50, 0.05);
 }
 
 .toolbar-card {
@@ -715,6 +748,20 @@ button {
 
 .ghost:hover {
   background: #dff0e1;
+}
+
+.primary-action {
+  background: #2e7d32;
+  color: #ffffff;
+  border: 1px solid #2e7d32;
+}
+
+.primary-action:hover {
+  background: #276b2a;
+}
+
+.panel-actions {
+  margin-top: 18px;
 }
 
 .map-frame {
@@ -947,11 +994,9 @@ button {
 .section-label {
   margin-bottom: 12px;
   padding-bottom: 6px;
-
   font-size: 14px;
   font-weight: 700;
   color: #3f8f46;
-
   border-bottom: 1px solid #e2eee3;
 }
 </style>
