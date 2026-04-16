@@ -2,7 +2,9 @@
   <nav class="navbar">
     <div class="logo">
       <img src="@/assets/Logo.png" alt="EcoTech Logo" class="logo-img" />
-      <span class="logo-text">EcoTech</span>
+      <router-link to="/" class="logo-link">
+  EcoTech
+</router-link>
     </div>
 
     <div class="links">
