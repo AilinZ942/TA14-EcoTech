@@ -17,7 +17,7 @@ const deathsChartRef = ref(null)
 const fatalityChartRef = ref(null)
 
 const heroRef = ref(null)
-const infoStripRef = ref(null)
+const contextRef = ref(null)
 const filtersRef = ref(null)
 const summaryRef = ref(null)
 const trendSectionRef = ref(null)
@@ -566,7 +566,7 @@ function resizeCharts() {
 function setupRevealAnimations() {
   const sections = [
     heroRef.value,
-    infoStripRef.value,
+    contextRef.value,
     filtersRef.value,
     summaryRef.value,
     trendSectionRef.value,
@@ -649,16 +649,11 @@ onBeforeUnmount(() => {
           <p class="dashboard-tag">Health Risk Context</p>
           <h1>Understand Why Safe E-waste Disposal Matters</h1>
           <p class="hero-subtext">
-            This dashboard turns health data into simple insights. You do not need technical
-            knowledge. Scroll, hover, and explore the trends to understand why harmful waste should
-            be handled safely.
+            E-waste contains harmful materials such as lead, cadmium, mercury, and chromium.
+            Long-term exposure to these toxic substances is associated with increased risk of
+            serious health conditions, including certain cancers. This dashboard uses health data
+            to help users understand why safe disposal matters.
           </p>
-
-          <div class="hero-chip-row">
-            <span class="hero-chip">Interactive insights</span>
-            <span class="hero-chip">Simple health view</span>
-            <span class="hero-chip">Trusted public data</span>
-          </div>
 
           <div class="current-view-inline">
             <span class="side-card-label">Current view</span>
@@ -671,29 +666,16 @@ onBeforeUnmount(() => {
       </div>
     </section>
 
-    <section ref="infoStripRef" class="info-strip">
-      <div class="info-strip-item glass-card">
-        <span class="info-strip-icon">ℹ️</span>
-        <div>
-          <strong>What this page shows</strong>
-          <p>A simple view of selected cancers associated with long-term toxic exposure risks.</p>
-        </div>
-      </div>
-
-      <div class="info-strip-item glass-card">
-        <span class="info-strip-icon">🖱️</span>
-        <div>
-          <strong>How to use it</strong>
-          <p>Hover over any chart to see clear values in a floating pop-up card.</p>
-        </div>
-      </div>
-
-      <div class="info-strip-item glass-card">
-        <span class="info-strip-icon">📚</span>
-        <div>
-          <strong>Data source</strong>
-          <p>AIHW health data, with health-risk context supported by WHO and IARC.</p>
-        </div>
+    <section ref="contextRef" class="context-card glass-card">
+      <div class="context-icon">⚠️</div>
+      <div>
+        <h3>Why this matters</h3>
+        <p>
+          Improper e-waste disposal can release toxic substances into the environment. According to
+          WHO and IARC, long-term exposure to materials found in e-waste is associated with increased
+          risk of several serious diseases, including some cancers. This page gives a simple health
+          context to show why responsible disposal is important.
+        </p>
       </div>
     </section>
 
@@ -960,7 +942,7 @@ onBeforeUnmount(() => {
   border: 1px solid rgba(220, 235, 220, 0.95);
   border-radius: 36px;
   padding: 40px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   background:
     linear-gradient(135deg, rgba(244, 251, 244, 0.82) 0%, rgba(237, 247, 238, 0.78) 100%);
   box-shadow:
@@ -1025,8 +1007,7 @@ onBeforeUnmount(() => {
 }
 
 .dashboard-tag,
-.mini-tag,
-.hero-chip {
+.mini-tag {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
@@ -1046,7 +1027,7 @@ onBeforeUnmount(() => {
 .hero-copy h1 {
   margin: 0 0 14px;
   font-size: 58px;
-  line-height: 1.0;
+  line-height: 1;
   font-weight: 800;
   color: #143324;
   letter-spacing: -1.35px;
@@ -1055,26 +1036,10 @@ onBeforeUnmount(() => {
 
 .hero-subtext {
   margin: 0;
-  max-width: 860px;
+  max-width: 900px;
   font-size: 16px;
   line-height: 1.9;
   color: #557260;
-}
-
-.hero-chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 22px;
-}
-
-.hero-chip {
-  padding: 8px 12px;
-  font-size: 12px;
-  color: #2d6544;
-  background: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(207, 232, 209, 0.95);
-  box-shadow: 0 8px 18px rgba(27, 67, 50, 0.04);
 }
 
 .current-view-inline {
@@ -1106,13 +1071,6 @@ onBeforeUnmount(() => {
   color: #557260;
 }
 
-.info-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(220px, 1fr));
-  gap: 16px;
-  margin-bottom: 26px;
-}
-
 .glass-card {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(251, 253, 251, 0.80) 100%);
@@ -1123,43 +1081,39 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(15px);
 }
 
-.info-strip-item {
+.context-card {
   display: flex;
-  gap: 12px;
-  padding: 20px;
-  border-radius: 22px;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 26px;
+  padding: 22px 24px;
+  border-radius: 26px;
 }
 
-.info-strip-item:hover {
-  transform: translateY(-5px);
-  border-color: rgba(129, 199, 132, 0.52);
-  box-shadow:
-    0 18px 34px rgba(27, 67, 50, 0.07),
-    0 0 0 1px rgba(129, 199, 132, 0.12);
-}
-
-.info-strip-icon {
+.context-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
   font-size: 20px;
-  line-height: 1;
-  margin-top: 2px;
+  background: linear-gradient(180deg, #eff8f0 0%, #e7f4e8 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  flex-shrink: 0;
 }
 
-.info-strip-item strong {
-  display: block;
-  margin-bottom: 4px;
+.context-card h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
   color: #173a29;
-  font-size: 15px;
+  letter-spacing: -0.2px;
 }
 
-.info-strip-item p {
+.context-card p {
   margin: 0;
+  font-size: 15px;
+  line-height: 1.85;
   color: #557260;
-  font-size: 13px;
-  line-height: 1.65;
 }
 
 .filter-sticky-wrap {
@@ -1481,10 +1435,6 @@ onBeforeUnmount(() => {
   .chart-grid {
     grid-template-columns: 1fr;
   }
-
-  .info-strip {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 1024px) {
@@ -1511,6 +1461,10 @@ onBeforeUnmount(() => {
 
   .current-view-inline strong {
     font-size: 22px;
+  }
+
+  .context-card {
+    flex-direction: column;
   }
 
   .chart-header h3 {
