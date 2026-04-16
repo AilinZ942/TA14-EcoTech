@@ -1,251 +1,698 @@
 <template>
   <div class="home">
-    <!-- Hero -->
-    <section class="hero">
-      <img :src="heroImg" class="hero-img" />
-      <div class="overlay"></div>
+    <section class="hero" :style="heroSectionStyle">
+      <img :src="heroImg" class="hero-img" :style="heroImageStyle" alt="E-waste awareness" />
+      <div class="hero-overlay"></div>
+      <div class="hero-gradient"></div>
 
-      <div class="hero-text">
-        <h1>Smarter E-Waste Solutions in Victoria</h1>
+      <div class="hero-content" :style="heroContentStyle">
+        <p class="hero-tag">EcoTech</p>
+        <h1>Dispose E-waste the Right Way</h1>
+        <p class="hero-subtitle">
+          Learn why e-waste is harmful, understand simple health risks, and find safe disposal
+          options near you.
+        </p>
+
+        <div class="hero-actions">
+          <router-link to="/disposal-locations" class="hero-btn primary">
+            Find Disposal Sites
+          </router-link>
+          <router-link to="/dashboard" class="hero-btn secondary">
+            View Health Insights
+          </router-link>
+        </div>
+
+        <div class="scroll-indicator">
+          <span class="scroll-line"></span>
+          <span class="scroll-text">Scroll to explore</span>
+        </div>
+      </div>
+    </section>
+
+    <section ref="introRef" class="intro-section reveal-section">
+      <div class="section-shell">
+        <div class="section-heading">
+          <p class="section-tag">Why this matters</p>
+          <h2>E-waste is not just waste. It is a health and environmental risk.</h2>
+          <p class="section-text">
+            Old electronics can contain toxic substances such as lead, cadmium, mercury, and
+            chromium. If these materials are dumped carelessly, they can harm people and the
+            environment over time.
+          </p>
+        </div>
+
+        <div class="highlight-card">
+          <strong>Simple idea</strong>
+          <p>
+            Most users do not need technical details. They need to know why e-waste matters, what
+            risks it creates, and where they can dispose of it safely.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section ref="featuresRef" class="features-section reveal-section">
+      <div class="section-shell">
+        <div class="section-heading compact">
+          <p class="section-tag">What you can do here</p>
+          <h2>Three simple actions</h2>
+        </div>
+
+        <div class="feature-grid">
+          <router-link to="/dashboard" class="feature-card">
+            <div class="feature-top">
+              <span class="feature-icon">📊</span>
+              <span class="feature-label">Health Insights</span>
+            </div>
+            <h3>Understand the health impact</h3>
+            <p>
+              View simple charts that explain why toxic exposure and unsafe disposal should be taken
+              seriously.
+            </p>
+          </router-link>
+
+          <router-link to="/disposal-locations" class="feature-card">
+            <div class="feature-top">
+              <span class="feature-icon">📍</span>
+              <span class="feature-label">Disposal Search</span>
+            </div>
+            <h3>Find safe disposal locations</h3>
+            <p>
+              Search for nearby places where you can responsibly take devices, electronics, and
+              related waste.
+            </p>
+          </router-link>
+
+          <div class="feature-card static-card">
+            <div class="feature-top">
+              <span class="feature-icon">♻️</span>
+              <span class="feature-label">Awareness</span>
+            </div>
+            <h3>Make better e-waste decisions</h3>
+            <p>
+              Learn why repair, reuse, recycling, and proper disposal are better than throwing old
+              devices away.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section ref="journeyRef" class="journey-section reveal-section">
+      <div class="section-shell journey-shell">
+        <div class="journey-copy">
+          <p class="section-tag">User journey</p>
+          <h2>From awareness to action</h2>
+          <p class="section-text">
+            The goal of EcoTech is simple. First, help users understand why e-waste is dangerous.
+            Then show the health context clearly. Finally, guide them to the next practical step:
+            safe disposal.
+          </p>
+        </div>
+
+        <div class="journey-steps">
+          <div class="step-card">
+            <span class="step-number">01</span>
+            <h3>Learn</h3>
+            <p>Understand why toxic materials in e-waste matter.</p>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">02</span>
+            <h3>Explore</h3>
+            <p>See health-related insights in a simple visual format.</p>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">03</span>
+            <h3>Act</h3>
+            <p>Find a safe place to dispose of your device responsibly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section ref="ctaRef" class="cta-section reveal-section">
+      <div class="cta-card">
+        <p class="section-tag">Take the next step</p>
+        <h2>Do not let old electronics become harmful waste.</h2>
         <p>
-          We are dedicated to reducing electronic waste and promoting sustainable technology
-          practices.
+          Explore disposal locations and make safer choices for your device, your health, and your
+          environment.
         </p>
+        <router-link to="/disposal-locations" class="hero-btn primary cta-btn">
+          Start with Disposal Locations
+        </router-link>
       </div>
     </section>
-
-    <!-- Intro -->
-    <section class="intro">
-      <p>
-        Our platform helps you extend the life of your devices, provides guidance on proper
-        disposal, and connects you with resources for environmentally conscious tech usage.
-      </p>
-    </section>
-
-    <!-- Feature Cards -->
-    <section class="features">
-      <router-link to="/repair-check" class="card-link">
-        <div class="card">
-          <div class="card-top green">
-            <div class="icon-box">
-              <span class="icon">📱</span>
-            </div>
-            <h3>Device Assessment</h3>
-          </div>
-          <p class="card-text">Check if your device can be repaired instead of replaced.</p>
-        </div>
-      </router-link>
-
-      <router-link to="/extend-usage" class="card-link">
-        <div class="card">
-          <div class="card-top blue">
-            <div class="icon-box">
-              <span class="icon">💻</span>
-            </div>
-            <h3>Usage Tips</h3>
-          </div>
-          <p class="card-text">Learn how to extend your device lifespan.</p>
-        </div>
-      </router-link>
-
-      <router-link to="/dashboard" class="card-link">
-        <div class="card">
-          <div class="card-top purple">
-            <div class="icon-box">
-              <span class="icon">⚡</span>
-            </div>
-            <h3>E-Waste Impact</h3>
-          </div>
-          <p class="card-text">Understand the health impact of e-waste.</p>
-        </div>
-      </router-link>
-    </section>
-
-    <!-- Mission -->
-    <section class="mission">
-      <div class="mission-card">
-        <h2>Our Mission</h2>
-
-        <p class="mission-sub">
-          Electronic waste is one of the fastest-growing waste streams in the world. Millions of
-          tons end up in landfills each year.
-        </p>
-
-        <p class="mission-main">
-          We provide tools to help users make better decisions, from repair to safe disposal.
-          Together, we can build a sustainable future.
-        </p>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">© 2026 EcoTech. Reducing e-waste, one device at a time.</footer>
   </div>
 </template>
 
 <script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import heroImg from '@/assets/e-waste.png'
+
+const introRef = ref(null)
+const featuresRef = ref(null)
+const journeyRef = ref(null)
+const ctaRef = ref(null)
+
+const scrollY = ref(0)
+let observer = null
+
+const heroImageStyle = computed(() => {
+  const y = Math.min(scrollY.value * 0.22, 140)
+  const scale = Math.max(1, 1 + scrollY.value * 0.00018)
+  return {
+    transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
+  }
+})
+
+const heroContentStyle = computed(() => {
+  const y = Math.min(scrollY.value * 0.18, 110)
+  const opacity = Math.max(0, 1 - scrollY.value / 650)
+  return {
+    transform: `translate3d(0, ${y}px, 0)`,
+    opacity,
+  }
+})
+
+const heroSectionStyle = computed(() => {
+  const bgY = Math.min(scrollY.value * 0.08, 60)
+  return {
+    transform: `translate3d(0, ${bgY}px, 0)`,
+  }
+})
+
+function handleScroll() {
+  scrollY.value = window.scrollY || 0
+}
+
+function setupRevealAnimations() {
+  const sections = [introRef.value, featuresRef.value, journeyRef.value, ctaRef.value].filter(Boolean)
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed')
+          observer?.unobserve(entry.target)
+        }
+      })
+    },
+    {
+      threshold: 0.14,
+      rootMargin: '0px 0px -40px 0px',
+    },
+  )
+
+  sections.forEach((section) => observer.observe(section))
+}
+
+onMounted(() => {
+  handleScroll()
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  setupRevealAnimations()
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll)
+  observer?.disconnect()
+})
 </script>
 
 <style scoped>
 .home {
-  background: #f7f7f7;
-  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(129, 199, 132, 0.12), transparent 18%),
+    radial-gradient(circle at 12% 92%, rgba(67, 160, 71, 0.08), transparent 22%),
+    linear-gradient(180deg, #f8fbf8 0%, #eef4ef 100%);
+  color: #173a29;
+  overflow-x: hidden;
 }
 
 .hero {
   position: relative;
-  height: 450px;
-  border-radius: 16px;
+  min-height: 100vh;
   overflow: hidden;
-  margin: 20px;
 }
 
 .hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 115%;
+  object-fit: cover;
+  will-change: transform;
+  transition: transform 0.08s linear;
 }
 
-.hero-text {
+.hero-overlay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 18, 12, 0.28) 0%, rgba(6, 18, 12, 0.42) 55%, rgba(6, 18, 12, 0.6) 100%);
 }
 
-.hero-text h1 {
-  font-size: 40px;
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 25%, rgba(129, 199, 132, 0.18), transparent 24%),
+    radial-gradient(circle at 80% 20%, rgba(67, 160, 71, 0.14), transparent 26%);
+  mix-blend-mode: screen;
 }
 
-.intro {
-  text-align: center;
-  padding: 30px 80px;
-  color: #555;
-}
-
-.features {
-  display: flex;
-  gap: 24px;
-  padding: 20px 40px;
-  align-items: stretch;
-}
-
-.card-link {
-  flex: 1;
-  text-decoration: none;
-  color: inherit;
-}
-
-.card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 20px;
+.hero-content {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  transition: 0.2s ease;
+  justify-content: center;
+  padding: 0 7vw;
+  color: #ffffff;
+  will-change: transform, opacity;
+  transition: transform 0.08s linear, opacity 0.08s linear;
 }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+.hero-tag {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0 0 18px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(10px);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
-.card-top {
+.hero-content h1 {
+  margin: 0;
+  max-width: 900px;
+  font-size: 76px;
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -2px;
+}
+
+.hero-subtitle {
+  margin: 22px 0 0;
+  max-width: 720px;
+  font-size: 20px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    background 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.hero-btn:hover {
+  transform: translateY(-3px);
+}
+
+.hero-btn.primary {
+  background: #ffffff;
+  color: #173a29;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+.hero-btn.primary:hover {
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+}
+
+.hero-btn.secondary {
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.hero-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.scroll-indicator {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  min-height: 56px;
+  margin-top: 38px;
+  width: fit-content;
+  color: rgba(255, 255, 255, 0.88);
 }
 
-.card-top h3 {
+.scroll-line {
+  width: 54px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.62);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  transform: translateX(-100%);
+  animation: scrollPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+
+.scroll-text {
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+.section-shell,
+.cta-card {
+  width: min(1220px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.intro-section,
+.features-section,
+.journey-section,
+.cta-section {
+  padding: 84px 0;
+}
+
+.reveal-section {
+  opacity: 0;
+  transform: translateY(72px) scale(0.985);
+  filter: blur(10px);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-section.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.section-heading {
+  max-width: 860px;
+}
+
+.section-heading.compact {
+  margin-bottom: 28px;
+}
+
+.section-tag {
+  display: inline-flex;
+  margin: 0 0 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(232, 245, 233, 0.9);
+  border: 1px solid rgba(207, 232, 209, 0.98);
+  color: #2e7d32;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.section-heading h2,
+.cta-card h2 {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #334155;
+  font-size: 46px;
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #143324;
 }
 
-.icon-box {
-  width: 36px;
-  height: 36px;
+.section-text,
+.cta-card p {
+  margin: 18px 0 0;
+  font-size: 18px;
+  line-height: 1.85;
+  color: #557260;
+}
+
+.highlight-card {
+  margin-top: 28px;
+  padding: 26px 28px;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(251, 253, 251, 0.84) 100%);
+  border: 1px solid rgba(226, 238, 227, 0.98);
+  box-shadow:
+    0 18px 34px rgba(27, 67, 50, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(14px);
+}
+
+.highlight-card strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 20px;
+  color: #173a29;
+}
+
+.highlight-card p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #557260;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+.feature-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 28px;
+  border-radius: 30px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(251, 253, 251, 0.84) 100%);
+  border: 1px solid rgba(226, 238, 227, 0.98);
+  box-shadow:
+    0 18px 34px rgba(27, 67, 50, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(14px);
+  transition:
+    transform 0.34s ease,
+    box-shadow 0.34s ease,
+    border-color 0.34s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(129, 199, 132, 0.58);
+  box-shadow:
+    0 24px 42px rgba(27, 67, 50, 0.08),
+    0 0 0 1px rgba(129, 199, 132, 0.14);
+}
+
+.feature-top {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.icon {
-  font-size: 22px;
-  line-height: 1;
+.feature-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #eff8f0 0%, #e7f4e8 100%);
+  font-size: 21px;
 }
 
-.card-text {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #475569;
+.feature-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #3f8f46;
 }
 
-.green {
-  background: #dcfce7;
-}
-
-.blue {
-  background: #dbeafe;
-}
-
-.purple {
-  background: #f3e8ff;
-}
-
-.mission {
-  padding: 24px 40px 40px;
-}
-
-.mission-card {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 16px;
-  padding: 32px 40px;
-}
-
-.mission-card h2 {
-  margin: 0 0 16px;
-  font-size: 28px;
-  font-weight: 600;
-  color: #334155;
-}
-
-.mission-main {
+.feature-card h3 {
   margin: 0 0 12px;
-  font-size: 18px;
-  line-height: 1.6;
-  color: #475569;
+  font-size: 28px;
+  line-height: 1.15;
+  color: #173a29;
+  letter-spacing: -0.5px;
 }
 
-.mission-sub {
+.feature-card p {
   margin: 0;
   font-size: 16px;
-  line-height: 1.6;
-  color: #64748b;
+  line-height: 1.8;
+  color: #557260;
 }
 
-.footer {
-  text-align: center;
-  padding: 20px;
-  color: #666;
+.static-card {
+  cursor: default;
+}
+
+.journey-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 0.95fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.journey-steps {
+  display: grid;
+  gap: 16px;
+}
+
+.step-card {
+  padding: 22px 24px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(251, 253, 251, 0.84) 100%);
+  border: 1px solid rgba(226, 238, 227, 0.98);
+  box-shadow:
+    0 18px 34px rgba(27, 67, 50, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(14px);
+}
+
+.step-number {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #3f8f46;
+}
+
+.step-card h3 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  color: #173a29;
+}
+
+.step-card p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #557260;
+}
+
+.cta-card {
+  padding: 40px;
+  border-radius: 34px;
+  background:
+    linear-gradient(180deg, rgba(241, 248, 242, 0.92) 0%, rgba(234, 244, 236, 0.92) 100%);
+  border: 1px solid rgba(210, 232, 214, 0.98);
+  box-shadow:
+    0 22px 42px rgba(27, 67, 50, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.cta-btn {
+  margin-top: 24px;
+  width: fit-content;
+}
+
+@media (max-width: 1200px) {
+  .feature-grid,
+  .journey-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-content h1 {
+    font-size: 62px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-content {
+    padding: 0 22px;
+  }
+
+  .hero-content h1 {
+    font-size: 48px;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+  }
+
+  .section-heading h2,
+  .cta-card h2 {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-content h1 {
+    font-size: 38px;
+    line-height: 1.05;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section-shell,
+  .cta-card {
+    width: min(100% - 24px, 1220px);
+  }
+
+  .intro-section,
+  .features-section,
+  .journey-section,
+  .cta-section {
+    padding: 64px 0;
+  }
+
+  .section-heading h2,
+  .cta-card h2 {
+    font-size: 30px;
+  }
+
+  .feature-card h3 {
+    font-size: 24px;
+  }
+
+  .cta-card {
+    padding: 28px 22px;
+  }
 }
 </style>
