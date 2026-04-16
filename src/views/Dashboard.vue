@@ -15,11 +15,15 @@ const trendChartRef = ref(null)
 const casesChartRef = ref(null)
 const deathsChartRef = ref(null)
 const fatalityChartRef = ref(null)
+const sexCompareChartRef = ref(null)
+const donutChartRef = ref(null)
 
 let trendChart = null
 let casesChart = null
 let deathsChart = null
 let fatalityChart = null
+let sexCompareChart = null
+let donutChart = null
 
 async function loadHealthData() {
   try {
@@ -37,23 +41,28 @@ async function loadHealthData() {
 }
 
 const yearOptions = computed(() => {
-  const years = [...new Set(healthData.value.map((item) => item.year))].sort((a, b) => a - b)
+  const years = [
+    ...new Set(healthData.value.map((item) => Number(item.year)).filter(Boolean)),
+  ].sort((a, b) => a - b)
   return ['All', ...years]
 })
 
 const sexOptions = computed(() => {
-  const values = [...new Set(healthData.value.map((item) => item.sex))].sort()
+  const values = [...new Set(healthData.value.map((item) => item.sex).filter(Boolean))].sort()
   return ['All', ...values]
 })
 
 const cancerTypeOptions = computed(() => {
-  const values = [...new Set(healthData.value.map((item) => item.cancer_type))].sort()
+  const values = [
+    ...new Set(healthData.value.map((item) => item.cancer_type).filter(Boolean)),
+  ].sort()
   return ['All', ...values]
 })
 
-const filteredData = computed(() => {
+const trendData = computed(() => {
   return healthData.value.filter((item) => {
-    const matchYear = selectedYear.value === 'All' || item.year === selectedYear.value
+    const matchYear =
+      selectedYear.value === 'All' || Number(item.year) === Number(selectedYear.value)
     const matchSex = selectedSex.value === 'All' || item.sex === selectedSex.value
     const matchCancer =
       selectedCancerType.value === 'All' || item.cancer_type === selectedCancerType.value
@@ -62,20 +71,40 @@ const filteredData = computed(() => {
   })
 })
 
-const totalRecords = computed(() => filteredData.value.length)
+const overviewData = computed(() => {
+  return healthData.value.filter((item) => {
+    const matchYear =
+      selectedYear.value === 'All' || Number(item.year) === Number(selectedYear.value)
+    const matchSex = selectedSex.value === 'All' || item.sex === selectedSex.value
+    return matchYear && matchSex
+  })
+})
+
+const totalRecords = computed(() => trendData.value.length)
 
 const totalCases = computed(() => {
-  return filteredData.value.reduce((sum, item) => sum + Number(item.cancer_cases || 0), 0)
+  return trendData.value.reduce((sum, item) => sum + Number(item.cancer_cases || 0), 0)
 })
 
 const totalDeaths = computed(() => {
-  return filteredData.value.reduce((sum, item) => sum + Number(item.cancer_deaths || 0), 0)
+  return trendData.value.reduce((sum, item) => sum + Number(item.cancer_deaths || 0), 0)
 })
 
 const averageFatalityRatio = computed(() => {
-  if (!filteredData.value.length) return 0
-  const total = filteredData.value.reduce((sum, item) => sum + Number(item.fatality_ratio || 0), 0)
-  return total / filteredData.value.length
+  if (!trendData.value.length) return 0
+
+  const total = trendData.value.reduce((sum, item) => {
+    const cases = Number(item.cancer_cases || 0)
+    const deaths = Number(item.cancer_deaths || 0)
+    const ratio = cases > 0 ? deaths / cases : 0
+    return sum + ratio
+  }, 0)
+
+  return total / trendData.value.length
+})
+
+const currentSelectionLabel = computed(() => {
+  return `Year: ${selectedYear.value} · Sex: ${selectedSex.value} · Cancer Type: ${selectedCancerType.value}`
 })
 
 function aggregateByYear(data) {
@@ -83,6 +112,8 @@ function aggregateByYear(data) {
 
   data.forEach((item) => {
     const year = Number(item.year)
+    if (!year) return
+
     if (!map.has(year)) {
       map.set(year, {
         year,
@@ -104,29 +135,56 @@ function aggregateByCancerType(data) {
 
   data.forEach((item) => {
     const name = item.cancer_type
+    if (!name) return
+
     if (!map.has(name)) {
       map.set(name, {
         cancer_type: name,
         cases: 0,
         deaths: 0,
-        ratioTotal: 0,
-        count: 0,
       })
     }
 
     const entry = map.get(name)
     entry.cases += Number(item.cancer_cases || 0)
     entry.deaths += Number(item.cancer_deaths || 0)
-    entry.ratioTotal += Number(item.fatality_ratio || 0)
-    entry.count += 1
   })
 
   return [...map.values()].map((item) => ({
     cancer_type: item.cancer_type,
     cases: item.cases,
     deaths: item.deaths,
-    avgRatio: item.count ? item.ratioTotal / item.count : 0,
+    avgRatio: item.cases > 0 ? item.deaths / item.cases : 0,
   }))
+}
+
+function aggregateMaleFemaleByCancerType(data) {
+  const filtered = data.filter((item) => item.sex === 'Male' || item.sex === 'Female')
+  const map = new Map()
+
+  filtered.forEach((item) => {
+    const name = item.cancer_type
+    if (!name) return
+
+    if (!map.has(name)) {
+      map.set(name, {
+        cancer_type: name,
+        maleCases: 0,
+        femaleCases: 0,
+        totalCases: 0,
+      })
+    }
+
+    const entry = map.get(name)
+    const cases = Number(item.cancer_cases || 0)
+
+    if (item.sex === 'Male') entry.maleCases += cases
+    if (item.sex === 'Female') entry.femaleCases += cases
+
+    entry.totalCases += cases
+  })
+
+  return [...map.values()]
 }
 
 function initCharts() {
@@ -134,11 +192,13 @@ function initCharts() {
   if (casesChartRef.value) casesChart = echarts.init(casesChartRef.value)
   if (deathsChartRef.value) deathsChart = echarts.init(deathsChartRef.value)
   if (fatalityChartRef.value) fatalityChart = echarts.init(fatalityChartRef.value)
+  if (sexCompareChartRef.value) sexCompareChart = echarts.init(sexCompareChartRef.value)
+  if (donutChartRef.value) donutChart = echarts.init(donutChartRef.value)
 }
 
 function updateCharts() {
-  const yearData = aggregateByYear(filteredData.value)
-  const cancerData = aggregateByCancerType(filteredData.value)
+  const yearData = aggregateByYear(trendData.value)
+  const cancerData = aggregateByCancerType(overviewData.value)
 
   const topCases = [...cancerData]
     .sort((a, b) => b.cases - a.cases)
@@ -155,162 +215,245 @@ function updateCharts() {
     .slice(0, 10)
     .reverse()
 
-  if (trendChart) {
-    trendChart.setOption({
-      backgroundColor: 'transparent',
-      tooltip: { trigger: 'axis' },
-      legend: {
-        top: 8,
-        textStyle: { color: '#1b4332' },
-      },
-      grid: {
-        left: 50,
-        right: 30,
-        top: 60,
-        bottom: 40,
-      },
-      xAxis: {
-        type: 'category',
-        data: yearData.map((item) => item.year),
-        axisLine: { lineStyle: { color: '#95b99f' } },
-        axisLabel: { color: '#1b4332' },
-      },
-      yAxis: {
-        type: 'value',
-        axisLine: { show: false },
-        splitLine: { lineStyle: { color: '#e3efe5' } },
-        axisLabel: { color: '#1b4332' },
-      },
-      series: [
-        {
-          name: 'Cancer Cases',
-          type: 'line',
-          smooth: true,
-          data: yearData.map((item) => item.cases),
-          lineStyle: { width: 3, color: '#43a047' },
-          itemStyle: { color: '#43a047' },
-          areaStyle: { color: 'rgba(67,160,71,0.12)' },
-        },
-        {
-          name: 'Cancer Deaths',
-          type: 'line',
-          smooth: true,
-          data: yearData.map((item) => item.deaths),
-          lineStyle: { width: 3, color: '#1b5e20' },
-          itemStyle: { color: '#1b5e20' },
-          areaStyle: { color: 'rgba(27,94,32,0.08)' },
-        },
-      ],
-    })
-  }
+  const sexCompareData = aggregateMaleFemaleByCancerType(overviewData.value)
+    .sort((a, b) => b.totalCases - a.totalCases)
+    .slice(0, 8)
+    .reverse()
 
-  if (casesChart) {
-    casesChart.setOption({
-      backgroundColor: 'transparent',
-      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-      grid: {
-        left: 180,
-        right: 30,
-        top: 30,
-        bottom: 30,
-      },
-      xAxis: {
-        type: 'value',
-        splitLine: { lineStyle: { color: '#e3efe5' } },
-        axisLabel: { color: '#1b4332' },
-      },
-      yAxis: {
-        type: 'category',
-        data: topCases.map((item) => item.cancer_type),
-        axisLabel: { color: '#1b4332' },
-        axisLine: { lineStyle: { color: '#95b99f' } },
-      },
-      series: [
-        {
-          name: 'Cases',
-          type: 'bar',
-          data: topCases.map((item) => item.cases),
-          itemStyle: {
-            color: '#66bb6a',
-            borderRadius: [0, 6, 6, 0],
-          },
-        },
-      ],
-    })
-  }
+  const donutData = [...cancerData]
+    .sort((a, b) => b.cases - a.cases)
+    .slice(0, 6)
+    .map((item) => ({
+      name: item.cancer_type,
+      value: item.cases,
+    }))
 
-  if (deathsChart) {
-    deathsChart.setOption({
-      backgroundColor: 'transparent',
-      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-      grid: {
-        left: 180,
-        right: 30,
-        top: 30,
-        bottom: 30,
+  trendChart?.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'axis' },
+    legend: {
+      top: 8,
+      textStyle: { color: '#1b4332' },
+    },
+    grid: {
+      left: 50,
+      right: 30,
+      top: 60,
+      bottom: 40,
+    },
+    xAxis: {
+      type: 'category',
+      data: yearData.map((item) => item.year),
+      axisLine: { lineStyle: { color: '#95b99f' } },
+      axisLabel: { color: '#1b4332' },
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: false },
+      splitLine: { lineStyle: { color: '#e3efe5' } },
+      axisLabel: { color: '#1b4332' },
+    },
+    series: [
+      {
+        name: 'Cancer Cases',
+        type: 'line',
+        smooth: true,
+        data: yearData.map((item) => item.cases),
+        lineStyle: { width: 3, color: '#43a047' },
+        itemStyle: { color: '#43a047' },
+        areaStyle: { color: 'rgba(67,160,71,0.12)' },
       },
-      xAxis: {
-        type: 'value',
-        splitLine: { lineStyle: { color: '#e3efe5' } },
-        axisLabel: { color: '#1b4332' },
+      {
+        name: 'Cancer Deaths',
+        type: 'line',
+        smooth: true,
+        data: yearData.map((item) => item.deaths),
+        lineStyle: { width: 3, color: '#1b5e20' },
+        itemStyle: { color: '#1b5e20' },
+        areaStyle: { color: 'rgba(27,94,32,0.08)' },
       },
-      yAxis: {
-        type: 'category',
-        data: topDeaths.map((item) => item.cancer_type),
-        axisLabel: { color: '#1b4332' },
-        axisLine: { lineStyle: { color: '#95b99f' } },
-      },
-      series: [
-        {
-          name: 'Deaths',
-          type: 'bar',
-          data: topDeaths.map((item) => item.deaths),
-          itemStyle: {
-            color: '#2e7d32',
-            borderRadius: [0, 6, 6, 0],
-          },
-        },
-      ],
-    })
-  }
+    ],
+  })
 
-  if (fatalityChart) {
-    fatalityChart.setOption({
-      backgroundColor: 'transparent',
-      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-      grid: {
-        left: 180,
-        right: 30,
-        top: 30,
-        bottom: 30,
+  casesChart?.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    grid: {
+      left: 210,
+      right: 30,
+      top: 30,
+      bottom: 30,
+    },
+    xAxis: {
+      type: 'value',
+      splitLine: { lineStyle: { color: '#e3efe5' } },
+      axisLabel: { color: '#1b4332' },
+    },
+    yAxis: {
+      type: 'category',
+      data: topCases.map((item) => item.cancer_type),
+      axisLabel: { color: '#1b4332' },
+      axisLine: { lineStyle: { color: '#95b99f' } },
+    },
+    series: [
+      {
+        name: 'Cases',
+        type: 'bar',
+        data: topCases.map((item) => item.cases),
+        itemStyle: {
+          color: '#66bb6a',
+          borderRadius: [0, 8, 8, 0],
+        },
       },
-      xAxis: {
-        type: 'value',
-        splitLine: { lineStyle: { color: '#e3efe5' } },
-        axisLabel: {
+    ],
+  })
+
+  deathsChart?.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    grid: {
+      left: 210,
+      right: 30,
+      top: 30,
+      bottom: 30,
+    },
+    xAxis: {
+      type: 'value',
+      splitLine: { lineStyle: { color: '#e3efe5' } },
+      axisLabel: { color: '#1b4332' },
+    },
+    yAxis: {
+      type: 'category',
+      data: topDeaths.map((item) => item.cancer_type),
+      axisLabel: { color: '#1b4332' },
+      axisLine: { lineStyle: { color: '#95b99f' } },
+    },
+    series: [
+      {
+        name: 'Deaths',
+        type: 'bar',
+        data: topDeaths.map((item) => item.deaths),
+        itemStyle: {
+          color: '#2e7d32',
+          borderRadius: [0, 8, 8, 0],
+        },
+      },
+    ],
+  })
+
+  fatalityChart?.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    grid: {
+      left: 210,
+      right: 30,
+      top: 30,
+      bottom: 30,
+    },
+    xAxis: {
+      type: 'value',
+      splitLine: { lineStyle: { color: '#e3efe5' } },
+      axisLabel: {
+        color: '#1b4332',
+        formatter: (value) => Number(value).toFixed(2),
+      },
+    },
+    yAxis: {
+      type: 'category',
+      data: topFatality.map((item) => item.cancer_type),
+      axisLabel: { color: '#1b4332' },
+      axisLine: { lineStyle: { color: '#95b99f' } },
+    },
+    series: [
+      {
+        name: 'Fatality Ratio',
+        type: 'bar',
+        data: topFatality.map((item) => Number(item.avgRatio.toFixed(4))),
+        itemStyle: {
           color: '#1b4332',
-          formatter: (value) => Number(value).toFixed(2),
+          borderRadius: [0, 8, 8, 0],
         },
       },
-      yAxis: {
-        type: 'category',
-        data: topFatality.map((item) => item.cancer_type),
-        axisLabel: { color: '#1b4332' },
-        axisLine: { lineStyle: { color: '#95b99f' } },
-      },
-      series: [
-        {
-          name: 'Fatality Ratio',
-          type: 'bar',
-          data: topFatality.map((item) => Number(item.avgRatio.toFixed(4))),
-          itemStyle: {
-            color: '#1b4332',
-            borderRadius: [0, 6, 6, 0],
-          },
+    ],
+  })
+
+  sexCompareChart?.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: {
+      top: 8,
+      textStyle: { color: '#1b4332' },
+    },
+    grid: {
+      left: 180,
+      right: 30,
+      top: 50,
+      bottom: 30,
+    },
+    xAxis: {
+      type: 'value',
+      splitLine: { lineStyle: { color: '#e3efe5' } },
+      axisLabel: { color: '#1b4332' },
+    },
+    yAxis: {
+      type: 'category',
+      data: sexCompareData.map((item) => item.cancer_type),
+      axisLabel: { color: '#1b4332' },
+      axisLine: { lineStyle: { color: '#95b99f' } },
+    },
+    series: [
+      {
+        name: 'Male',
+        type: 'bar',
+        data: sexCompareData.map((item) => item.maleCases),
+        itemStyle: {
+          color: '#81c784',
+          borderRadius: [0, 8, 8, 0],
         },
-      ],
-    })
-  }
+      },
+      {
+        name: 'Female',
+        type: 'bar',
+        data: sexCompareData.map((item) => item.femaleCases),
+        itemStyle: {
+          color: '#388e3c',
+          borderRadius: [0, 8, 8, 0],
+        },
+      },
+    ],
+  })
+
+  donutChart?.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'item' },
+    legend: {
+      bottom: 0,
+      left: 'center',
+      textStyle: { color: '#1b4332' },
+    },
+    series: [
+      {
+        name: 'Cancer Case Distribution',
+        type: 'pie',
+        radius: ['48%', '72%'],
+        center: ['50%', '46%'],
+        avoidLabelOverlap: true,
+        label: {
+          color: '#1b4332',
+          formatter: '{b}\n{d}%',
+        },
+        labelLine: {
+          lineStyle: { color: '#95b99f' },
+        },
+        data: donutData,
+        itemStyle: {
+          borderColor: '#ffffff',
+          borderWidth: 3,
+        },
+        color: ['#2e7d32', '#43a047', '#66bb6a', '#81c784', '#a5d6a7', '#c8e6c9'],
+      },
+    ],
+  })
 }
 
 function resizeCharts() {
@@ -318,6 +461,8 @@ function resizeCharts() {
   casesChart?.resize()
   deathsChart?.resize()
   fatalityChart?.resize()
+  sexCompareChart?.resize()
+  donutChart?.resize()
 }
 
 onMounted(async () => {
@@ -328,7 +473,7 @@ onMounted(async () => {
   window.addEventListener('resize', resizeCharts)
 })
 
-watch(filteredData, async () => {
+watch([trendData, overviewData], async () => {
   await nextTick()
   updateCharts()
 })
@@ -340,6 +485,8 @@ onBeforeUnmount(() => {
   casesChart?.dispose()
   deathsChart?.dispose()
   fatalityChart?.dispose()
+  sexCompareChart?.dispose()
+  donutChart?.dispose()
 })
 </script>
 
@@ -352,6 +499,46 @@ onBeforeUnmount(() => {
         <p class="dashboard-subtitle">
           Explore cancer cases, deaths, and fatality patterns by year, sex, and cancer type.
         </p>
+      </div>
+    </div>
+
+    <div class="intro-card">
+      <div class="intro-top">
+        <div class="intro-text">
+          <p class="intro-tag">Why this matters</p>
+          <h2>Understanding Health Risks of E-waste</h2>
+          <p>
+            Improper e-waste disposal can release hazardous substances into the environment,
+            increasing potential long-term health risks. This dashboard uses cancer-related data to
+            provide a data-informed view of why safe disposal and recycling practices matter.
+          </p>
+        </div>
+      </div>
+
+      <div class="intro-points horizontal">
+        <div class="point-box">
+          <span class="point-icon">⚠️</span>
+          <div>
+            <strong>Toxic Exposure</strong>
+            <p>Unsafe disposal may release harmful substances into the environment.</p>
+          </div>
+        </div>
+
+        <div class="point-box">
+          <span class="point-icon">🧠</span>
+          <div>
+            <strong>Health Risks</strong>
+            <p>Long-term exposure may increase serious health concerns over time.</p>
+          </div>
+        </div>
+
+        <div class="point-box">
+          <span class="point-icon">📊</span>
+          <div>
+            <strong>Data Insight</strong>
+            <p>Health data helps make the impact of e-waste easier to understand.</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -388,6 +575,10 @@ onBeforeUnmount(() => {
     <p v-else-if="error" class="error-text">{{ error }}</p>
 
     <template v-else>
+      <div class="selection-note">
+        <strong>Current trend selection:</strong> {{ currentSelectionLabel }}
+      </div>
+
       <div class="summary-grid">
         <div class="summary-card">
           <span class="card-label">Total Records</span>
@@ -413,16 +604,24 @@ onBeforeUnmount(() => {
       <div class="chart-card large-chart">
         <div class="chart-header">
           <h2>Cases and Deaths Over Time</h2>
-          <p>Trend of cancer cases and deaths across years</p>
+          <p>
+            This trend chart follows all filters, including the selected cancer type, so you can
+            inspect a specific pattern in more detail.
+          </p>
         </div>
         <div ref="trendChartRef" class="chart"></div>
+      </div>
+
+      <div class="overview-note">
+        <strong>Overview charts:</strong> The charts below compare all cancer types and are not
+        affected by the cancer type filter. This keeps the comparisons meaningful.
       </div>
 
       <div class="chart-grid">
         <div class="chart-card">
           <div class="chart-header">
             <h2>Top 10 Cancer Types by Cases</h2>
-            <p>Most common cancer types in the filtered dataset</p>
+            <p>Most common cancer types in the selected year and sex view</p>
           </div>
           <div ref="casesChartRef" class="chart small-chart"></div>
         </div>
@@ -436,12 +635,32 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <div class="chart-card">
-        <div class="chart-header">
-          <h2>Top 10 Cancer Types by Fatality Ratio</h2>
-          <p>Average fatality ratio by cancer type</p>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h2>Top 10 Cancer Types by Fatality Ratio</h2>
+            <p>Average fatality ratio by cancer type</p>
+          </div>
+          <div ref="fatalityChartRef" class="chart small-chart"></div>
         </div>
-        <div ref="fatalityChartRef" class="chart small-chart"></div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h2>Male vs Female Cases by Cancer Type</h2>
+            <p>Comparison across the top cancer types using Male and Female records only</p>
+          </div>
+          <div ref="sexCompareChartRef" class="chart small-chart"></div>
+        </div>
+      </div>
+
+      <div class="chart-grid single-row-bottom">
+        <div class="chart-card donut-card">
+          <div class="chart-header">
+            <h2>Cancer Type Distribution</h2>
+            <p>Donut chart showing case share across major cancer types</p>
+          </div>
+          <div ref="donutChartRef" class="chart donut-chart"></div>
+        </div>
       </div>
     </template>
   </div>
@@ -525,15 +744,93 @@ onBeforeUnmount(() => {
   color: #4f6f59;
 }
 
+.intro-card {
+  display: block;
+  margin-bottom: 24px;
+  padding: 26px 28px;
+
+  background: #ffffff;
+  border: 1px solid #e3efe5;
+  border-radius: 24px;
+
+  box-shadow: 0 10px 30px rgba(27, 67, 50, 0.05);
+}
+
+.intro-top {
+  margin-bottom: 18px;
+}
+
+.intro-tag {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #5c7465;
+  letter-spacing: 0.2px;
+}
+
+.intro-text h2 {
+  margin: 0 0 12px;
+  font-size: 32px;
+  color: #173a29;
+  line-height: 1.2;
+}
+
+.intro-text p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #557260;
+}
+
+.intro-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.point-box {
+  display: flex;
+  gap: 12px;
+  padding: 16px 18px;
+
+  background: linear-gradient(135deg, #f1f8f2 0%, #ecf6ee 100%);
+  border: 1px solid #e2eee3;
+  border-radius: 18px;
+
+  align-items: flex-start;
+  transition: all 0.2s ease;
+}
+
+.point-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.point-box strong {
+  display: block;
+  color: #244535;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.point-box p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6f8a76;
+}
+
 .filter-bar {
   display: grid;
   grid-template-columns: repeat(3, minmax(220px, 1fr));
   gap: 18px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .filter-item {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);
   border: 1px solid #deebdf;
   border-radius: 20px;
@@ -557,6 +854,17 @@ onBeforeUnmount(() => {
   color: #173a29;
   font-size: 16px;
   font-weight: 500;
+}
+
+.selection-note,
+.overview-note {
+  background: #f4faf4;
+  border: 1px solid #dcebdc;
+  border-radius: 18px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  color: #456654;
+  line-height: 1.6;
 }
 
 .summary-grid {
@@ -603,7 +911,6 @@ onBeforeUnmount(() => {
   border-radius: 24px;
   padding: 22px;
   box-shadow: 0 8px 24px rgba(27, 67, 50, 0.05);
-  margin-bottom: 28px;
 }
 
 .chart-header h2 {
@@ -627,12 +934,29 @@ onBeforeUnmount(() => {
   margin-top: 18px;
 }
 
+.large-chart {
+  margin-bottom: 24px;
+}
+
 .large-chart .chart {
   height: 430px;
 }
 
 .small-chart {
   height: 420px;
+}
+
+.donut-card {
+  max-width: 760px;
+}
+
+.donut-chart {
+  height: 460px;
+}
+
+.single-row-bottom {
+  grid-template-columns: 1fr;
+  justify-items: start;
 }
 
 .state-text,
@@ -650,10 +974,26 @@ onBeforeUnmount(() => {
   font-weight: 500;
 }
 
+@media (max-width: 1200px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .donut-card {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 1024px) {
-  .summary-grid,
-  .chart-grid,
   .filter-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-points {
     grid-template-columns: 1fr;
   }
 
@@ -669,8 +1009,18 @@ onBeforeUnmount(() => {
     font-size: 16px;
   }
 
+  .intro-text h2 {
+    font-size: 28px;
+  }
+
   .dashboard-page {
     padding: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
