@@ -1,12 +1,12 @@
 <template>
   <h1>Safe Guidance Page</h1>
 
-  <section class="hero">
-    <div class="hero-left">
+  <section class="safe-hero">
+    <div class="safe-hero-left">
       <h1>Content for this page is coming soon.</h1>
     </div>
 
-    <div class="hero-right">
+    <div class="safe-hero-right">
       <svg
         class="animated"
         id="freepik_stories-fast-loading"
@@ -800,7 +800,7 @@
 </template>
 
 <style>
-.hero {
+.safe-hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -808,16 +808,16 @@
   padding: 60px 80px;
 }
 
-.hero-left {
+.safe-hero-left {
   flex: 1;
 }
 
-.hero-right {
+.safe-hero-right {
   flex: 1;
   max-width: 420px;
 }
 
-.hero-right svg {
+.safe-hero-right svg {
   width: 100%;
   height: auto;
   display: block;
