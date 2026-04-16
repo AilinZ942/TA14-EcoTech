@@ -3,11 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-<<<<<<< HEAD
 import { api } from '@/api'
-=======
-import { searchMapFacilities } from '../lib/mapApi'
->>>>>>> dad8642 (health)
 import {
   buildCategorySummary,
   buildFacilityMarkers,
@@ -17,11 +13,6 @@ import {
 } from '../lib/ewasteMapModel'
 
 const mapboxAccessToken = String(import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || '').trim()
-<<<<<<< HEAD
-=======
-const mapDataMode = String(import.meta.env.VITE_MAP_DATA_MODE || 'auto').trim().toLowerCase() || 'auto'
-
->>>>>>> dad8642 (health)
 const mapContainerRef = ref(null)
 const isLoading = ref(false)
 const loadError = ref('')
@@ -30,14 +21,8 @@ const selectedCategory = ref('')
 const facilityRows = ref([])
 const facilityMarkers = ref([])
 const selectedMarkerId = ref('')
-<<<<<<< HEAD
 const activePipeline = ref('api')
 const activeSource = ref('api')
-=======
-const activePipeline = ref('local')
-const activeSource = ref('csv')
-const fallbackReason = ref('')
->>>>>>> dad8642 (health)
 
 let map = null
 let mapReady = false
@@ -87,12 +72,7 @@ const tokenHelpText = computed(() =>
 )
 const pipelineLabel = computed(() => {
   if (activePipeline.value === 'azure') return 'Azure API'
-<<<<<<< HEAD
   return activePipeline.value || 'Unknown'
-=======
-  if (activePipeline.value === 'legacy-geojson') return 'Legacy GeoJSON'
-  return 'Local CSV'
->>>>>>> dad8642 (health)
 })
 
 function buildRequestPayload() {
@@ -195,10 +175,7 @@ function fitMapToMarkers(markers) {
   const bounds = getFacilityBounds(markers)
   if (!bounds) return
 
-  if (
-    bounds.minLongitude === bounds.maxLongitude &&
-    bounds.minLatitude === bounds.maxLatitude
-  ) {
+  if (bounds.minLongitude === bounds.maxLongitude && bounds.minLatitude === bounds.maxLatitude) {
     map.easeTo({
       center: [bounds.minLongitude, bounds.minLatitude],
       zoom: 8.5,
@@ -264,37 +241,21 @@ async function loadFacilities() {
     activeRequestController.abort()
   }
 
-<<<<<<< HEAD
-    const controller = new AbortController()
-    activeRequestController = controller
-    isLoading.value = true
-    loadError.value = ''
-
-    try {
-    const response = await api.searchDisposalLocations(buildRequestPayload(), {
-=======
   const controller = new AbortController()
   activeRequestController = controller
   isLoading.value = true
   loadError.value = ''
 
   try {
-    const response = await searchMapFacilities(buildRequestPayload(), {
->>>>>>> dad8642 (health)
+    const response = await api.searchDisposalLocations(buildRequestPayload(), {
       signal: controller.signal,
     })
     const rows = Array.isArray(response?.items) ? response.items : []
 
     facilityRows.value = rows
     facilityMarkers.value = buildFacilityMarkers(rows)
-<<<<<<< HEAD
     activePipeline.value = response?.meta?.pipeline || 'api'
     activeSource.value = response?.meta?.source || 'api'
-=======
-    activePipeline.value = response?.meta?.pipeline || 'local'
-    activeSource.value = response?.meta?.source || 'csv'
-    fallbackReason.value = response?.meta?.fallbackReason || ''
->>>>>>> dad8642 (health)
 
     if (
       selectedMarkerId.value &&
@@ -309,19 +270,12 @@ async function loadFacilities() {
     if (error?.name === 'AbortError') return
 
     console.error('[DisposalLocations] failed to load disposal facilities:', error)
-    loadError.value =
-      error instanceof Error ? error.message : 'Failed to load disposal facilities'
+    loadError.value = error instanceof Error ? error.message : 'Failed to load disposal facilities'
     facilityRows.value = []
     facilityMarkers.value = []
     selectedMarkerId.value = ''
-<<<<<<< HEAD
     activePipeline.value = 'api'
     activeSource.value = 'api'
-=======
-    activePipeline.value = 'local'
-    activeSource.value = 'csv'
-    fallbackReason.value = ''
->>>>>>> dad8642 (health)
     removeRenderedMarkers()
     closePopup()
   } finally {
@@ -401,39 +355,14 @@ onBeforeUnmount(() => {
   <section class="disposal-page">
     <header class="hero-card">
       <div>
-        <p class="eyebrow">Disposal Locations</p>
-        <h1>Mapbox disposal site map</h1>
-        <p class="hero-copy">
-<<<<<<< HEAD
-          This page uses a Mapbox GL JS embedded map and loads disposal rows through the
-          `src/api` layer backed by your deployed Function.
-=======
-          This page now uses a Mapbox GL JS embedded map and consumes disposal rows through the
-          unified `{ items: [...] }` pipeline. In `auto` mode it prefers Azure when available and
-          falls back to the local cleaned CSV.
->>>>>>> dad8642 (health)
-        </p>
+        <p class="eyebrow">Disposal Map</p>
+        <h1>Find Disposal Locations</h1>
       </div>
 
       <div class="hero-stats">
         <article>
           <span>Visible sites</span>
           <strong>{{ visibleMarkers.length }}</strong>
-        </article>
-        <article>
-          <span>Pipeline</span>
-          <strong>{{ pipelineLabel }}</strong>
-        </article>
-        <article>
-<<<<<<< HEAD
-=======
-          <span>Mode</span>
-          <strong>{{ mapDataMode }}</strong>
-        </article>
-        <article>
->>>>>>> dad8642 (health)
-          <span>Source</span>
-          <strong>{{ activeSource }}</strong>
         </article>
       </div>
     </header>
@@ -483,66 +412,66 @@ onBeforeUnmount(() => {
           <div v-else-if="loadError" class="map-overlay map-overlay--error">
             <h2>Unable to load disposal data</h2>
             <p>{{ loadError }}</p>
-<<<<<<< HEAD
-=======
-            <p v-if="fallbackReason">{{ fallbackReason }}</p>
->>>>>>> dad8642 (health)
           </div>
 
           <div ref="mapContainerRef" class="map-container" />
         </div>
-
-<<<<<<< HEAD
-=======
-        <p v-if="fallbackReason && !loadError" class="support-copy">
-          Azure disposal data was unavailable, so the page automatically fell back to the local CSV.
-          Reason: {{ fallbackReason }}
-        </p>
->>>>>>> dad8642 (health)
       </section>
 
       <aside class="side-panel">
         <section class="panel-card">
-          <p class="eyebrow">Selection</p>
+          <p class="section-label">Selection</p>
           <template v-if="selectedMarker">
             <h2>{{ selectedMarker.facilityName }}</h2>
             <div class="detail-list">
-              <div class="detail-row"><span>Address</span><strong>{{ selectedMarker.address || 'Not provided' }}</strong></div>
-              <div class="detail-row"><span>Suburb</span><strong>{{ selectedMarker.suburb || 'Not provided' }}</strong></div>
-              <div class="detail-row"><span>Postcode</span><strong>{{ selectedMarker.postcode || 'Not provided' }}</strong></div>
-              <div class="detail-row"><span>State</span><strong>{{ selectedMarker.state || 'Not provided' }}</strong></div>
-              <div class="detail-row"><span>Category</span><strong>{{ selectedMarker.categoryLabel }}</strong></div>
-              <div class="detail-row"><span>Coord source</span><strong>{{ selectedMarker.coordSource || 'Not provided' }}</strong></div>
-              <div class="detail-row"><span>Source file</span><strong>{{ selectedMarker.sourceFile || 'Not provided' }}</strong></div>
+              <div class="detail-row">
+                <span>Address</span><strong>{{ selectedMarker.address || 'Not provided' }}</strong>
+              </div>
+              <div class="detail-row">
+                <span>Suburb</span><strong>{{ selectedMarker.suburb || 'Not provided' }}</strong>
+              </div>
+              <div class="detail-row">
+                <span>Postcode</span
+                ><strong>{{ selectedMarker.postcode || 'Not provided' }}</strong>
+              </div>
+              <div class="detail-row">
+                <span>State</span><strong>{{ selectedMarker.state || 'Not provided' }}</strong>
+              </div>
+              <div class="detail-row">
+                <span>Category</span><strong>{{ selectedMarker.categoryLabel }}</strong>
+              </div>
+              <div class="detail-row">
+                <span>Coord source</span
+                ><strong>{{ selectedMarker.coordSource || 'Not provided' }}</strong>
+              </div>
+              <div class="detail-row">
+                <span>Source file</span
+                ><strong>{{ selectedMarker.sourceFile || 'Not provided' }}</strong>
+              </div>
             </div>
           </template>
           <template v-else>
             <h2>Map summary</h2>
             <p class="support-copy">
-              Click a marker to inspect a disposal site. The summary updates from the current visible
-              marker set.
+              Click a marker to inspect a disposal site. The summary updates from the current
+              visible marker set.
             </p>
             <div class="detail-list">
-              <div class="detail-row"><span>Rows loaded</span><strong>{{ facilityRows.length }}</strong></div>
-              <div class="detail-row"><span>Markers shown</span><strong>{{ visibleMarkers.length }}</strong></div>
-              <div class="detail-row"><span>Pipeline</span><strong>{{ pipelineLabel }}</strong></div>
-<<<<<<< HEAD
-=======
-              <div class="detail-row"><span>Mode</span><strong>{{ mapDataMode }}</strong></div>
->>>>>>> dad8642 (health)
+              <div class="detail-row">
+                <span>Rows loaded</span><strong>{{ facilityRows.length }}</strong>
+              </div>
+              <div class="detail-row">
+                <span>Markers shown</span><strong>{{ visibleMarkers.length }}</strong>
+              </div>
             </div>
           </template>
         </section>
 
         <section class="panel-card">
-          <p class="eyebrow">Categories</p>
+          <p class="section-label">Categories</p>
           <h2>Visible breakdown</h2>
           <div class="category-list">
-            <div
-              v-for="entry in categorySummary"
-              :key="entry.key"
-              class="category-row"
-            >
+            <div v-for="entry in categorySummary" :key="entry.key" class="category-row">
               <span class="category-label">
                 <span class="category-dot" :style="{ backgroundColor: entry.color }" />
                 {{ entry.label }}
@@ -560,47 +489,469 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.disposal-page{min-height:100vh;padding:2rem;background:linear-gradient(180deg,#f6f4ef 0%,#ece6db 100%);color:#102a43}
-.hero-card,.toolbar-card,.panel-card{border:1px solid rgba(16,42,67,.12);border-radius:28px;background:rgba(255,252,247,.94);box-shadow:0 20px 60px rgba(16,42,67,.08)}
-.hero-card{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.9fr);gap:1.25rem;padding:1.5rem;margin-bottom:1.5rem}
-.eyebrow{margin:0 0 .35rem;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#9b4b1e}
-h1,h2,p{margin-top:0}
-h1{margin-bottom:.75rem;font-size:clamp(2rem,3vw,3.1rem);line-height:1.05}
-.hero-copy,.support-copy{margin-bottom:0;color:#486581;line-height:1.6}
-.hero-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}
-.hero-stats article{padding:1rem;border-radius:22px;background:#102a43;color:#fff}
-.hero-stats span{display:block;margin-bottom:.35rem;color:rgba(255,255,255,.68);font-size:.82rem}
-.hero-stats strong{font-size:1.05rem}
-.content-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,.85fr);gap:1.5rem;align-items:start}
-.map-panel,.side-panel{display:grid;gap:1rem}
-.toolbar-card,.panel-card{padding:1.2rem}
-.toolbar-card{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(180px,.7fr) auto;gap:1rem;align-items:end}
-label{display:grid;gap:.45rem;font-size:.92rem;font-weight:700;color:#334e68}
-input,select{min-height:46px;border:1px solid rgba(16,42,67,.14);border-radius:16px;padding:.85rem 1rem;background:#fffdfa;color:#102a43;font:inherit}
-button{min-height:44px;border:0;border-radius:999px;padding:.72rem 1rem;background:#102a43;color:#fff;font-weight:700;cursor:pointer}
-.ghost{background:rgba(16,42,67,.1);color:#102a43}
-.map-frame{position:relative;min-height:640px;border:1px solid rgba(16,42,67,.14);border-radius:30px;overflow:hidden;background:#dfe8e8}
-.map-container{width:100%;height:640px}
-.map-overlay{position:absolute;inset:18px auto auto 18px;z-index:2;max-width:340px;padding:1rem 1.1rem;border-radius:18px;background:rgba(16,42,67,.9);color:#fff}
-.map-overlay h2,.map-overlay p{margin-bottom:.55rem}
-.map-overlay code{display:block;padding:.7rem .8rem;border-radius:12px;background:rgba(255,255,255,.08);font-size:.86rem;word-break:break-all}
-.map-overlay--warning{background:rgba(122,72,21,.94)}
-.map-overlay--error{background:rgba(122,29,29,.94)}
-.detail-list,.category-list{display:grid;gap:.7rem}
-.detail-row,.category-row{display:flex;gap:1rem;justify-content:space-between;align-items:start}
-.detail-row span,.category-row span{color:#486581}
-.detail-row strong,.category-row strong{text-align:right}
-.category-label{display:inline-flex;align-items:center;gap:.55rem}
-.category-dot{width:12px;height:12px;border-radius:999px;flex:0 0 auto}
-:deep(.facility-marker){width:18px;height:18px;border:3px solid #fff;border-radius:999px;box-shadow:0 8px 18px rgba(16,42,67,.28);cursor:pointer;padding:0}
-:deep(.mapboxgl-popup-content){padding:0;border-radius:18px;box-shadow:0 18px 36px rgba(16,42,67,.18)}
-:deep(.mapboxgl-popup-close-button){padding:.45rem .55rem;font-size:1.1rem}
-:deep(.map-popup){padding:1rem 1rem .95rem;min-width:240px;color:#102a43}
-:deep(.map-popup__eyebrow){margin:0 0 .3rem;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9b4b1e}
-:deep(.map-popup h3){margin:0 0 .7rem;font-size:1rem;line-height:1.35}
-:deep(.map-popup__row){display:flex;gap:.8rem;justify-content:space-between;align-items:start;padding:.18rem 0}
-:deep(.map-popup__row span){color:#627d98}
-:deep(.map-popup__row strong){max-width:160px;text-align:right}
-@media (max-width:1100px){.hero-card,.content-grid{grid-template-columns:1fr}}
-@media (max-width:760px){.disposal-page{padding:1rem}.toolbar-card{grid-template-columns:1fr}.hero-stats{grid-template-columns:1fr}.map-frame,.map-container{min-height:520px;height:520px}}
+.disposal-page {
+  min-height: 100vh;
+  padding: 32px;
+  background: linear-gradient(180deg, #f8fbf8 0%, #eef4ef 100%);
+  color: #1f3b2d;
+}
+
+.hero-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+  gap: 1.25rem;
+  padding: 36px 40px;
+  margin-bottom: 28px;
+  background: linear-gradient(135deg, #f4fbf4 0%, #edf7ee 100%);
+  border: 1px solid #dcebdc;
+  border-radius: 28px;
+  box-shadow: 0 10px 30px rgba(27, 67, 50, 0.06);
+}
+
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -60px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(129, 199, 132, 0.28) 0%, rgba(129, 199, 132, 0) 70%);
+  pointer-events: none;
+}
+
+.hero-card::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  right: 180px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(165, 214, 167, 0.18) 0%, rgba(165, 214, 167, 0) 72%);
+  pointer-events: none;
+}
+
+.toolbar-card,
+.panel-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfb 100%);
+  border: 1px solid #e2eee3;
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(27, 67, 50, 0.05);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2e7d32;
+  background: #e8f5e9;
+  border: 1px solid #cfe8d1;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 12px;
+  font-size: 48px;
+  line-height: 1.12;
+  font-weight: 800;
+  color: #163828;
+  letter-spacing: -0.8px;
+  max-width: 900px;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 21px;
+  font-weight: 700;
+  color: #173a29;
+  letter-spacing: -0.2px;
+}
+
+.hero-copy,
+.support-copy {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #557260;
+}
+
+.hero-stats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.hero-stats article {
+  width: 320px;
+  padding: 24px 28px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid #deebdf;
+  box-shadow: 0 8px 20px rgba(27, 67, 50, 0.05);
+}
+
+.hero-stats span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3f8f46;
+}
+
+.hero-stats strong {
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
+  color: #173a29;
+  letter-spacing: -0.3px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.85fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.map-panel,
+.side-panel {
+  display: grid;
+  gap: 20px;
+}
+
+.toolbar-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(180px, 0.7fr) auto;
+  gap: 18px;
+  align-items: end;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3f8f46;
+}
+
+label span {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #173a29;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid #deebdf;
+  border-radius: 16px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #173a29;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  box-shadow: 0 8px 20px rgba(27, 67, 50, 0.03);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+input::placeholder {
+  color: #8aa091;
+  font-weight: 400;
+}
+
+input:focus,
+select:focus {
+  border-color: #bdd8c0;
+  box-shadow: 0 0 0 4px rgba(129, 199, 132, 0.12);
+  background: #ffffff;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: end;
+}
+
+button {
+  min-height: 48px;
+  border: none;
+  border-radius: 999px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ghost {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #cfe8d1;
+}
+
+.ghost:hover {
+  background: #dff0e1;
+}
+
+.map-frame {
+  position: relative;
+  min-height: 640px;
+  border: 1px solid #dcebdc;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #edf5ee;
+  box-shadow: 0 8px 24px rgba(27, 67, 50, 0.05);
+}
+
+.map-container {
+  width: 100%;
+  height: 640px;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  max-width: 340px;
+  padding: 18px 20px;
+  background: rgba(248, 251, 248, 0.94);
+  backdrop-filter: blur(10px);
+  border: 1px solid #dcebdc;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(27, 67, 50, 0.06);
+  color: #173a29;
+}
+
+.map-overlay h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.map-overlay p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #557260;
+}
+
+.map-overlay code {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f1f7f2;
+  border: 1px solid #e3efe5;
+  font-size: 13px;
+  color: #173a29;
+  word-break: break-all;
+}
+
+.map-overlay--warning {
+  background: rgba(255, 248, 236, 0.95);
+  border-color: #f0dec4;
+}
+
+.map-overlay--error {
+  background: rgba(255, 241, 241, 0.95);
+  border-color: #efcaca;
+}
+
+.detail-list,
+.category-list {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-row,
+.category-row {
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.detail-row span,
+.category-row span {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6b8a74;
+}
+
+.detail-row strong,
+.category-row strong {
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 700;
+  text-align: right;
+  color: #173a29;
+}
+
+.category-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+:deep(.facility-marker) {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(27, 67, 50, 0.16);
+  cursor: pointer;
+  padding: 0;
+}
+
+:deep(.mapboxgl-popup-content) {
+  padding: 0;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfb 100%);
+  box-shadow: 0 14px 30px rgba(27, 67, 50, 0.12);
+}
+
+:deep(.mapboxgl-popup-close-button) {
+  padding: 8px 10px;
+  font-size: 18px;
+  color: #6b8a74;
+}
+
+:deep(.map-popup) {
+  padding: 18px 18px 16px;
+  min-width: 240px;
+  color: #173a29;
+}
+
+:deep(.map-popup__eyebrow) {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #2e7d32;
+  background: #e8f5e9;
+  border: 1px solid #cfe8d1;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+:deep(.map-popup h3) {
+  margin: 0 0 12px;
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #173a29;
+}
+
+:deep(.map-popup__row) {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 4px 0;
+}
+
+:deep(.map-popup__row span) {
+  color: #6b8a74;
+  font-size: 13px;
+}
+
+:deep(.map-popup__row strong) {
+  max-width: 160px;
+  text-align: right;
+  font-size: 13px;
+  color: #173a29;
+}
+
+@media (max-width: 1200px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .toolbar-card {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-card {
+    grid-template-columns: 1fr;
+    padding: 28px 24px;
+  }
+
+  h1 {
+    font-size: 34px;
+  }
+
+  .disposal-page {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .map-frame,
+  .map-container {
+    min-height: 520px;
+    height: 520px;
+  }
+}
+
+@media (max-width: 640px) {
+  .detail-row,
+  .category-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detail-row strong,
+  .category-row strong {
+    text-align: left;
+  }
+}
+
+.section-label {
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+
+  font-size: 14px;
+  font-weight: 700;
+  color: #3f8f46;
+
+  border-bottom: 1px solid #e2eee3;
+}
 </style>
