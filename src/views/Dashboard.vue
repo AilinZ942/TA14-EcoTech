@@ -3,9 +3,9 @@ import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { api } from '@/api'
 import * as echarts from 'echarts'
 
-const healthData = ref([])
 const loading = ref(true)
 const error = ref('')
+const healthData = ref([])
 
 const selectedYear = ref('All')
 const selectedSex = ref('All')
@@ -16,19 +16,10 @@ const casesChartRef = ref(null)
 const deathsChartRef = ref(null)
 const fatalityChartRef = ref(null)
 
-const heroRef = ref(null)
-const contextRef = ref(null)
-const filtersRef = ref(null)
-const summaryRef = ref(null)
-const trendSectionRef = ref(null)
-const compareSectionRef = ref(null)
-const takeawayRef = ref(null)
-
 let trendChart = null
 let casesChart = null
 let deathsChart = null
 let fatalityChart = null
-let observer = null
 
 const allowedCancerTypes = [
   'Lung cancer',
@@ -51,10 +42,11 @@ async function loadHealthData() {
 
     const res = await api.getHealthAll()
     const items = Array.isArray(res.items) ? res.items : []
+
     healthData.value = items.filter((item) => allowedCancerSet.has(item.cancer_type))
   } catch (err) {
     console.error(err)
-    error.value = err.message || 'Failed to load health data.'
+    error.value = err.message || 'Failed to load dashboard data.'
   } finally {
     loading.value = false
   }
@@ -72,11 +64,9 @@ const sexOptions = computed(() => {
   return ['All', ...values]
 })
 
-const cancerTypeOptions = computed(() => {
-  return ['All', ...allowedCancerTypes]
-})
+const cancerTypeOptions = computed(() => ['All', ...allowedCancerTypes])
 
-const trendData = computed(() => {
+const filteredData = computed(() => {
   return healthData.value.filter((item) => {
     const matchYear =
       selectedYear.value === 'All' || Number(item.year) === Number(selectedYear.value)
@@ -88,7 +78,7 @@ const trendData = computed(() => {
   })
 })
 
-const overviewData = computed(() => {
+const compareData = computed(() => {
   return healthData.value.filter((item) => {
     const matchYear =
       selectedYear.value === 'All' || Number(item.year) === Number(selectedYear.value)
@@ -97,36 +87,41 @@ const overviewData = computed(() => {
   })
 })
 
-const totalRecords = computed(() => trendData.value.length)
+const totalRecords = computed(() => filteredData.value.length)
 
-const totalCases = computed(() => {
-  return trendData.value.reduce((sum, item) => sum + Number(item.cancer_cases || 0), 0)
-})
+const totalCases = computed(() =>
+  filteredData.value.reduce((sum, item) => sum + Number(item.cancer_cases || 0), 0),
+)
 
-const totalDeaths = computed(() => {
-  return trendData.value.reduce((sum, item) => sum + Number(item.cancer_deaths || 0), 0)
-})
+const totalDeaths = computed(() =>
+  filteredData.value.reduce((sum, item) => sum + Number(item.cancer_deaths || 0), 0),
+)
 
-const averageFatalityRatio = computed(() => {
-  if (!trendData.value.length) return 0
+const avgFatalityRatio = computed(() => {
+  if (!filteredData.value.length) return 0
 
-  const total = trendData.value.reduce((sum, item) => {
+  const total = filteredData.value.reduce((sum, item) => {
     const cases = Number(item.cancer_cases || 0)
     const deaths = Number(item.cancer_deaths || 0)
-    const ratio = cases > 0 ? deaths / cases : 0
-    return sum + ratio
+    return sum + (cases > 0 ? deaths / cases : 0)
   }, 0)
 
-  return total / trendData.value.length
+  return total / filteredData.value.length
 })
 
-const selectedFiltersSummary = computed(() => {
-  const yearText = selectedYear.value === 'All' ? 'All years' : `Year ${selectedYear.value}`
-  const sexText = selectedSex.value === 'All' ? 'All sexes' : selectedSex.value
-  const cancerText =
-    selectedCancerType.value === 'All' ? 'All selected conditions' : selectedCancerType.value
+const dominantCancer = computed(() => {
+  const aggregated = aggregateByCancerType(compareData.value)
+  if (!aggregated.length) return 'No data'
 
-  return `${yearText} • ${sexText} • ${cancerText}`
+  return [...aggregated].sort((a, b) => b.cases - a.cases)[0].cancer_type
+})
+
+const insightText = computed(() => {
+  if (!filteredData.value.length) {
+    return 'No matching records found for the selected filters.'
+  }
+
+  return `Showing ${formatCompactNumber(totalCases.value)} total cases and ${formatCompactNumber(totalDeaths.value)} total deaths for ${selectedCancerType.value === 'All' ? 'the selected cancers' : selectedCancerType.value}.`
 })
 
 function aggregateByYear(data) {
@@ -156,18 +151,18 @@ function aggregateByCancerType(data) {
   const map = new Map()
 
   data.forEach((item) => {
-    const name = item.cancer_type
-    if (!name) return
+    const type = item.cancer_type
+    if (!type) return
 
-    if (!map.has(name)) {
-      map.set(name, {
-        cancer_type: name,
+    if (!map.has(type)) {
+      map.set(type, {
+        cancer_type: type,
         cases: 0,
         deaths: 0,
       })
     }
 
-    const entry = map.get(name)
+    const entry = map.get(type)
     entry.cases += Number(item.cancer_cases || 0)
     entry.deaths += Number(item.cancer_deaths || 0)
   })
@@ -186,18 +181,17 @@ function formatCompactNumber(value) {
 
 function tooltipStyle() {
   return {
-    backgroundColor: 'rgba(7, 20, 14, 0.97)',
-    borderColor: 'rgba(129, 199, 132, 0.30)',
+    backgroundColor: 'rgba(9, 16, 13, 0.96)',
+    borderColor: 'rgba(120, 255, 165, 0.22)',
     borderWidth: 1,
     textStyle: {
-      color: '#f4fff5',
+      color: '#f5fff7',
       fontSize: 13,
     },
-    padding: [12, 14],
     extraCssText: `
-      border-radius: 18px;
-      box-shadow: 0 22px 52px rgba(0, 0, 0, 0.36);
-      backdrop-filter: blur(14px);
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
     `,
   }
 }
@@ -210,115 +204,56 @@ function initCharts() {
 }
 
 function updateCharts() {
-  const yearData = aggregateByYear(trendData.value)
-  const cancerData = aggregateByCancerType(overviewData.value)
+  const yearly = aggregateByYear(filteredData.value)
+  const cancerGroups = aggregateByCancerType(compareData.value)
 
-  const topCases = [...cancerData]
-    .sort((a, b) => b.cases - a.cases)
-    .slice(0, 10)
-    .reverse()
-
-  const topDeaths = [...cancerData]
-    .sort((a, b) => b.deaths - a.deaths)
-    .slice(0, 10)
-    .reverse()
-
-  const topFatality = [...cancerData]
+  const topCases = [...cancerGroups].sort((a, b) => b.cases - a.cases).slice(0, 8).reverse()
+  const topDeaths = [...cancerGroups].sort((a, b) => b.deaths - a.deaths).slice(0, 8).reverse()
+  const topFatality = [...cancerGroups]
     .sort((a, b) => b.avgRatio - a.avgRatio)
-    .slice(0, 10)
+    .slice(0, 8)
     .reverse()
 
   trendChart?.setOption({
     backgroundColor: 'transparent',
-    animationDuration: 1200,
-    animationEasing: 'cubicOut',
     tooltip: {
       trigger: 'axis',
       ...tooltipStyle(),
-      axisPointer: {
-        type: 'line',
-        lineStyle: {
-          color: 'rgba(129, 199, 132, 0.74)',
-          width: 2,
-          shadowBlur: 14,
-          shadowColor: 'rgba(129, 199, 132, 0.38)',
-        },
-      },
-      formatter(params) {
-        if (!params?.length) return ''
-        const year = params[0].axisValue
-        const lines = params
-          .map(
-            (item) => `
-              <div style="margin-top:7px; display:flex; align-items:center; gap:8px;">
-                <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:${item.color}; box-shadow:0 0 12px ${item.color};"></span>
-                <span>${item.seriesName}: <strong>${formatCompactNumber(item.data)}</strong></span>
-              </div>
-            `,
-          )
-          .join('')
-        return `
-          <div style="font-weight:700; font-size:14px; margin-bottom:4px;">${year}</div>
-          ${lines}
-        `
-      },
     },
     legend: {
-      top: 10,
-      textStyle: { color: '#1b4332', fontWeight: 600 },
-      itemWidth: 14,
-      itemHeight: 14,
+      top: 8,
+      textStyle: { color: '#d9f7e2', fontWeight: 600 },
     },
     grid: {
       left: 50,
-      right: 30,
-      top: 72,
+      right: 24,
+      top: 60,
       bottom: 40,
     },
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: yearData.map((item) => item.year),
-      axisLine: { lineStyle: { color: '#a8cdb0' } },
-      axisTick: { show: false },
-      axisLabel: { color: '#274833', fontWeight: 600 },
+      data: yearly.map((item) => item.year),
+      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.18)' } },
+      axisLabel: { color: '#b7d9c1' },
     },
     yAxis: {
       type: 'value',
-      axisLine: { show: false },
-      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.74)' } },
-      axisLabel: { color: '#274833' },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.08)' } },
+      axisLabel: { color: '#b7d9c1' },
     },
     series: [
       {
         name: 'Cases',
         type: 'line',
         smooth: true,
-        symbol: 'circle',
-        symbolSize: 9,
-        showSymbol: false,
-        emphasis: {
-          focus: 'series',
-          scale: true,
-          itemStyle: {
-            borderWidth: 3,
-            borderColor: '#ffffff',
-            shadowBlur: 20,
-            shadowColor: 'rgba(67,160,71,0.62)',
-          },
-        },
-        data: yearData.map((item) => item.cases),
-        lineStyle: {
-          width: 4,
-          color: '#43a047',
-          shadowBlur: 16,
-          shadowColor: 'rgba(67,160,71,0.30)',
-        },
-        itemStyle: { color: '#43a047' },
+        data: yearly.map((item) => item.cases),
+        lineStyle: { width: 3, color: '#66e087' },
+        itemStyle: { color: '#66e087' },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(67,160,71,0.34)' },
-            { offset: 1, color: 'rgba(67,160,71,0.03)' },
+            { offset: 0, color: 'rgba(102,224,135,0.28)' },
+            { offset: 1, color: 'rgba(102,224,135,0.02)' },
           ]),
         },
       },
@@ -326,31 +261,13 @@ function updateCharts() {
         name: 'Deaths',
         type: 'line',
         smooth: true,
-        symbol: 'circle',
-        symbolSize: 9,
-        showSymbol: false,
-        emphasis: {
-          focus: 'series',
-          scale: true,
-          itemStyle: {
-            borderWidth: 3,
-            borderColor: '#ffffff',
-            shadowBlur: 20,
-            shadowColor: 'rgba(27,94,32,0.58)',
-          },
-        },
-        data: yearData.map((item) => item.deaths),
-        lineStyle: {
-          width: 4,
-          color: '#1b5e20',
-          shadowBlur: 16,
-          shadowColor: 'rgba(27,94,32,0.30)',
-        },
-        itemStyle: { color: '#1b5e20' },
+        data: yearly.map((item) => item.deaths),
+        lineStyle: { width: 3, color: '#2bb673' },
+        itemStyle: { color: '#2bb673' },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(27,94,32,0.22)' },
-            { offset: 1, color: 'rgba(27,94,32,0.02)' },
+            { offset: 0, color: 'rgba(43,182,115,0.24)' },
+            { offset: 1, color: 'rgba(43,182,115,0.02)' },
           ]),
         },
       },
@@ -359,64 +276,28 @@ function updateCharts() {
 
   casesChart?.setOption({
     backgroundColor: 'transparent',
-    animationDuration: 1000,
-    animationEasing: 'cubicOut',
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'shadow' },
-      ...tooltipStyle(),
-      formatter(params) {
-        if (!params?.length) return ''
-        const item = params[0]
-        return `
-          <div style="font-weight:700; margin-bottom:6px;">${item.name}</div>
-          <div>Cases: <strong>${formatCompactNumber(item.value)}</strong></div>
-        `
-      },
-    },
-    grid: {
-      left: 240,
-      right: 30,
-      top: 24,
-      bottom: 30,
-    },
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, ...tooltipStyle() },
+    grid: { left: 180, right: 20, top: 20, bottom: 26 },
     xAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.74)' } },
-      axisLabel: { color: '#274833' },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.08)' } },
+      axisLabel: { color: '#b7d9c1' },
     },
     yAxis: {
       type: 'category',
       data: topCases.map((item) => item.cancer_type),
-      axisLabel: { color: '#1b4332', fontWeight: 600 },
-      axisLine: { lineStyle: { color: '#a8cdb0' } },
+      axisLabel: { color: '#d9f7e2', fontWeight: 600 },
+      axisLine: { show: false },
       axisTick: { show: false },
     },
     series: [
       {
-        name: 'Cases',
         type: 'bar',
         data: topCases.map((item) => item.cases),
-        barWidth: 18,
-        showBackground: true,
-        backgroundStyle: {
-          color: 'rgba(67,160,71,0.08)',
-          borderRadius: [0, 10, 10, 0],
-        },
+        barWidth: 16,
         itemStyle: {
           borderRadius: [0, 10, 10, 0],
-          color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-            { offset: 0, color: '#8be292' },
-            { offset: 1, color: '#43a047' },
-          ]),
-          shadowBlur: 14,
-          shadowColor: 'rgba(67,160,71,0.26)',
-        },
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 20,
-            shadowColor: 'rgba(67,160,71,0.40)',
-          },
+          color: '#66e087',
         },
       },
     ],
@@ -424,64 +305,28 @@ function updateCharts() {
 
   deathsChart?.setOption({
     backgroundColor: 'transparent',
-    animationDuration: 1000,
-    animationEasing: 'cubicOut',
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'shadow' },
-      ...tooltipStyle(),
-      formatter(params) {
-        if (!params?.length) return ''
-        const item = params[0]
-        return `
-          <div style="font-weight:700; margin-bottom:6px;">${item.name}</div>
-          <div>Deaths: <strong>${formatCompactNumber(item.value)}</strong></div>
-        `
-      },
-    },
-    grid: {
-      left: 240,
-      right: 30,
-      top: 24,
-      bottom: 30,
-    },
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, ...tooltipStyle() },
+    grid: { left: 180, right: 20, top: 20, bottom: 26 },
     xAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.74)' } },
-      axisLabel: { color: '#274833' },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.08)' } },
+      axisLabel: { color: '#b7d9c1' },
     },
     yAxis: {
       type: 'category',
       data: topDeaths.map((item) => item.cancer_type),
-      axisLabel: { color: '#1b4332', fontWeight: 600 },
-      axisLine: { lineStyle: { color: '#a8cdb0' } },
+      axisLabel: { color: '#d9f7e2', fontWeight: 600 },
+      axisLine: { show: false },
       axisTick: { show: false },
     },
     series: [
       {
-        name: 'Deaths',
         type: 'bar',
         data: topDeaths.map((item) => item.deaths),
-        barWidth: 18,
-        showBackground: true,
-        backgroundStyle: {
-          color: 'rgba(27,94,32,0.08)',
-          borderRadius: [0, 10, 10, 0],
-        },
+        barWidth: 16,
         itemStyle: {
           borderRadius: [0, 10, 10, 0],
-          color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-            { offset: 0, color: '#5ab36a' },
-            { offset: 1, color: '#1b5e20' },
-          ]),
-          shadowBlur: 14,
-          shadowColor: 'rgba(27,94,32,0.26)',
-        },
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 20,
-            shadowColor: 'rgba(27,94,32,0.40)',
-          },
+          color: '#2bb673',
         },
       },
     ],
@@ -489,67 +334,31 @@ function updateCharts() {
 
   fatalityChart?.setOption({
     backgroundColor: 'transparent',
-    animationDuration: 1000,
-    animationEasing: 'cubicOut',
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'shadow' },
-      ...tooltipStyle(),
-      formatter(params) {
-        if (!params?.length) return ''
-        const item = params[0]
-        return `
-          <div style="font-weight:700; margin-bottom:6px;">${item.name}</div>
-          <div>Severity ratio: <strong>${Number(item.value).toFixed(4)}</strong></div>
-        `
-      },
-    },
-    grid: {
-      left: 240,
-      right: 30,
-      top: 24,
-      bottom: 30,
-    },
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, ...tooltipStyle() },
+    grid: { left: 180, right: 20, top: 20, bottom: 26 },
     xAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: 'rgba(201, 224, 205, 0.74)' } },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.08)' } },
       axisLabel: {
-        color: '#274833',
+        color: '#b7d9c1',
         formatter: (value) => Number(value).toFixed(2),
       },
     },
     yAxis: {
       type: 'category',
       data: topFatality.map((item) => item.cancer_type),
-      axisLabel: { color: '#1b4332', fontWeight: 600 },
-      axisLine: { lineStyle: { color: '#a8cdb0' } },
+      axisLabel: { color: '#d9f7e2', fontWeight: 600 },
+      axisLine: { show: false },
       axisTick: { show: false },
     },
     series: [
       {
-        name: 'Severity Ratio',
         type: 'bar',
-        data: topFatality.map((item) => Number(item.avgRatio.toFixed(4))),
-        barWidth: 18,
-        showBackground: true,
-        backgroundStyle: {
-          color: 'rgba(27,67,50,0.08)',
-          borderRadius: [0, 10, 10, 0],
-        },
+        data: topFatality.map((item) => Number(item.avgRatio.toFixed(3))),
+        barWidth: 16,
         itemStyle: {
           borderRadius: [0, 10, 10, 0],
-          color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-            { offset: 0, color: '#5b9875' },
-            { offset: 1, color: '#1b4332' },
-          ]),
-          shadowBlur: 14,
-          shadowColor: 'rgba(27,67,50,0.26)',
-        },
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 20,
-            shadowColor: 'rgba(27,67,50,0.40)',
-          },
+          color: '#9fffc0',
         },
       },
     ],
@@ -563,324 +372,193 @@ function resizeCharts() {
   fatalityChart?.resize()
 }
 
-function setupRevealAnimations() {
-  const sections = [
-    heroRef.value,
-    contextRef.value,
-    filtersRef.value,
-    summaryRef.value,
-    trendSectionRef.value,
-    compareSectionRef.value,
-    takeawayRef.value,
-  ].filter(Boolean)
+function disposeCharts() {
+  trendChart?.dispose()
+  casesChart?.dispose()
+  deathsChart?.dispose()
+  fatalityChart?.dispose()
 
-  sections.forEach((section, index) => {
-    section.classList.add('reveal-section')
-    section.style.setProperty('--reveal-delay', `${index * 0.08}s`)
-  })
-
-  if (summaryRef.value) {
-    const cards = summaryRef.value.querySelectorAll('.summary-card')
-    cards.forEach((card, index) => {
-      card.classList.add('reveal-child')
-      card.style.setProperty('--child-delay', `${0.12 + index * 0.08}s`)
-    })
-  }
-
-  if (compareSectionRef.value) {
-    const compareCards = compareSectionRef.value.querySelectorAll('.chart-card')
-    compareCards.forEach((card, index) => {
-      card.classList.add('reveal-child')
-      card.style.setProperty('--child-delay', `${0.15 + index * 0.10}s`)
-    })
-  }
-
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed')
-          observer?.unobserve(entry.target)
-        }
-      })
-    },
-    {
-      threshold: 0.12,
-      rootMargin: '0px 0px -20px 0px',
-    },
-  )
-
-  sections.forEach((section) => observer.observe(section))
+  trendChart = null
+  casesChart = null
+  deathsChart = null
+  fatalityChart = null
 }
+
+watch([filteredData, compareData], async () => {
+  await nextTick()
+  updateCharts()
+})
 
 onMounted(async () => {
   await loadHealthData()
   await nextTick()
   initCharts()
   updateCharts()
-  setupRevealAnimations()
   window.addEventListener('resize', resizeCharts)
-})
-
-watch([trendData, overviewData], async () => {
-  await nextTick()
-  updateCharts()
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', resizeCharts)
-  observer?.disconnect()
-  trendChart?.dispose()
-  casesChart?.dispose()
-  deathsChart?.dispose()
-  fatalityChart?.dispose()
+  disposeCharts()
 })
 </script>
 
 <template>
   <div class="dashboard-page">
-    <section ref="heroRef" class="hero-section">
-      <div class="hero-orb hero-orb-one"></div>
-      <div class="hero-orb hero-orb-two"></div>
-      <div class="hero-grid-lines"></div>
-
-      <div class="hero-content single-column-hero">
-        <div class="hero-copy">
-          <p class="dashboard-tag">Health Risk Context</p>
-          <h1>Understand Why Safe E-waste Disposal Matters</h1>
-          <p class="hero-subtext">
-            E-waste contains harmful materials such as lead, cadmium, mercury, and chromium.
-            Long-term exposure to these toxic substances is associated with increased risk of
-            serious health conditions, including certain cancers. This dashboard uses health data
-            to help users understand why safe disposal matters.
-          </p>
-
-    
-        </div>
-      </div>
-    </section>
-
-    <section ref="contextRef" class="context-card glass-card">
-      <div class="context-icon">⚠️</div>
-      <div>
-        <h3>Why this matters</h3>
+    <section class="hero-panel">
+      <div class="hero-copy">
+        <span class="eyebrow">EcoTech Health Dashboard</span>
+        <h1>Toxic exposure and cancer impact overview</h1>
         <p>
-          Improper e-waste disposal can release toxic substances into the environment. According to
-          WHO and IARC, long-term exposure to materials found in e-waste is associated with increased
-          risk of several serious diseases, including some cancers. This page gives a simple health
-          context to show why responsible disposal is important.
+          This dashboard presents selected cancer conditions linked to toxic exposure concerns.
+          It helps users explore case volume, deaths, and fatality patterns across time.
         </p>
+
+        <div class="hero-highlights">
+          <div class="mini-pill">Health trends</div>
+          <div class="mini-pill">Severity patterns</div>
+          <div class="mini-pill">Filter by year, sex, and condition</div>
+        </div>
+      </div>
+
+      <div class="hero-side-card">
+        <div class="side-label">Current view</div>
+        <div class="side-value">{{ selectedCancerType === 'All' ? 'All selected cancers' : selectedCancerType }}</div>
+        <p>{{ insightText }}</p>
       </div>
     </section>
 
-    <section ref="filtersRef" class="filter-sticky-wrap">
-      <div class="filter-bar">
-        <div class="filter-item glass-card">
-          <label for="year">Year</label>
-          <select id="year" v-model="selectedYear">
-            <option v-for="year in yearOptions" :key="year" :value="year">
-              {{ year }}
-            </option>
-          </select>
-        </div>
+    <section class="filter-panel">
+      <div class="filter-group">
+        <label>Year</label>
+        <select v-model="selectedYear">
+          <option v-for="year in yearOptions" :key="year" :value="year">
+            {{ year }}
+          </option>
+        </select>
+      </div>
 
-        <div class="filter-item glass-card">
-          <label for="sex">Sex</label>
-          <select id="sex" v-model="selectedSex">
-            <option v-for="sex in sexOptions" :key="sex" :value="sex">
-              {{ sex }}
-            </option>
-          </select>
-        </div>
+      <div class="filter-group">
+        <label>Sex</label>
+        <select v-model="selectedSex">
+          <option v-for="sex in sexOptions" :key="sex" :value="sex">
+            {{ sex }}
+          </option>
+        </select>
+      </div>
 
-        <div class="filter-item glass-card">
-          <label for="cancerType">Health condition</label>
-          <select id="cancerType" v-model="selectedCancerType">
-            <option v-for="type in cancerTypeOptions" :key="type" :value="type">
-              {{ type }}
-            </option>
-          </select>
-        </div>
+      <div class="filter-group">
+        <label>Cancer Type</label>
+        <select v-model="selectedCancerType">
+          <option v-for="type in cancerTypeOptions" :key="type" :value="type">
+            {{ type }}
+          </option>
+        </select>
       </div>
     </section>
 
-    <p v-if="loading" class="state-text">Loading dashboard data...</p>
-    <p v-else-if="error" class="error-text">{{ error }}</p>
+    <section v-if="loading" class="status-card">
+      <h3>Loading dashboard...</h3>
+      <p>Please wait while health data is being fetched.</p>
+    </section>
+
+    <section v-else-if="error" class="status-card error-card">
+      <h3>Unable to load dashboard</h3>
+      <p>{{ error }}</p>
+    </section>
 
     <template v-else>
-      <section ref="summaryRef">
-        <div class="section-heading">
-          <h2>Quick Health Insights</h2>
-          <p>These cards update automatically based on your selected filters.</p>
-        </div>
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span class="stat-label">Records</span>
+          <h2>{{ formatCompactNumber(totalRecords) }}</h2>
+          <p>Filtered dataset rows currently visible.</p>
+        </article>
 
-        <div class="summary-grid">
-          <div class="summary-card glass-card">
-            <div class="summary-icon">🧾</div>
-            <span class="card-label">Records</span>
-            <span class="card-value">{{ totalRecords }}</span>
-            <span class="card-footnote">Data rows in the current view</span>
-          </div>
+        <article class="stat-card">
+          <span class="stat-label">Total Cases</span>
+          <h2>{{ formatCompactNumber(totalCases) }}</h2>
+          <p>Combined cancer cases under the current filters.</p>
+        </article>
 
-          <div class="summary-card glass-card">
-            <div class="summary-icon">🧬</div>
-            <span class="card-label">Cases</span>
-            <span class="card-value">{{ totalCases.toLocaleString() }}</span>
-            <span class="card-footnote">Total reported cases in this view</span>
-          </div>
+        <article class="stat-card">
+          <span class="stat-label">Total Deaths</span>
+          <h2>{{ formatCompactNumber(totalDeaths) }}</h2>
+          <p>Combined cancer deaths under the current filters.</p>
+        </article>
 
-          <div class="summary-card glass-card">
-            <div class="summary-icon">⚠️</div>
-            <span class="card-label">Deaths</span>
-            <span class="card-value">{{ totalDeaths.toLocaleString() }}</span>
-            <span class="card-footnote">Total recorded deaths in this view</span>
-          </div>
-
-          <div class="summary-card glass-card">
-            <div class="summary-icon">📈</div>
-            <span class="card-label">Severity Ratio</span>
-            <span class="card-value">{{ averageFatalityRatio.toFixed(4) }}</span>
-            <span class="card-footnote">Deaths compared with total cases</span>
-          </div>
-        </div>
+        <article class="stat-card">
+          <span class="stat-label">Avg. Fatality Ratio</span>
+          <h2>{{ avgFatalityRatio.toFixed(3) }}</h2>
+          <p>Average deaths-to-cases ratio across visible rows.</p>
+        </article>
       </section>
 
-      <section ref="trendSectionRef">
-        <div class="section-heading">
-          <h2>Main Trend View</h2>
-          <p>Hover over the graph to see how reported cases and deaths change over time.</p>
-        </div>
+      <section class="insight-grid">
+        <article class="insight-card">
+          <span>Most dominant condition</span>
+          <h3>{{ dominantCancer }}</h3>
+          <p>This condition currently contributes the highest visible case count.</p>
+        </article>
 
-        <div class="chart-card glass-card interactive-chart-card">
-          <div class="chart-header">
-            <div>
-              <span class="mini-tag">Interactive graph</span>
-              <h3>Cases and Deaths Over Time</h3>
-            </div>
-            <p>
-              This graph follows all selected filters and helps you compare changes year by year.
-            </p>
-          </div>
-          <div ref="trendChartRef" class="chart trend-chart"></div>
+        <article class="insight-card">
+          <span>Filter summary</span>
+          <h3>
+            {{ selectedYear === 'All' ? 'All years' : selectedYear }},
+            {{ selectedSex === 'All' ? 'All sexes' : selectedSex }}
+          </h3>
+          <p>Use filters to sharpen the health story and compare different patterns.</p>
+        </article>
+      </section>
 
-          <div class="graph-explainer">
-            <div class="axis-box">
-              <strong>X-axis:</strong> Year
-            </div>
-            <div class="axis-box">
-              <strong>Y-axis:</strong> Number of reported cases and deaths
-            </div>
-            <p class="graph-note">
-              This graph helps users see how the selected health condition changes over time.
-              The lighter green line shows total cases. The darker green line shows total deaths.
-            </p>
-          </div>
-        </div>
-
-        <div class="insight-banner glass-card">
+      <section class="chart-shell trend-shell">
+        <div class="section-header">
           <div>
-            <strong>What does this graph mean?</strong>
-            <p>
-              If the lines rise, the selected condition appears more often or causes more deaths in
-              that period. Hover over any point to see the exact numbers.
-            </p>
+            <span class="section-tag">Trend Analysis</span>
+            <h2>Cases and deaths over time</h2>
           </div>
-        </div>
-      </section>
-
-      <section ref="compareSectionRef">
-        <div class="section-heading">
-          <h2>Compare Conditions</h2>
           <p>
-            These charts compare selected conditions by how common they are, how serious they are,
-            and how much death impact they have.
+            This chart helps show whether the selected cancer conditions rise, fall, or remain stable
+            over the years.
           </p>
         </div>
-
-        <div class="chart-grid">
-          <div class="chart-card glass-card interactive-chart-card">
-            <div class="chart-header">
-              <div>
-                <span class="mini-tag">Comparison</span>
-                <h3>Most Common Conditions</h3>
-              </div>
-              <p>Shows which selected conditions appear most often in the chosen view.</p>
-            </div>
-            <div ref="casesChartRef" class="chart small-chart"></div>
-
-            <div class="graph-explainer">
-              <div class="axis-box">
-                <strong>X-axis:</strong> Number of cases
-              </div>
-              <div class="axis-box">
-                <strong>Y-axis:</strong> Health conditions
-              </div>
-              <p class="graph-note">
-                Longer bars mean that condition has more reported cases in the selected filter view.
-              </p>
-            </div>
-          </div>
-
-          <div class="chart-card glass-card interactive-chart-card">
-            <div class="chart-header">
-              <div>
-                <span class="mini-tag">Comparison</span>
-                <h3>Highest Death Impact</h3>
-              </div>
-              <p>Shows which selected conditions contribute most to recorded deaths.</p>
-            </div>
-            <div ref="deathsChartRef" class="chart small-chart"></div>
-
-            <div class="graph-explainer">
-              <div class="axis-box">
-                <strong>X-axis:</strong> Number of deaths
-              </div>
-              <div class="axis-box">
-                <strong>Y-axis:</strong> Health conditions
-              </div>
-              <p class="graph-note">
-                Longer bars mean that condition is linked to a higher death burden in the selected view.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="chart-grid single-chart-row">
-          <div class="chart-card glass-card interactive-chart-card">
-            <div class="chart-header">
-              <div>
-                <span class="mini-tag">Comparison</span>
-                <h3>Condition Severity Ratio</h3>
-              </div>
-              <p>
-                Higher values mean deaths make up a larger share of total cases for that condition.
-              </p>
-            </div>
-            <div ref="fatalityChartRef" class="chart small-chart"></div>
-
-            <div class="graph-explainer">
-              <div class="axis-box">
-                <strong>X-axis:</strong> Severity ratio
-              </div>
-              <div class="axis-box">
-                <strong>Y-axis:</strong> Health conditions
-              </div>
-              <p class="graph-note">
-                A higher severity ratio suggests a condition is more serious relative to the number of total cases.
-              </p>
-            </div>
-          </div>
-        </div>
+        <div ref="trendChartRef" class="chart-box large-chart"></div>
       </section>
 
-      <section ref="takeawayRef" class="analysis-description glass-card">
-        <h3>Simple takeaway</h3>
-        <p>
-          This dashboard makes complex health data easier to understand. It does not claim that
-          these cases are directly caused by e-waste. Instead, it gives a public health view of
-          conditions associated with long-term toxic exposure risks, helping users understand why
-          safe disposal matters.
-        </p>
+      <section class="chart-grid">
+        <article class="chart-shell">
+          <div class="section-header compact">
+            <div>
+              <span class="section-tag">Cases</span>
+              <h2>Top conditions by case count</h2>
+            </div>
+          </div>
+          <div ref="casesChartRef" class="chart-box"></div>
+        </article>
+
+        <article class="chart-shell">
+          <div class="section-header compact">
+            <div>
+              <span class="section-tag">Deaths</span>
+              <h2>Top conditions by death count</h2>
+            </div>
+          </div>
+          <div ref="deathsChartRef" class="chart-box"></div>
+        </article>
+      </section>
+
+      <section class="chart-shell">
+        <div class="section-header">
+          <div>
+            <span class="section-tag">Severity</span>
+            <h2>Highest fatality ratio conditions</h2>
+          </div>
+          <p>
+            Higher ratio means deaths are large relative to cases. This helps highlight more severe
+            conditions in the selected view.
+          </p>
+        </div>
+        <div ref="fatalityChartRef" class="chart-box"></div>
       </section>
     </template>
   </div>
@@ -889,629 +567,311 @@ onBeforeUnmount(() => {
 <style scoped>
 .dashboard-page {
   min-height: 100vh;
+  padding: 32px 24px 80px;
+  background:
+    radial-gradient(circle at top left, rgba(71, 196, 120, 0.14), transparent 30%),
+    radial-gradient(circle at top right, rgba(95, 255, 174, 0.08), transparent 24%),
+    linear-gradient(180deg, #08120d 0%, #0d1d15 55%, #11261b 100%);
+  color: #f3fff7;
+}
+
+.hero-panel {
+  max-width: 1400px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: 1.5fr 0.9fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.hero-copy,
+.hero-side-card,
+.filter-panel,
+.stat-card,
+.chart-shell,
+.insight-card,
+.status-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(12px);
+}
+
+.hero-copy {
+  border-radius: 28px;
   padding: 34px;
-  background:
-    radial-gradient(circle at 86% 5%, rgba(129, 199, 132, 0.20), transparent 18%),
-    radial-gradient(circle at 12% 92%, rgba(67, 160, 71, 0.12), transparent 21%),
-    linear-gradient(180deg, #f8fbf8 0%, #eef4ef 100%);
-  color: #1f3b2d;
-  overflow: hidden;
 }
 
-.reveal-section {
-  opacity: 0;
-  transform: translateY(70px) scale(0.985);
-  filter: blur(10px);
-  transition:
-    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 1.05s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--reveal-delay, 0s);
-  will-change: opacity, transform, filter;
-}
-
-.reveal-section.revealed {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
-
-.reveal-child {
-  opacity: 0;
-  transform: translateY(32px);
-  transition:
-    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--child-delay, 0s);
-}
-
-.revealed .reveal-child {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hero-section {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(220, 235, 220, 0.95);
-  border-radius: 36px;
-  padding: 40px;
-  margin-bottom: 24px;
-  background:
-    linear-gradient(135deg, rgba(244, 251, 244, 0.82) 0%, rgba(237, 247, 238, 0.78) 100%);
-  box-shadow:
-    0 22px 48px rgba(27, 67, 50, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.80);
-  backdrop-filter: blur(15px);
-}
-
-.hero-orb {
-  position: absolute;
-  border-radius: 999px;
-  pointer-events: none;
-  filter: blur(8px);
-}
-
-.hero-orb-one {
-  top: -90px;
-  right: -20px;
-  width: 280px;
-  height: 280px;
-  background: radial-gradient(circle, rgba(129, 199, 132, 0.26) 0%, rgba(129, 199, 132, 0) 72%);
-  animation: floatOrbOne 12s ease-in-out infinite;
-}
-
-.hero-orb-two {
-  bottom: -120px;
-  left: 8%;
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(67, 160, 71, 0.18) 0%, rgba(67, 160, 71, 0) 72%);
-  animation: floatOrbTwo 14s ease-in-out infinite;
-}
-
-.hero-grid-lines {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 34px 34px;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.20), transparent 90%);
-  pointer-events: none;
-}
-
-@keyframes floatOrbOne {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(-14px, 18px, 0); }
-}
-
-@keyframes floatOrbTwo {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(18px, -14px, 0); }
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-}
-
-.single-column-hero {
-  display: block;
-}
-
-.dashboard-tag,
-.mini-tag {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
+.eyebrow,
+.section-tag,
+.side-label,
+.stat-label,
+.insight-card span {
+  display: inline-block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8de8aa;
+  margin-bottom: 12px;
   font-weight: 700;
-  letter-spacing: 0.2px;
-}
-
-.dashboard-tag {
-  margin: 0 0 14px;
-  padding: 8px 14px;
-  font-size: 13px;
-  color: #2e7d32;
-  background: rgba(232, 245, 233, 0.90);
-  border: 1px solid rgba(207, 232, 209, 0.98);
 }
 
 .hero-copy h1 {
   margin: 0 0 14px;
-  font-size: 58px;
-  line-height: 1;
-  font-weight: 800;
-  color: #143324;
-  letter-spacing: -1.35px;
-  max-width: 940px;
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  line-height: 1.05;
+  color: #f5fff8;
 }
 
-.hero-subtext {
+.hero-copy p {
   margin: 0;
-  max-width: 900px;
-  font-size: 16px;
-  line-height: 1.9;
-  color: #557260;
-}
-
-.current-view-inline {
-  margin-top: 28px;
-  max-width: 900px;
-}
-
-.side-card-label {
-  display: inline-block;
-  margin-bottom: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #5c7465;
-}
-
-.current-view-inline strong {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 28px;
-  line-height: 1.4;
-  color: #173a29;
-  font-weight: 700;
-}
-
-.current-view-inline p {
-  margin: 0;
-  font-size: 14px;
+  max-width: 760px;
+  color: #b7d9c1;
+  font-size: 1rem;
   line-height: 1.7;
-  color: #557260;
 }
 
-.glass-card {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(251, 253, 251, 0.80) 100%);
-  border: 1px solid rgba(226, 238, 227, 0.98);
-  box-shadow:
-    0 16px 32px rgba(27, 67, 50, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.74);
-  backdrop-filter: blur(15px);
-}
-
-.context-card {
+.hero-highlights {
   display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  margin-bottom: 26px;
-  padding: 22px 24px;
-  border-radius: 26px;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 22px;
 }
 
-.context-icon {
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  font-size: 20px;
-  background: linear-gradient(180deg, #eff8f0 0%, #e7f4e8 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
-  flex-shrink: 0;
+.mini-pill {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(102, 224, 135, 0.12);
+  border: 1px solid rgba(102, 224, 135, 0.18);
+  color: #dfffea;
+  font-size: 0.92rem;
 }
 
-.context-card h3 {
-  margin: 0 0 8px;
-  font-size: 22px;
-  color: #173a29;
-  letter-spacing: -0.2px;
-}
-
-.context-card p {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.85;
-  color: #557260;
-}
-
-.filter-sticky-wrap {
-  position: sticky;
-  top: 14px;
-  z-index: 40;
-  margin-bottom: 28px;
-}
-
-.filter-bar {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(220px, 1fr));
-  gap: 18px;
-  padding: 12px;
-  background: rgba(248, 251, 248, 0.72);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(220, 235, 220, 0.96);
+.hero-side-card {
   border-radius: 28px;
-  box-shadow:
-    0 16px 30px rgba(27, 67, 50, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.filter-item {
-  border-radius: 22px;
-  padding: 16px 18px;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+.side-value {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 12px;
 }
 
-.filter-item:hover {
-  transform: translateY(-3px);
-  border-color: rgba(129, 199, 132, 0.58);
-  box-shadow:
-    0 18px 30px rgba(27, 67, 50, 0.08),
-    0 0 0 1px rgba(129, 199, 132, 0.14);
+.hero-side-card p {
+  margin: 0;
+  line-height: 1.7;
+  color: #b7d9c1;
 }
 
-.filter-item label {
-  display: block;
-  font-size: 13px;
-  font-weight: 700;
-  color: #3f8f46;
-  margin-bottom: 10px;
+.filter-panel {
+  max-width: 1400px;
+  margin: 0 auto 28px;
+  border-radius: 24px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
 }
 
-.filter-item select {
-  width: 100%;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #173a29;
-  font-size: 16px;
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 0.9rem;
+  color: #d7f7e0;
   font-weight: 600;
 }
 
-.section-heading {
+.filter-group select {
+  width: 100%;
+  background: rgba(8, 18, 13, 0.82);
+  color: #f3fff7;
+  border: 1px solid rgba(122, 255, 170, 0.12);
+  border-radius: 14px;
+  padding: 14px 14px;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.status-card {
+  max-width: 1400px;
+  margin: 0 auto 28px;
+  border-radius: 24px;
+  padding: 28px;
+}
+
+.status-card h3,
+.error-card h3 {
+  margin: 0 0 8px;
+}
+
+.error-card {
+  border-color: rgba(255, 120, 120, 0.18);
+}
+
+.stats-grid {
+  max-width: 1400px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.stat-card {
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.stat-card h2 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+  color: #ffffff;
+}
+
+.stat-card p {
+  margin: 0;
+  color: #b7d9c1;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.insight-grid {
+  max-width: 1400px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.insight-card {
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.insight-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.4rem;
+  color: #ffffff;
+}
+
+.insight-card p {
+  margin: 0;
+  color: #b7d9c1;
+  line-height: 1.7;
+}
+
+.chart-shell {
+  max-width: 1400px;
+  margin: 0 auto 28px;
+  border-radius: 28px;
+  padding: 24px;
+}
+
+.trend-shell {
+  padding-top: 28px;
+}
+
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: end;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 20px;
+  margin-bottom: 18px;
 }
 
-.section-heading h2 {
+.section-header h2 {
   margin: 0;
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: #173a29;
+  font-size: 1.5rem;
+  color: #ffffff;
 }
 
-.section-heading p {
+.section-header p {
   margin: 0;
-  color: #647f6d;
-  font-size: 14px;
-  line-height: 1.65;
+  max-width: 520px;
+  color: #b7d9c1;
+  line-height: 1.7;
+  text-align: right;
 }
 
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(180px, 1fr));
-  gap: 18px;
-  margin-bottom: 34px;
-}
-
-.summary-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 28px;
-  padding: 24px;
-  transition:
-    transform 0.34s ease,
-    box-shadow 0.34s ease,
-    border-color 0.34s ease;
-}
-
-.summary-card::before {
-  content: '';
-  position: absolute;
-  top: -34px;
-  right: -22px;
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, rgba(129, 199, 132, 0.18) 0%, transparent 72%);
-  pointer-events: none;
-}
-
-.summary-card:hover {
-  transform: translateY(-9px) scale(1.01);
-  border-color: rgba(129, 199, 132, 0.58);
-  box-shadow:
-    0 22px 40px rgba(27, 67, 50, 0.09),
-    0 0 0 1px rgba(129, 199, 132, 0.15);
-}
-
-.summary-icon {
-  width: 50px;
-  height: 50px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 14px;
-  border-radius: 16px;
-  background: linear-gradient(180deg, #eff8f0 0%, #e7f4e8 100%);
-  font-size: 21px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
-}
-
-.card-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
-  color: #6b8a74;
-  margin-bottom: 8px;
-}
-
-.card-value {
-  display: block;
-  font-size: 34px;
-  font-weight: 800;
-  color: #173a29;
-  letter-spacing: -0.5px;
-  margin-bottom: 8px;
-}
-
-.card-footnote {
-  display: block;
-  font-size: 13px;
-  line-height: 1.55;
-  color: #5f7967;
-}
-
-.chart-card {
-  border-radius: 30px;
-  padding: 26px;
-  margin-bottom: 28px;
-  transition:
-    transform 0.36s ease,
-    box-shadow 0.36s ease,
-    border-color 0.36s ease;
-}
-
-.interactive-chart-card:hover {
-  transform: translateY(-9px) scale(1.003);
-  border-color: rgba(129, 199, 132, 0.58);
-  box-shadow:
-    0 26px 44px rgba(27, 67, 50, 0.10),
-    0 0 0 1px rgba(129, 199, 132, 0.14);
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 18px;
-}
-
-.chart-header h3 {
-  margin: 6px 0 0;
-  font-size: 27px;
-  font-weight: 800;
-  color: #173a29;
-  letter-spacing: -0.42px;
-}
-
-.chart-header p {
-  max-width: 420px;
-  margin: 0;
-  color: #647f6d;
-  font-size: 14px;
-  line-height: 1.8;
-}
-
-.mini-tag {
-  padding: 7px 12px;
-  font-size: 12px;
-  color: #2e7d32;
-  background: rgba(236, 247, 237, 0.90);
-  border: 1px solid rgba(212, 236, 214, 0.98);
-}
-
-.chart {
-  width: 100%;
-  height: 420px;
-  margin-top: 18px;
-}
-
-.trend-chart {
-  height: 510px;
-}
-
-.small-chart {
-  height: 440px;
-}
-
-.graph-explainer {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(210, 226, 213, 0.9);
-}
-
-.axis-box {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-right: 12px;
-  margin-bottom: 10px;
-  padding: 8px 12px;
-  font-size: 13px;
-  color: #254433;
-  background: rgba(240, 247, 241, 0.9);
-  border: 1px solid rgba(216, 232, 218, 0.95);
-  border-radius: 999px;
-}
-
-.graph-note {
-  margin: 4px 0 0;
-  font-size: 14px;
-  line-height: 1.75;
-  color: #557260;
-}
-
-.insight-banner {
-  display: flex;
-  gap: 12px;
-  margin-top: -2px;
-  margin-bottom: 30px;
-  padding: 20px 24px;
-  border-radius: 24px;
-}
-
-.insight-banner strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #173a29;
-  font-size: 16px;
-}
-
-.insight-banner p {
-  margin: 0;
-  color: #557260;
-  line-height: 1.8;
-  font-size: 14px;
+.section-header.compact {
+  margin-bottom: 12px;
 }
 
 .chart-grid {
+  max-width: 1400px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2, minmax(320px, 1fr));
-  gap: 20px;
-  margin-bottom: 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
-.single-chart-row {
-  grid-template-columns: 1fr;
-}
-
-.analysis-description {
-  margin-bottom: 28px;
-  padding: 26px 28px;
-  border-radius: 30px;
-}
-
-.analysis-description h3 {
-  margin: 0 0 10px;
-  font-size: 24px;
-  color: #173a29;
-  letter-spacing: -0.25px;
-}
-
-.analysis-description p {
+.chart-grid .chart-shell {
   margin: 0;
-  font-size: 15px;
-  line-height: 1.9;
-  color: #557260;
 }
 
-.state-text,
-.error-text {
-  margin-top: 20px;
-  font-size: 16px;
+.chart-box {
+  width: 100%;
+  height: 420px;
 }
 
-.state-text {
-  color: #557260;
+.large-chart {
+  height: 500px;
 }
 
-.error-text {
-  color: #c62828;
-  font-weight: 600;
-}
-
-@media (max-width: 1280px) {
-  .summary-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .chart-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 1024px) {
-  .dashboard-page {
-    padding: 22px;
-  }
-
-  .filter-bar {
+@media (max-width: 1100px) {
+  .hero-panel,
+  .chart-grid,
+  .insight-grid,
+  .stats-grid {
     grid-template-columns: 1fr;
   }
 
-  .section-heading {
+  .filter-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
   }
 
-  .chart-header {
-    flex-direction: column;
-  }
-
-  .hero-copy h1 {
-    font-size: 40px;
-  }
-
-  .current-view-inline strong {
-    font-size: 22px;
-  }
-
-  .context-card {
-    flex-direction: column;
-  }
-
-  .chart-header h3 {
-    font-size: 22px;
-  }
-
-  .section-heading h2 {
-    font-size: 24px;
-  }
-
-  .trend-chart {
-    height: 440px;
+  .section-header p {
+    text-align: left;
+    max-width: 100%;
   }
 }
 
 @media (max-width: 640px) {
   .dashboard-page {
-    padding: 16px;
+    padding: 20px 14px 60px;
   }
 
-  .hero-section {
-    padding: 24px 20px;
+  .hero-copy,
+  .hero-side-card,
+  .filter-panel,
+  .stat-card,
+  .chart-shell,
+  .insight-card,
+  .status-card {
+    border-radius: 20px;
   }
 
-  .summary-grid {
-    grid-template-columns: 1fr;
+  .chart-box,
+  .large-chart {
+    height: 340px;
   }
 
-  .hero-copy h1 {
-    font-size: 31px;
-  }
-
-  .hero-subtext {
-    font-size: 15px;
-  }
-
-  .current-view-inline strong {
-    font-size: 20px;
-  }
-
-  .chart,
-  .trend-chart,
-  .small-chart {
-    height: 360px;
-  }
-
-  .chart-header p {
-    max-width: 100%;
-  }
-
-  .axis-box {
-    display: flex;
-    margin-right: 0;
+  .hero-copy {
+    padding: 24px;
   }
 }
 </style>
