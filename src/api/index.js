@@ -1,54 +1,58 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+const API_BASE =
+  import.meta.env.VITE_API_BASE ||
+  import.meta.env.VITE_API_URL ||
+  'http://localhost:8000/api'
 
-import Home from '@/views/Home.vue'
-import Dashboard from '@/views/Dashboard.vue'
-import RepairCheck from '@/views/RepairCheck.vue'
-import ExtendUsage from '@/views/ExtendUsage.vue'
-import AIChat from '@/views/AIChat.vue'
-import SafeGuidance from '@/views/SafeGuidance.vue'
-import DisposalLocations from '@/views/DisposalLocations.vue'
+async function request(path, options = {}) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      ...(options.headers || {}),
+    },
+    ...options,
+  })
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
-  },
-  {
-    path: '/repair-check',
-    name: 'RepairCheck',
-    component: RepairCheck,
-  },
-  {
-    path: '/extend-usage',
-    name: 'ExtendUsage',
-    component: ExtendUsage,
-  },
-  {
-    path: '/ai-chat',
-    name: 'AIChat',
-    component: AIChat,
-  },
-  {
-    path: '/safe-guidance',
-    name: 'SafeGuidance',
-    component: SafeGuidance,
-  },
-  {
-    path: '/disposal-locations',
-    name: 'DisposalLocations',
-    component: DisposalLocations,
-  },
-]
+  if (!response.ok) {
+    const text = await response.text()
+    throw new Error(text || `API request failed: ${response.status}`)
+  }
 
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
-})
+  return response.json()
+}
 
-export default router
+export const api = {
+  // Health
+  getHealthAll() {
+    return request('/health/all')
+  },
+
+  // Emissions
+  getHeavyMetalState() {
+    return request('/emissions/state')
+  },
+
+  getHeavyMetalFacility() {
+    return request('/emissions/facility')
+  },
+
+  // Disposal locations
+  searchDisposalLocations(params = {}) {
+    const query = new URLSearchParams()
+
+    if (params.suburb) query.append('suburb', params.suburb)
+    if (params.postcode) query.append('postcode', params.postcode)
+    if (params.state) query.append('state', params.state)
+    if (params.limit) query.append('limit', params.limit)
+
+    const qs = query.toString()
+    return request(`/map/disposal-locations/search${qs ? `?${qs}` : ''}`)
+  },
+
+  getDisposalLocationsByPostcode(postcode) {
+    return request(`/map/disposal-locations/${postcode}`)
+  },
+
+  getPerson() {
+    return request('/getperson')
+  },
+}
