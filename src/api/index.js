@@ -1,72 +1,54 @@
-const apiSiteBaseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_SITE || '')
+import { createRouter, createWebHashHistory } from 'vue-router'
 
-function normalizeApiBaseUrl(value) {
-  let normalized = String(value || '')
-    .trim()
-    .replace(/\/$/, '')
-  if (!normalized) return ''
+import Home from '@/views/Home.vue'
+import Dashboard from '@/views/Dashboard.vue'
+import RepairCheck from '@/views/RepairCheck.vue'
+import ExtendUsage from '@/views/ExtendUsage.vue'
+import AIChat from '@/views/AIChat.vue'
+import SafeGuidance from '@/views/SafeGuidance.vue'
+import DisposalLocations from '@/views/DisposalLocations.vue'
 
-  if (normalized.endsWith('/api')) {
-    normalized = normalized.slice(0, -4)
-  }
-
-  return normalized
-}
-
-async function parseErrorResponse(response) {
-  let message = `HTTP error! status: ${response.status}`
-
-  try {
-    const payload = await response.json()
-    if (payload?.error) {
-      message = payload.error
-    }
-  } catch {
-    // Keep the fallback HTTP error when the body is not JSON.
-  }
-
-  return message
-}
-
-function buildApiUrl(path) {
-  if (!apiSiteBaseUrl) {
-    throw new Error('API site URL is not configured. Set VITE_API_SITE in .env.local.')
-  }
-
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`
-  return `${apiSiteBaseUrl}${normalizedPath}`
-}
-
-async function requestJson(path, options = {}) {
-  const response = await fetch(buildApiUrl(path), options)
-  if (!response.ok) {
-    throw new Error(await parseErrorResponse(response))
-  }
-
-  return response.json()
-}
-
-export const api = {
-  getMapLocation: async (postcode) => {
-    if (typeof postcode !== 'string') {
-      throw new Error('Parameter must be a string')
-    }
-
-    return requestJson(`/api/map/disposal-locations/${postcode}`)
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
   },
-
-  searchDisposalLocations: async (payload = {}, options = {}) => {
-    return requestJson('/api/map/disposal-locations/search', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-      signal: options.signal,
-    })
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
   },
-
-  getHealthAll: async () => {
-    return requestJson('/api/health/all')
+  {
+    path: '/repair-check',
+    name: 'RepairCheck',
+    component: RepairCheck,
   },
-}
+  {
+    path: '/extend-usage',
+    name: 'ExtendUsage',
+    component: ExtendUsage,
+  },
+  {
+    path: '/ai-chat',
+    name: 'AIChat',
+    component: AIChat,
+  },
+  {
+    path: '/safe-guidance',
+    name: 'SafeGuidance',
+    component: SafeGuidance,
+  },
+  {
+    path: '/disposal-locations',
+    name: 'DisposalLocations',
+    component: DisposalLocations,
+  },
+]
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes,
+})
+
+export default router
