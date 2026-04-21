@@ -1,48 +1,20 @@
-const apiSiteBaseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_SITE || '')
+const API_BASE =
+  import.meta.env.VITE_API_BASE ||
+  import.meta.env.VITE_API_URL ||
+  'http://localhost:8000/api'
 
-// Normalizes the API base URL by trimming whitespace, removing trailing slashes, and stripping any trailing '/api' segment.
-function normalizeApiBaseUrl(value) {
-  let normalized = String(value || '').trim().replace(/\/$/, '')
-  if (!normalized) return ''
+async function request(path) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    headers: {
+      'Content-Type': 'application/json'
 
-  if (normalized.endsWith('/api')) {
-    normalized = normalized.slice(0, -4)
-  }
+    },
+    
+  })
 
-  return normalized
-}
-
-// Parses the error response from the API, attempting to extract a meaningful error message from the JSON body if available.
-async function parseErrorResponse(response) {
-  let message = `HTTP error! status: ${response.status}`
-
-  try {
-    const payload = await response.json()
-    if (payload?.error) {
-      message = payload.error
-    }
-  } catch {
-    // Keep the fallback HTTP error when the body is not JSON.
-  }
-
-  return message
-}
-
-// Constructs the full API URL by combining the base URL with the provided path, ensuring proper formatting.
-
-function buildApiUrl(path) {
-  if (!apiSiteBaseUrl) {
-    throw new Error('API site URL is not configured. Set VITE_API_SITE in .env.local.')
-  }
-
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`
-  return `${apiSiteBaseUrl}${normalizedPath}`
-}
-
-async function requestJson(path, options = {}) {
-  const response = await fetch(buildApiUrl(path), options)
   if (!response.ok) {
-    throw new Error(await parseErrorResponse(response))
+    const text = await response.text()
+    throw new Error(text || `API request failed: ${response.status}`)
   }
 
   return response.json()
@@ -50,23 +22,38 @@ async function requestJson(path, options = {}) {
 
 // API
 export const api = {
-
-  getMapLocation: async (postcode) => {
-    if (typeof postcode !== 'string') {
-      throw new Error('Parameter must be a string')
-    }
-
-    return requestJson(`/api/map/disposal-locations/${postcode}`)
+  // Health
+  getHealthAll() {
+    return request('/health/all')
   },
 
-  searchDisposalLocations: async (payload = {}, options = {}) => {
-    return requestJson('/api/map/disposal-locations/search', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-      signal: options.signal,
-    })
+  // Emissions
+  getHeavyMetalState() {
+    return request('/emissions/state')
+  },
+
+  getHeavyMetalFacility() {
+    return request('/emissions/facility')
+  },
+
+  // Disposal locations
+  searchDisposalLocations(params = {}) {
+    const query = new URLSearchParams()
+
+    if (params.suburb) query.append('suburb', params.suburb)
+    if (params.postcode) query.append('postcode', params.postcode)
+    if (params.state) query.append('state', params.state)
+    if (params.limit) query.append('limit', params.limit)
+
+    const qs = query.toString()
+    return request(`/map/disposal-locations/search${qs ? `?${qs}` : ''}`)
+  },
+
+  getDisposalLocationsByPostcode(postcode) {
+    return request(`/map/disposal-locations/${postcode}`)
+  },
+
+  getPerson() {
+    return request('/getperson')
   },
 }

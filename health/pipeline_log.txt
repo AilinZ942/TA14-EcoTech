@@ -1,0 +1,30 @@
+Input file found: /Users/jashwanthreddymokilla/Desktop/ecotech/TA14-EcoTech-main/health/acimcombinedcounts.csv
+Original shape: (9240, 23)
+Columns after cleaning: ['year', 'sex', 'type', 'cancer_type', 'age_0_to_4', 'age_5_to_9', 'age_10_to_14', 'age_15_to_19', 'age_20_to_24', 'age_25_to_29', 'age_30_to_34', 'age_35_to_39', 'age_40_to_44', 'age_45_to_49', 'age_50_to_54', 'age_55_to_59', 'age_60_to_64', 'age_65_to_69', 'age_70_to_74', 'age_75_to_79', 'age_80_to_84', 'age_85', 'age_unknown']
+Shape after key cleaning: (9240, 23)
+Unique type values: ['incidence', 'mortality']
+Unique sex values: ['females', 'males', 'persons']
+Age columns found: 19
+Shape after total_count filter: (6567, 24)
+Year range: 1968 to 2011
+Incidence raw rows: 2611
+Mortality raw rows: 3956
+Incidence cleaned rows: 2611
+Mortality cleaned rows: 3956
+Saved: /Users/jashwanthreddymokilla/Desktop/ecotech/TA14-EcoTech-main/health/final_cleaned_cancer_data.csv
+Saved: /Users/jashwanthreddymokilla/Desktop/ecotech/TA14-EcoTech-main/health/final_cleaned_mortality_data.csv
+Merged rows before ratio cleaning: 2536
+Saved: /Users/jashwanthreddymokilla/Desktop/ecotech/TA14-EcoTech-main/health/final_health_merged_dataset.csv
+Saved: /Users/jashwanthreddymokilla/Desktop/ecotech/TA14-EcoTech-main/health/health_pipeline_summary.csv
+   incidence_rows  mortality_rows  merged_rows  year_min  year_max  sex_count  cancer_type_count
+0            2611            3956         2536      1968      2011          3                 34
+
+Merged preview:
+   year      sex                    cancer_type  cancer_cases  cancer_deaths  fatality_ratio
+0  1982  females  Acute lymphoblastic leukaemia          95.0           63.0        0.663158
+1  1982  females        Acute myeloid leukaemia         194.0          176.0        0.907216
+2  1982  females                    Anal cancer          35.0            9.0        0.257143
+3  1982  females                 Bladder cancer         582.0          175.0        0.300687
+4  1982  females                   Bowel cancer        3444.0         1787.0        0.518873
+
+Saved log: /Users/jashwanthreddymokilla/Desktop/ecotech/TA14-EcoTech-main/health/pipeline_log.txt

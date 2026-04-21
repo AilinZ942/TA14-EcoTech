@@ -123,3 +123,38 @@ def search_all_disposal_locations(req: HttpRequest, ewaste_rows: SqlRowList) -> 
         status_code=200,
         mimetype="application/json",
     )
+
+@app.function_name(name="GetHealthAll")
+@app.route(route="health/all")
+@app.sql_input(
+    arg_name="health_rows",
+    command_text="""
+        SELECT
+            year,
+            sex,
+            cancer_type,
+            cancer_cases,
+            cancer_deaths,
+            fatality_ratio
+        FROM dbo.health_merged
+        ORDER BY year, sex, cancer_type
+    """,
+    command_type="Text",
+    connection_string_setting="SqlConnectionString",
+)
+def get_health_all(req: HttpRequest, health_rows: SqlRowList) -> HttpResponse:
+
+    rows = [json.loads(row.to_json()) for row in health_rows]
+
+    return HttpResponse(
+        json.dumps({
+            "items": rows,
+            "meta": {
+                "pipeline": "azure",
+                "source": "sql-db",
+                "table": "health_merged",
+            },
+        }),
+        status_code=200,
+        mimetype="application/json",
+    )
