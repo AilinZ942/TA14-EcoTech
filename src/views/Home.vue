@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <section class="hero" :style="heroSectionStyle">
+    <section class="hero">
       <img :src="heroImg" class="hero-img" :style="heroImageStyle" alt="E-waste awareness" />
       <div class="hero-overlay"></div>
       <div class="hero-gradient"></div>
@@ -21,11 +21,12 @@
             View Health Insights
           </router-link>
         </div>
+      </div>
 
-        <div class="scroll-indicator">
-          <span class="scroll-line"></span>
-          <span class="scroll-text">Scroll to explore</span>
-        </div>
+      <!-- bottom center arrow -->
+      <div class="scroll-arrow" aria-hidden="true">
+        <span class="scroll-arrow-text">Scroll to explore</span>
+        <span class="scroll-arrow-icon"></span>
       </div>
     </section>
 
@@ -161,26 +162,18 @@ const scrollY = ref(0)
 let observer = null
 
 const heroImageStyle = computed(() => {
-  const y = Math.min(scrollY.value * 0.22, 140)
-  const scale = Math.max(1, 1 + scrollY.value * 0.00018)
+  const y = Math.min(scrollY.value * 0.12, 80)
   return {
-    transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
+    transform: `translate3d(0, ${y}px, 0)`,
   }
 })
 
 const heroContentStyle = computed(() => {
-  const y = Math.min(scrollY.value * 0.18, 110)
-  const opacity = Math.max(0, 1 - scrollY.value / 650)
+  const y = Math.min(scrollY.value * 0.08, 40)
+  const opacity = Math.max(0, 1 - scrollY.value / 850)
   return {
     transform: `translate3d(0, ${y}px, 0)`,
     opacity,
-  }
-})
-
-const heroSectionStyle = computed(() => {
-  const bgY = Math.min(scrollY.value * 0.08, 60)
-  return {
-    transform: `translate3d(0, ${bgY}px, 0)`,
   }
 })
 
@@ -189,7 +182,9 @@ function handleScroll() {
 }
 
 function setupRevealAnimations() {
-  const sections = [introRef.value, featuresRef.value, journeyRef.value, ctaRef.value].filter(Boolean)
+  const sections = [introRef.value, featuresRef.value, journeyRef.value, ctaRef.value].filter(
+    Boolean,
+  )
 
   observer = new IntersectionObserver(
     (entries) => {
@@ -242,17 +237,20 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 115%;
+  height: 108%;
   object-fit: cover;
   will-change: transform;
-  transition: transform 0.08s linear;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(6, 18, 12, 0.28) 0%, rgba(6, 18, 12, 0.42) 55%, rgba(6, 18, 12, 0.6) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(6, 18, 12, 0.28) 0%,
+    rgba(6, 18, 12, 0.42) 55%,
+    rgba(6, 18, 12, 0.6) 100%
+  );
 }
 
 .hero-gradient {
@@ -274,7 +272,6 @@ onBeforeUnmount(() => {
   padding: 0 7vw;
   color: #ffffff;
   will-change: transform, opacity;
-  transition: transform 0.08s linear, opacity 0.08s linear;
 }
 
 .hero-tag {
@@ -285,7 +282,6 @@ onBeforeUnmount(() => {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(10px);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -350,48 +346,81 @@ onBeforeUnmount(() => {
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.28);
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
 }
 
 .hero-btn.secondary:hover {
   background: rgba(255, 255, 255, 0.14);
 }
 
-.scroll-indicator {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 38px;
-  width: fit-content;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-.scroll-line {
-  width: 54px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.62);
-  position: relative;
-  overflow: hidden;
-}
-
-.scroll-line::after {
-  content: '';
+.scroll-arrow {
   position: absolute;
-  inset: 0;
-  background: #ffffff;
-  transform: translateX(-100%);
-  animation: scrollPulse 0.5ms ease-in-out infinite;
+  left: 50%;
+  bottom: 100px;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  animation: arrowFloat 1.8s ease-in-out infinite;
 }
 
-@keyframes scrollPulse {
-  0% { transform: translateX(-100%); }
-  50% { transform: translateX(0%); }
-  100% { transform: translateX(100%); }
-}
-
-.scroll-text {
+.scroll-arrow-text {
   font-size: 14px;
-  letter-spacing: 0.3px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.88);
+  text-transform: uppercase;
+}
+
+.scroll-arrow-icon {
+  width: 16px;
+  height: 16px;
+  border-right: 3px solid rgba(255, 255, 255, 0.95);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.95);
+  transform: rotate(45deg);
+  display: block;
+}
+
+@keyframes arrowFloat {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateX(-50%) translateY(8px);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .scroll-arrow {
+    bottom: 42px;
+    gap: 8px;
+  }
+
+  .scroll-arrow-text {
+    font-size: 12px;
+  }
+
+  .scroll-arrow-icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@keyframes arrowFloat {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateX(-50%) translateY(8px);
+    opacity: 1;
+  }
 }
 
 .section-shell,
@@ -409,18 +438,15 @@ onBeforeUnmount(() => {
 
 .reveal-section {
   opacity: 0;
-  transform: translateY(72px) scale(0.985);
-  filter: blur(10px);
+  transform: translateY(48px);
   transition:
-    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 .reveal-section.revealed {
   opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
+  transform: translateY(0);
 }
 
 .section-heading {
@@ -465,13 +491,11 @@ onBeforeUnmount(() => {
   margin-top: 28px;
   padding: 26px 28px;
   border-radius: 28px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(251, 253, 251, 0.84) 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(251, 253, 251, 0.96) 100%);
   border: 1px solid rgba(226, 238, 227, 0.98);
   box-shadow:
     0 18px 34px rgba(27, 67, 50, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.74);
-  backdrop-filter: blur(14px);
 }
 
 .highlight-card strong {
@@ -500,13 +524,11 @@ onBeforeUnmount(() => {
   color: inherit;
   padding: 28px;
   border-radius: 30px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(251, 253, 251, 0.84) 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(251, 253, 251, 0.96) 100%);
   border: 1px solid rgba(226, 238, 227, 0.98);
   box-shadow:
     0 18px 34px rgba(27, 67, 50, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.74);
-  backdrop-filter: blur(14px);
   transition:
     transform 0.34s ease,
     box-shadow 0.34s ease,
@@ -578,13 +600,11 @@ onBeforeUnmount(() => {
 .step-card {
   padding: 22px 24px;
   border-radius: 24px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(251, 253, 251, 0.84) 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(251, 253, 251, 0.96) 100%);
   border: 1px solid rgba(226, 238, 227, 0.98);
   box-shadow:
     0 18px 34px rgba(27, 67, 50, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.74);
-  backdrop-filter: blur(14px);
 }
 
 .step-number {
@@ -611,8 +631,7 @@ onBeforeUnmount(() => {
 .cta-card {
   padding: 40px;
   border-radius: 34px;
-  background:
-    linear-gradient(180deg, rgba(241, 248, 242, 0.92) 0%, rgba(234, 244, 236, 0.92) 100%);
+  background: linear-gradient(180deg, rgba(241, 248, 242, 0.92) 0%, rgba(234, 244, 236, 0.92) 100%);
   border: 1px solid rgba(210, 232, 214, 0.98);
   box-shadow:
     0 22px 42px rgba(27, 67, 50, 0.06),
@@ -693,6 +712,10 @@ onBeforeUnmount(() => {
 
   .cta-card {
     padding: 28px 22px;
+  }
+
+  .scroll-arrow {
+    bottom: 24px;
   }
 }
 </style>
