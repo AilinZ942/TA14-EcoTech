@@ -2,17 +2,19 @@ from azure.functions import FunctionApp, HttpRequest, HttpResponse, SqlRowList, 
 import json
 import logging
 
+# Create the FunctionApp instance, authentication level is set to anonymous for simplicity, adjust as needed for production
 app = FunctionApp(http_auth_level=AuthLevel.ANONYMOUS)
 logger = logging.getLogger(__name__)
 
 # Helper functions
 
+# A helper function to safely strip string values, returning an empty string if the value is None
 def _safe_strip(value):
     if value is None:
         return ""
     return str(value).strip()
 
-
+# A helper function to convert a SQL row to a disposal item dictionary, handling potential None values and ensuring proper types
 def _row_to_disposal_item(row):
     return {
         "facility_name": _safe_strip(row.get("facility_name")),
@@ -25,26 +27,11 @@ def _row_to_disposal_item(row):
     }
 
 
-# Location function
 
 
-@app.function_name(name="GetPerson")
-@app.route(route="getperson")
-@app.sql_input(arg_name="person",
-                        command_text="select [ID], [FirstName], [LastName] from dbo.Persons",
-                        command_type="Text",
-                        connection_string_setting="SqlConnectionString")
-def get_person(req: HttpRequest, person: SqlRowList) -> HttpResponse:
-    rows = list(map(lambda r: json.loads(r.to_json()), person))
-    
-
-    return HttpResponse(
-        json.dumps(rows),
-        status_code=200,
-        mimetype="application/json"
-    )
 
 
+# Used for iteration 2 - search by postcode, returns all locations in that postcode
 @app.function_name(name="SearchDisposalLocations")
 @app.route(route="map/disposal-locations/{postcode}")
 @app.sql_input(
@@ -96,6 +83,7 @@ def search_disposal_locations(req: HttpRequest, ewaste_rows: SqlRowList) -> Http
     )
 
 
+# Used for iteration 1 - returns all locations, no filtering, this is the original function we had before we added the postcode filter, we can keep it for testing and comparison purposes
 @app.function_name(name="SearchAllDisposalLocations")
 @app.route(route="map/disposal-locations/search", methods=["POST"])
 @app.sql_input(

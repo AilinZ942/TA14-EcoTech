@@ -48,3 +48,9 @@ database/
 sql/
 
 mssql_geojson_loader/
+
+# Azurite artifacts
+__blobstorage__/
+__queuestorage__/
+__azurite_db*__.json
+AzuriteConfig

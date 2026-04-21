@@ -1,5 +1,6 @@
 const apiSiteBaseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_SITE || '')
 
+// Normalizes the API base URL by trimming whitespace, removing trailing slashes, and stripping any trailing '/api' segment.
 function normalizeApiBaseUrl(value) {
   let normalized = String(value || '').trim().replace(/\/$/, '')
   if (!normalized) return ''
@@ -11,6 +12,7 @@ function normalizeApiBaseUrl(value) {
   return normalized
 }
 
+// Parses the error response from the API, attempting to extract a meaningful error message from the JSON body if available.
 async function parseErrorResponse(response) {
   let message = `HTTP error! status: ${response.status}`
 
@@ -25,6 +27,8 @@ async function parseErrorResponse(response) {
 
   return message
 }
+
+// Constructs the full API URL by combining the base URL with the provided path, ensuring proper formatting.
 
 function buildApiUrl(path) {
   if (!apiSiteBaseUrl) {
@@ -44,6 +48,7 @@ async function requestJson(path, options = {}) {
   return response.json()
 }
 
+// API
 export const api = {
 
   getMapLocation: async (postcode) => {
