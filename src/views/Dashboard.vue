@@ -188,10 +188,10 @@ function formatNumber(value) {
 
 function tooltipStyle() {
   return {
-    backgroundColor: 'rgba(8, 14, 12, 0.96)',
-    borderColor: 'rgba(120,255,180,0.16)',
+    backgroundColor: 'rgba(15, 23, 42, 0.96)',
+    borderColor: 'rgba(56, 189, 248, 0.18)',
     borderWidth: 1,
-    textStyle: { color: '#f3fff7', fontSize: 13 },
+    textStyle: { color: '#f8fafc', fontSize: 13 },
     extraCssText: `
       border-radius: 16px;
       box-shadow: 0 18px 40px rgba(0,0,0,0.35);
@@ -296,25 +296,25 @@ function updateCharts() {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, ...tooltipStyle() },
     legend: {
       top: 8,
-      textStyle: { color: '#dfffea' },
+      textStyle: { color: '#e2e8f0' },
     },
     grid: { left: 50, right: 20, top: 50, bottom: 40 },
     xAxis: {
       type: 'category',
       data: pollutionState.states,
-      axisLabel: { color: '#b7d9c1' },
+      axisLabel: { color: '#cbd5e1' },
       axisLine: { lineStyle: { color: 'rgba(255,255,255,0.12)' } },
     },
     yAxis: {
       type: 'value',
-      axisLabel: { color: '#b7d9c1' },
+      axisLabel: { color: '#cbd5e1' },
       splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
     },
     series: pollutionState.series.map((s, idx) => ({
       ...s,
       itemStyle: {
         borderRadius: [8, 8, 0, 0],
-        color: ['#66e087', '#2bb673', '#a4ffca'][idx],
+        color: ['#38bdf8', '#818cf8', '#a78bfa'][idx],
       },
     })),
   })
@@ -325,13 +325,13 @@ function updateCharts() {
     grid: { left: 180, right: 20, top: 20, bottom: 20 },
     xAxis: {
       type: 'value',
-      axisLabel: { color: '#b7d9c1' },
+      axisLabel: { color: '#cbd5e1' },
       splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
     },
     yAxis: {
       type: 'category',
       data: facilities.map((item) => item.facility_name),
-      axisLabel: { color: '#e6fff0', fontWeight: 600 },
+      axisLabel: { color: '#f1f5f9', fontWeight: 600 },
       axisLine: { show: false },
       axisTick: { show: false },
     },
@@ -341,7 +341,7 @@ function updateCharts() {
         data: facilities.map((item) => Number(item.total_air_emission_kg || 0)),
         barWidth: 16,
         itemStyle: {
-          color: '#66e087',
+          color: '#38bdf8',
           borderRadius: [0, 10, 10, 0],
         },
       },
@@ -360,11 +360,12 @@ function updateCharts() {
           name: item.metal,
           value: item.value,
         })),
-        label: { color: '#f3fff7' },
+        label: { color: '#f8fafc' },
         itemStyle: {
           borderWidth: 2,
-          borderColor: '#101c18',
+          borderColor: '#0f172a',
         },
+        color: ['#38bdf8', '#818cf8', '#a78bfa'],
       },
     ],
   })
@@ -374,19 +375,19 @@ function updateCharts() {
     tooltip: { trigger: 'axis', ...tooltipStyle() },
     legend: {
       top: 8,
-      textStyle: { color: '#dfffea' },
+      textStyle: { color: '#e2e8f0' },
     },
     grid: { left: 50, right: 20, top: 50, bottom: 40 },
     xAxis: {
       type: 'category',
       data: healthTrend.map((item) => item.year),
       boundaryGap: false,
-      axisLabel: { color: '#b7d9c1' },
+      axisLabel: { color: '#cbd5e1' },
       axisLine: { lineStyle: { color: 'rgba(255,255,255,0.12)' } },
     },
     yAxis: {
       type: 'value',
-      axisLabel: { color: '#b7d9c1' },
+      axisLabel: { color: '#cbd5e1' },
       splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
     },
     series: [
@@ -395,16 +396,16 @@ function updateCharts() {
         type: 'line',
         smooth: true,
         data: healthTrend.map((item) => item.cases),
-        lineStyle: { width: 3, color: '#66e087' },
-        itemStyle: { color: '#66e087' },
+        lineStyle: { width: 3, color: '#38bdf8' },
+        itemStyle: { color: '#38bdf8' },
       },
       {
         name: 'Deaths',
         type: 'line',
         smooth: true,
         data: healthTrend.map((item) => item.deaths),
-        lineStyle: { width: 3, color: '#2bb673' },
-        itemStyle: { color: '#2bb673' },
+        lineStyle: { width: 3, color: '#818cf8' },
+        itemStyle: { color: '#818cf8' },
       },
     ],
   })
@@ -415,13 +416,13 @@ function updateCharts() {
     grid: { left: 190, right: 20, top: 20, bottom: 20 },
     xAxis: {
       type: 'value',
-      axisLabel: { color: '#b7d9c1' },
+      axisLabel: { color: '#cbd5e1' },
       splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
     },
     yAxis: {
       type: 'category',
       data: fatality.map((item) => item.cancer_type),
-      axisLabel: { color: '#e6fff0', fontWeight: 600 },
+      axisLabel: { color: '#f1f5f9', fontWeight: 600 },
       axisLine: { show: false },
       axisTick: { show: false },
     },
@@ -431,7 +432,7 @@ function updateCharts() {
         data: fatality.map((item) => Number(item.ratio.toFixed(3))),
         barWidth: 16,
         itemStyle: {
-          color: '#a4ffca',
+          color: '#a78bfa',
           borderRadius: [0, 10, 10, 0],
         },
       },
@@ -653,10 +654,10 @@ onBeforeUnmount(() => {
   min-height: 100vh;
   padding: 30px 24px 80px;
   background:
-    radial-gradient(circle at top left, rgba(71, 196, 120, 0.14), transparent 28%),
-    radial-gradient(circle at top right, rgba(95, 255, 174, 0.08), transparent 22%),
-    linear-gradient(180deg, #08120d 0%, #0d1d15 55%, #11261b 100%);
-  color: #f3fff7;
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 30%),
+    radial-gradient(circle at top right, rgba(168, 85, 247, 0.08), transparent 24%),
+    linear-gradient(180deg, #0f172a 0%, #111827 55%, #020617 100%);
+  color: #f8fafc;
 }
 
 .hero-panel,
@@ -676,8 +677,8 @@ onBeforeUnmount(() => {
 .insight-card,
 .chart-shell,
 .status-card {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  background: rgba(30, 41, 59, 0.5);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.24);
   backdrop-filter: blur(12px);
 }
@@ -699,7 +700,7 @@ onBeforeUnmount(() => {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #8de8aa;
+  color: #38bdf8;
   margin-bottom: 12px;
   font-weight: 700;
 }
@@ -713,7 +714,7 @@ onBeforeUnmount(() => {
 .hero-left p {
   margin: 0;
   line-height: 1.7;
-  color: #b7d9c1;
+  color: #cbd5e1;
 }
 
 .hero-right {
@@ -726,9 +727,9 @@ onBeforeUnmount(() => {
 .hero-chip {
   padding: 12px 16px;
   border-radius: 999px;
-  background: rgba(102, 224, 135, 0.12);
-  border: 1px solid rgba(102, 224, 135, 0.18);
-  color: #e7fff0;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: #e2e8f0;
   height: fit-content;
 }
 
@@ -749,15 +750,15 @@ onBeforeUnmount(() => {
 
 .filter-group label {
   font-size: 0.9rem;
-  color: #d7f7e0;
+  color: #e2e8f0;
   font-weight: 600;
 }
 
 .filter-group select {
   width: 100%;
-  background: rgba(8, 18, 13, 0.82);
-  color: #f3fff7;
-  border: 1px solid rgba(122, 255, 170, 0.12);
+  background: rgba(15, 23, 42, 0.82);
+  color: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 14px;
   padding: 14px;
   outline: none;
@@ -770,7 +771,7 @@ onBeforeUnmount(() => {
 }
 
 .error-card {
-  border-color: rgba(255, 120, 120, 0.18);
+  border-color: rgba(248, 113, 113, 0.28);
 }
 
 .stats-grid {
@@ -792,7 +793,7 @@ onBeforeUnmount(() => {
 
 .stat-card p {
   margin: 0;
-  color: #b7d9c1;
+  color: #cbd5e1;
   line-height: 1.6;
 }
 
@@ -816,7 +817,7 @@ onBeforeUnmount(() => {
 .insight-card p {
   margin: 0;
   line-height: 1.7;
-  color: #b7d9c1;
+  color: #cbd5e1;
 }
 
 .chart-shell {

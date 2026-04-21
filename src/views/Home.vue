@@ -380,7 +380,7 @@ onBeforeUnmount(() => {
   inset: 0;
   background: #ffffff;
   transform: translateX(-100%);
-  animation: scrollPulse 1.8s ease-in-out infinite;
+  animation: scrollPulse 0.5s ease-in-out infinite;
 }
 
 @keyframes scrollPulse {
