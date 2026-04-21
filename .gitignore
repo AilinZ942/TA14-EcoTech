@@ -1,0 +1,5 @@
+.venv/
+.venv_broken/
+.venv_test/
+
+emissions.xlsx

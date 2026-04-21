@@ -1,0 +1,9 @@
+state,n_years_total,top_environmental_metric_for_ewaste,top_pearson_corr_for_ewaste
+ACT,15,total_land_emission_kg,0.6883823618848235
+NSW,15,tvoc_air_kg,-0.8001463657654175
+NT,15,tvoc_air_kg,0.8473116855116638
+QLD,15,mercury_air_kg,0.4204992096280979
+SA,15,chromium_land_kg,0.625422374311353
+TAS,15,zinc_land_kg,0.7254140868568785
+VIC,15,total_air_emission_kg,-0.8191753261567598
+WA,15,mercury_air_kg,-0.9145101549073625
