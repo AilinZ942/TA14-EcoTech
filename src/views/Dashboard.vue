@@ -188,14 +188,14 @@ function formatNumber(value) {
 
 function tooltipStyle() {
   return {
-    backgroundColor: 'rgba(15, 23, 42, 0.96)',
-    borderColor: 'rgba(56, 189, 248, 0.18)',
+    backgroundColor: 'rgba(241, 248, 242, 0.97)',
+    borderColor: 'rgba(210, 232, 214, 0.98)',
     borderWidth: 1,
-    textStyle: { color: '#f8fafc', fontSize: 13 },
+    textStyle: { color: '#173a29', fontSize: 13 },
     extraCssText: `
       border-radius: 16px;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
-      backdrop-filter: blur(8px);
+      box-shadow: 0 18px 34px rgba(27, 67, 50, 0.10);
+      backdrop-filter: blur(10px);
     `,
   }
 }
@@ -296,25 +296,25 @@ function updateCharts() {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, ...tooltipStyle() },
     legend: {
       top: 8,
-      textStyle: { color: '#e2e8f0' },
+      textStyle: { color: '#557260' },
     },
     grid: { left: 50, right: 20, top: 50, bottom: 40 },
     xAxis: {
       type: 'category',
       data: pollutionState.states,
-      axisLabel: { color: '#cbd5e1' },
-      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.12)' } },
+      axisLabel: { color: '#557260' },
+      axisLine: { lineStyle: { color: 'rgba(23, 58, 41, 0.14)' } },
     },
     yAxis: {
       type: 'value',
-      axisLabel: { color: '#cbd5e1' },
-      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+      axisLabel: { color: '#557260' },
+      splitLine: { lineStyle: { color: 'rgba(23, 58, 41, 0.08)' } },
     },
     series: pollutionState.series.map((s, idx) => ({
       ...s,
       itemStyle: {
         borderRadius: [8, 8, 0, 0],
-        color: ['#38bdf8', '#818cf8', '#a78bfa'][idx],
+        color: ['#81c784', '#43a047', '#2e7d32'][idx],
       },
     })),
   })
@@ -325,13 +325,13 @@ function updateCharts() {
     grid: { left: 180, right: 20, top: 20, bottom: 20 },
     xAxis: {
       type: 'value',
-      axisLabel: { color: '#cbd5e1' },
-      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+      axisLabel: { color: '#557260' },
+      splitLine: { lineStyle: { color: 'rgba(23, 58, 41, 0.08)' } },
     },
     yAxis: {
       type: 'category',
       data: facilities.map((item) => item.facility_name),
-      axisLabel: { color: '#f1f5f9', fontWeight: 600 },
+      axisLabel: { color: '#173a29', fontWeight: 600 },
       axisLine: { show: false },
       axisTick: { show: false },
     },
@@ -341,7 +341,7 @@ function updateCharts() {
         data: facilities.map((item) => Number(item.total_air_emission_kg || 0)),
         barWidth: 16,
         itemStyle: {
-          color: '#38bdf8',
+          color: '#81c784',
           borderRadius: [0, 10, 10, 0],
         },
       },
@@ -360,12 +360,12 @@ function updateCharts() {
           name: item.metal,
           value: item.value,
         })),
-        label: { color: '#f8fafc' },
+        label: { color: '#173a29' },
         itemStyle: {
           borderWidth: 2,
-          borderColor: '#0f172a',
+          borderColor: '#f8fbf8',
         },
-        color: ['#38bdf8', '#818cf8', '#a78bfa'],
+        color: ['#81c784', '#43a047', '#2e7d32'],
       },
     ],
   })
@@ -375,20 +375,20 @@ function updateCharts() {
     tooltip: { trigger: 'axis', ...tooltipStyle() },
     legend: {
       top: 8,
-      textStyle: { color: '#e2e8f0' },
+      textStyle: { color: '#557260' },
     },
     grid: { left: 50, right: 20, top: 50, bottom: 40 },
     xAxis: {
       type: 'category',
       data: healthTrend.map((item) => item.year),
       boundaryGap: false,
-      axisLabel: { color: '#cbd5e1' },
-      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.12)' } },
+      axisLabel: { color: '#557260' },
+      axisLine: { lineStyle: { color: 'rgba(23, 58, 41, 0.14)' } },
     },
     yAxis: {
       type: 'value',
-      axisLabel: { color: '#cbd5e1' },
-      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+      axisLabel: { color: '#557260' },
+      splitLine: { lineStyle: { color: 'rgba(23, 58, 41, 0.08)' } },
     },
     series: [
       {
@@ -396,16 +396,16 @@ function updateCharts() {
         type: 'line',
         smooth: true,
         data: healthTrend.map((item) => item.cases),
-        lineStyle: { width: 3, color: '#38bdf8' },
-        itemStyle: { color: '#38bdf8' },
+        lineStyle: { width: 3, color: '#81c784' },
+        itemStyle: { color: '#81c784' },
       },
       {
         name: 'Deaths',
         type: 'line',
         smooth: true,
         data: healthTrend.map((item) => item.deaths),
-        lineStyle: { width: 3, color: '#818cf8' },
-        itemStyle: { color: '#818cf8' },
+        lineStyle: { width: 3, color: '#43a047' },
+        itemStyle: { color: '#43a047' },
       },
     ],
   })
@@ -416,13 +416,13 @@ function updateCharts() {
     grid: { left: 190, right: 20, top: 20, bottom: 20 },
     xAxis: {
       type: 'value',
-      axisLabel: { color: '#cbd5e1' },
-      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+      axisLabel: { color: '#557260' },
+      splitLine: { lineStyle: { color: 'rgba(23, 58, 41, 0.08)' } },
     },
     yAxis: {
       type: 'category',
       data: fatality.map((item) => item.cancer_type),
-      axisLabel: { color: '#f1f5f9', fontWeight: 600 },
+      axisLabel: { color: '#173a29', fontWeight: 600 },
       axisLine: { show: false },
       axisTick: { show: false },
     },
@@ -432,7 +432,7 @@ function updateCharts() {
         data: fatality.map((item) => Number(item.ratio.toFixed(3))),
         barWidth: 16,
         itemStyle: {
-          color: '#a78bfa',
+          color: '#3f8f46',
           borderRadius: [0, 10, 10, 0],
         },
       },
@@ -654,10 +654,10 @@ onBeforeUnmount(() => {
   min-height: 100vh;
   padding: 30px 24px 80px;
   background:
-    radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 30%),
-    radial-gradient(circle at top right, rgba(168, 85, 247, 0.08), transparent 24%),
-    linear-gradient(180deg, #0f172a 0%, #111827 55%, #020617 100%);
-  color: #f8fafc;
+    radial-gradient(circle at 88% 8%, rgba(129, 199, 132, 0.12), transparent 18%),
+    radial-gradient(circle at 12% 92%, rgba(67, 160, 71, 0.08), transparent 22%),
+    linear-gradient(180deg, #f8fbf8 0%, #eef4ef 100%);
+  color: #173a29;
 }
 
 .hero-panel,
@@ -677,10 +677,13 @@ onBeforeUnmount(() => {
 .insight-card,
 .chart-shell,
 .status-card {
-  border: 1px solid rgba(148, 163, 184, 0.15);
-  background: rgba(30, 41, 59, 0.5);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 238, 227, 0.98);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(251, 253, 251, 0.84) 100%);
+  box-shadow:
+    0 18px 34px rgba(27, 67, 50, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(14px);
 }
 
 .hero-panel {
@@ -696,25 +699,32 @@ onBeforeUnmount(() => {
 .section-tag,
 .stat-label,
 .insight-card span {
-  display: inline-block;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #38bdf8;
-  margin-bottom: 12px;
+  display: inline-flex;
+  margin: 0 0 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(232, 245, 233, 0.9);
+  border: 1px solid rgba(207, 232, 209, 0.98);
+  color: #2e7d32;
+  font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .hero-left h1 {
   margin: 0 0 12px;
   font-size: clamp(2rem, 4vw, 3.6rem);
   line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #143324;
 }
 
 .hero-left p {
   margin: 0;
-  line-height: 1.7;
-  color: #cbd5e1;
+  line-height: 1.8;
+  color: #557260;
 }
 
 .hero-right {
@@ -727,9 +737,10 @@ onBeforeUnmount(() => {
 .hero-chip {
   padding: 12px 16px;
   border-radius: 999px;
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.18);
-  color: #e2e8f0;
+  background: linear-gradient(180deg, #eff8f0 0%, #e7f4e8 100%);
+  border: 1px solid rgba(210, 232, 214, 0.98);
+  color: #173a29;
+  font-weight: 600;
   height: fit-content;
 }
 
@@ -750,15 +761,15 @@ onBeforeUnmount(() => {
 
 .filter-group label {
   font-size: 0.9rem;
-  color: #e2e8f0;
+  color: #173a29;
   font-weight: 600;
 }
 
 .filter-group select {
   width: 100%;
-  background: rgba(15, 23, 42, 0.82);
-  color: #f8fafc;
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  color: #173a29;
+  border: 1px solid rgba(210, 232, 214, 0.98);
   border-radius: 14px;
   padding: 14px;
   outline: none;
@@ -770,8 +781,18 @@ onBeforeUnmount(() => {
   margin-bottom: 24px;
 }
 
+.status-card h3 {
+  margin: 0 0 10px;
+  color: #143324;
+}
+
+.status-card p {
+  margin: 0;
+  color: #557260;
+}
+
 .error-card {
-  border-color: rgba(248, 113, 113, 0.28);
+  border-color: rgba(220, 120, 120, 0.28);
 }
 
 .stats-grid {
@@ -789,11 +810,12 @@ onBeforeUnmount(() => {
 .stat-card h2 {
   margin: 0 0 8px;
   font-size: 2rem;
+  color: #143324;
 }
 
 .stat-card p {
   margin: 0;
-  color: #cbd5e1;
+  color: #557260;
   line-height: 1.6;
 }
 
@@ -812,12 +834,13 @@ onBeforeUnmount(() => {
 .insight-card h3 {
   margin: 0 0 8px;
   font-size: 1.4rem;
+  color: #143324;
 }
 
 .insight-card p {
   margin: 0;
   line-height: 1.7;
-  color: #cbd5e1;
+  color: #557260;
 }
 
 .chart-shell {
@@ -837,6 +860,7 @@ onBeforeUnmount(() => {
 .section-header h2 {
   margin: 0;
   font-size: 1.45rem;
+  color: #143324;
 }
 
 .section-header.compact {
