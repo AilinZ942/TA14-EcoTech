@@ -48,12 +48,13 @@ ENVIRONMENTAL_METRICS = [
 ]
 
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+
 def resolve_data_dir() -> Path:
-    candidates = [Path("/mnt/data"), Path.cwd()]
-    for candidate in candidates:
-        if (candidate / "merged_stage1.csv").exists():
-            return candidate
-    raise FileNotFoundError("Could not locate merged_stage1.csv.")
+    if (SCRIPT_DIR / "merged_stage1.csv").exists():
+        return SCRIPT_DIR
+    raise FileNotFoundError(f"Could not locate merged_stage1.csv in {SCRIPT_DIR}.")
 
 
 def build_correlation_table(df: pd.DataFrame) -> pd.DataFrame:

@@ -68,14 +68,17 @@ POLLUTANT_PATTERNS = {
 }
 
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = SCRIPT_DIR.parent
+RAW_DATA_DIR = PROJECT_DIR / "raw_data"
+
+
 def resolve_data_dir() -> Path:
-    candidates = [Path("/mnt/data"), Path.cwd()]
-    for candidate in candidates:
-        if (candidate / "national-waste-database-2022.xlsx").exists() and (
-            candidate / "emissions.xlsx"
-        ).exists():
-            return candidate
-    raise FileNotFoundError("Could not locate the required Excel workbooks.")
+    if (RAW_DATA_DIR / "national-waste-database-2022.xlsx").exists() and (
+        RAW_DATA_DIR / "emissions.xlsx"
+    ).exists():
+        return RAW_DATA_DIR
+    raise FileNotFoundError(f"Could not locate the required Excel workbooks in {RAW_DATA_DIR}.")
 
 
 def trim_text_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -312,19 +315,20 @@ def attempt_merge(
 
 
 def save_outputs(
-    data_dir: Path,
+    output_dir: Path,
     waste_state_year_agg: pd.DataFrame,
     emissions_state_year_substance: pd.DataFrame,
     emissions_state_year_wide: pd.DataFrame,
     merged_stage1: pd.DataFrame | None,
 ) -> None:
-    waste_state_year_agg.to_csv(data_dir / "waste_state_year_agg.csv", index=False)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    waste_state_year_agg.to_csv(output_dir / "waste_state_year_agg.csv", index=False)
     emissions_state_year_substance.to_csv(
-        data_dir / "emissions_state_year_substance.csv", index=False
+        output_dir / "emissions_state_year_substance.csv", index=False
     )
-    emissions_state_year_wide.to_csv(data_dir / "emissions_state_year_wide.csv", index=False)
+    emissions_state_year_wide.to_csv(output_dir / "emissions_state_year_wide.csv", index=False)
     if merged_stage1 is not None:
-        merged_stage1.to_csv(data_dir / "merged_stage1.csv", index=False)
+        merged_stage1.to_csv(output_dir / "merged_stage1.csv", index=False)
 
 
 def print_summary(
@@ -350,7 +354,8 @@ def print_summary(
 
 def main() -> None:
     data_dir = resolve_data_dir()
-    print(f"Using data directory: {data_dir}")
+    print(f"Using raw data directory: {data_dir}")
+    print(f"Writing outputs to: {SCRIPT_DIR}")
 
     waste_raw, emissions_raw = load_inputs(data_dir)
     _, hazardous_proxy, waste_state_year_agg, waste_stream_management_breakdown = clean_waste_dataset(
@@ -370,7 +375,7 @@ def main() -> None:
 
     merged_stage1 = attempt_merge(waste_state_year_agg, emissions_state_year_wide)
     save_outputs(
-        data_dir,
+        SCRIPT_DIR,
         waste_state_year_agg,
         emissions_state_year_substance,
         emissions_state_year_wide,
