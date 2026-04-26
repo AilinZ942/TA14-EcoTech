@@ -1,888 +1,620 @@
-<!--
-<script setup>
-import { ref, onMounted } from 'vue'
-import { api } from '@/api'
-const products = ref(null);
-onMounted(async () => {
-  products.value = await api.getMapLocation('2361');
-  console.log(products.value)
-})
-
-</script>
--->
-
 <template>
-  <section class="chat-hero">
-    <h1 class="page-title">AI Chat Page</h1>
-    <div class="chat-hero-left">
-      <h1>Content for this page is coming soon.</h1>
+  <section class="device-optimizer-page">
+    <div class="hero-card">
+      <div class="hero-copy">
+        <p class="eyebrow">EcoTech AI</p>
+        <h1>AI Device Optimizer</h1>
+        <p class="lede">
+          Choose your device type, write the issue in your own words, and get simple optimisation
+          tips plus a plain-language explanation of what may be affecting performance.
+        </p>
+      </div>
+
+      <div class="hero-meta">
+        <div class="meta-chip">
+          <span class="chip-label">Supported devices</span>
+          <strong>Laptop and phone</strong>
+        </div>
+        <div class="meta-chip">
+          <span class="chip-label">Input</span>
+          <strong>Free-text issue description</strong>
+        </div>
+        <div class="meta-chip">
+          <span class="chip-label">Output</span>
+          <strong>Easy tips and explanation</strong>
+        </div>
+      </div>
     </div>
 
-    <div class="chat-hero-right">
-      <svg
-        class="animated"
-        id="freepik_stories-fast-loading"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 500 500"
-        version="1.1"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svgjs="http://svgjs.com/svgjs"
-      >
-        <g
-          id="freepik--background-simple--inject-32"
-          class="animable"
-          style="transform-origin: 249.786px 240.85px"
-        >
-          <path
-            d="M437.18,367.7c2.6-5.8,14.13-33.77,17.48-81.56,3.8-54-10.43-106.82-41.72-140.13s-57.84-25.28-89.13-17.24c-16.87,4.34-31.23-1.29-46.8-7.23-43.95-16.74-87.77-5.94-112.67,35.75-8.12,13.6-10.84,26.54-11.42,42.09s-.75,32.21-12.12,44.26c-15.17,16.08-36,13.79-49.31,40.21s-15.17,52.84-22.76,58.58-13.27,4.59-19,11.49c-3.62,4.38-4.94,10.16-5.42,13.78Z"
-            style="fill: rgb(146, 227, 169); transform-origin: 249.786px 240.85px"
-            id="elyt4us4ixxkj"
-            class="animable"
-          />
-          <g id="el9k0qxwhu0l">
-            <path
-              d="M437.18,367.7c2.6-5.8,14.13-33.77,17.48-81.56,3.8-54-10.43-106.82-41.72-140.13s-57.84-25.28-89.13-17.24c-16.87,4.34-31.23-1.29-46.8-7.23-43.95-16.74-87.77-5.94-112.67,35.75-8.12,13.6-10.84,26.54-11.42,42.09s-.75,32.21-12.12,44.26c-15.17,16.08-36,13.79-49.31,40.21s-15.17,52.84-22.76,58.58-13.27,4.59-19,11.49c-3.62,4.38-4.94,10.16-5.42,13.78Z"
-              style="fill: rgb(255, 255, 255); opacity: 0.7; transform-origin: 249.786px 240.85px"
-              class="animable"
+    <div class="workspace">
+      <aside class="sidebar">
+        <div class="panel">
+          <div class="panel-heading">
+            <h2>1. Device type</h2>
+            <p>Choose the device you want help with.</p>
+          </div>
+
+          <div class="choice-list">
+            <button
+              v-for="device in deviceTypes"
+              :key="device.value"
+              class="choice-button"
+              :class="{ active: selectedDeviceType === device.value }"
+              type="button"
+              @click="selectedDeviceType = device.value"
+            >
+              <span>{{ device.label }}</span>
+              <small>{{ device.hint }}</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-heading">
+            <h2>2. Write the issue</h2>
+            <p>Describe what you are seeing in your own words.</p>
+          </div>
+
+          <label class="issue-field">
+            <span>Your issue</span>
+            <textarea
+              v-model="issueText"
+              rows="7"
+              placeholder="Describe the issue in your own words."
             />
-          </g>
-        </g>
+          </label>
+        </div>
 
-        <g
-          id="freepik--Clouds--inject-32"
-          class="animable"
-          style="transform-origin: 304.045px 163.448px"
-        >
-          <path
-            d="M343,166.74c.93-.31-2.88-11.4-3.22-12.44-2.35-7.18-8.19-14.22-16.34-14.07s-17.55,11.5-25.68,6.88c-6.72-3.81-10.34-11.2-17.71-14.17-13.94-5.63-13.95,9.22-24.16,11.58-7.81,1.8-10.21-4.81-17.42.6s-2.41,7.81-10.21,9-9-.6-13.82,1.2-13.22,10.81-13.22,10.81-6.6-2.4-12.61,0-8.41,6-8.41,6h170S348.36,165.54,343,166.74Z"
-            style="fill: rgb(146, 227, 169); transform-origin: 265.2px 151.903px"
-            id="elk1gc7mea6f"
-            class="animable"
-          />
-          <path
-            d="M424,192.34c.49-.17-1.53-6.08-1.72-6.64-1.25-3.82-4.37-7.58-8.71-7.5s-9.36,6.13-13.69,3.67c-3.59-2-5.52-6-9.45-7.56-7.43-3-7.43,4.92-12.88,6.18-4.16,1-5.44-2.56-9.29.32s-1.28,4.17-5.44,4.81-4.81-.32-7.37.64-7,5.76-7,5.76a10.57,10.57,0,0,0-6.72,0,10,10,0,0,0-4.49,3.2h90.65S426.89,191.7,424,192.34Z"
-            style="fill: rgb(146, 227, 169); transform-origin: 382.565px 184.428px"
-            id="elxnlbahlym6"
-            class="animable"
-          />
-          <g id="ell6cw6ydczxb">
-            <g style="opacity: 0.4; transform-origin: 304.045px 163.448px" class="animable">
-              <path
-                d="M343,166.74c.93-.31-2.88-11.4-3.22-12.44-2.35-7.18-8.19-14.22-16.34-14.07s-17.55,11.5-25.68,6.88c-6.72-3.81-10.34-11.2-17.71-14.17-13.94-5.63-13.95,9.22-24.16,11.58-7.81,1.8-10.21-4.81-17.42.6s-2.41,7.81-10.21,9-9-.6-13.82,1.2-13.22,10.81-13.22,10.81-6.6-2.4-12.61,0-8.41,6-8.41,6h170S348.36,165.54,343,166.74Z"
-                style="fill: rgb(255, 255, 255); transform-origin: 265.2px 151.903px"
-                id="elifnsppqkv8"
-                class="animable"
-              />
-              <path
-                d="M424,192.34c.49-.17-1.53-6.08-1.72-6.64-1.25-3.82-4.37-7.58-8.71-7.5s-9.36,6.13-13.69,3.67c-3.59-2-5.52-6-9.45-7.56-7.43-3-7.43,4.92-12.88,6.18-4.16,1-5.44-2.56-9.29.32s-1.28,4.17-5.44,4.81-4.81-.32-7.37.64-7,5.76-7,5.76a10.57,10.57,0,0,0-6.72,0,10,10,0,0,0-4.49,3.2h90.65S426.89,191.7,424,192.34Z"
-                style="fill: rgb(255, 255, 255); transform-origin: 382.565px 184.428px"
-                id="el3q907cykrto"
-                class="animable"
-              />
-            </g>
-          </g>
-        </g>
+        <div class="panel compact">
+          <button class="primary-button" type="button" :disabled="isSending" @click="getTips">
+            Get Optimisation Tips
+          </button>
+          <button class="secondary-button" type="button" @click="resetForm">
+            Reset form
+          </button>
+          <p class="panel-note">
+            The form checks that you select a device and write an issue before generating results.
+          </p>
+        </div>
+      </aside>
 
-        <g
-          id="freepik--Device--inject-32"
-          class="animable"
-          style="transform-origin: 287.26px 289.78px"
-        >
-          <path
-            d="M235.25,211.06H427.12a4.29,4.29,0,0,1,4.29,4.29V356.73a0,0,0,0,1,0,0H231a0,0,0,0,1,0,0V215.35A4.29,4.29,0,0,1,235.25,211.06Z"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 331.205px 283.895px;
-            "
-            id="elqph71hq1y5"
-            class="animable"
-          />
-          <path
-            d="M247,222.12H415.36a4.29,4.29,0,0,1,4.29,4.29V358.69a0,0,0,0,1,0,0H242.72a0,0,0,0,1,0,0V226.41A4.29,4.29,0,0,1,247,222.12Z"
-            style="
-              fill: rgb(38, 50, 56);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 331.185px 290.405px;
-            "
-            id="eluslmppwix6q"
-            class="animable"
-          />
-          <path
-            d="M429.46,368.5H222.73c-10.83,0-19.62-6.56-19.62-14.65h246C449.07,361.94,440.29,368.5,429.46,368.5Z"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 326.11px 361.175px;
-            "
-            id="el2cfbpncphz"
-            class="animable"
-          />
-          <rect
-            x="272.83"
-            y="274.8"
-            width="106.53"
-            height="17.85"
-            rx="5"
-            style="
-              fill: rgb(255, 255, 255);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 326.095px 283.725px;
-            "
-            id="elg104esb1w0a"
-            class="animable"
-          />
-          <rect
-            x="321.55"
-            y="278.04"
-            width="9.08"
-            height="11.36"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 326.09px 283.72px;
-            "
-            id="elanwgcjb059j"
-            class="animable"
-          />
-          <rect
-            x="310.59"
-            y="278.04"
-            width="9.08"
-            height="11.36"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 315.13px 283.72px;
-            "
-            id="eli1oldwti2ga"
-            class="animable"
-          />
-          <rect
-            x="299.62"
-            y="278.04"
-            width="9.08"
-            height="11.36"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 304.16px 283.72px;
-            "
-            id="elk6ddoqagzo9"
-            class="animable"
-          />
-          <rect
-            x="288.65"
-            y="278.04"
-            width="9.08"
-            height="11.36"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 293.19px 283.72px;
-            "
-            id="elmx3wclhnoxg"
-            class="animable"
-          />
-          <path
-            d="M286.76,278h-4.47a5.68,5.68,0,0,0,0,11.36h4.47Z"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 281.685px 283.68px;
-            "
-            id="elltg40cky9w"
-            class="animable"
-          />
-          <rect
-            x="332.52"
-            y="278.04"
-            width="9.08"
-            height="11.36"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 337.06px 283.72px;
-            "
-            id="elbm7eebouzng"
-            class="animable"
-          />
-          <line
-            x1="235.88"
-            y1="220.98"
-            x2="181.95"
-            y2="220.98"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 208.915px 220.98px;
-            "
-            id="el7fxijoift0g"
-            class="animable"
-          />
-          <line
-            x1="235.88"
-            y1="276.48"
-            x2="206.56"
-            y2="276.48"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 221.22px 276.48px;
-            "
-            id="elgdod40aspv"
-            class="animable"
-          />
-          <line
-            x1="200.8"
-            y1="276.48"
-            x2="188.76"
-            y2="276.48"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 194.78px 276.48px;
-            "
-            id="elgut8xtaxohp"
-            class="animable"
-          />
-          <line
-            x1="235.88"
-            y1="255.87"
-            x2="175.67"
-            y2="255.87"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 205.775px 255.87px;
-            "
-            id="el54vwtt520l5"
-            class="animable"
-          />
-          <line
-            x1="235.88"
-            y1="245.93"
-            x2="219.12"
-            y2="245.93"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 227.5px 245.93px;
-            "
-            id="el9cxlxjuakfp"
-            class="animable"
-          />
-          <line
-            x1="235.88"
-            y1="301.26"
-            x2="175.67"
-            y2="301.26"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 205.775px 301.26px;
-            "
-            id="el6f7bxxd0ak"
-            class="animable"
-          />
-          <line
-            x1="235.88"
-            y1="323.19"
-            x2="219.12"
-            y2="323.19"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 227.5px 323.19px;
-            "
-            id="eld5mncq1p23n"
-            class="animable"
-          />
-          <line
-            x1="199.23"
-            y1="230.41"
-            x2="145.3"
-            y2="230.41"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 172.265px 230.41px;
-            "
-            id="elkwr3sbwnylb"
-            class="animable"
-          />
-          <line
-            x1="136.93"
-            y1="230.41"
-            x2="125.41"
-            y2="230.41"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 131.17px 230.41px;
-            "
-            id="eln04bdcwq5nq"
-            class="animable"
-          />
-        </g>
+      <main class="results-panel">
+        <div class="results-header">
+          <div>
+            <p class="eyebrow">Results</p>
+            <h2>{{ resultTitle }}</h2>
+          </div>
 
-        <g
-          id="freepik--Car--inject-32"
-          class="animable animator-active"
-          style="transform-origin: 183.385px 336.869px"
-        >
-          <path
-            d="M176.51,331.23a7.51,7.51,0,0,1,6.25-9c7.8-1.76,9,7.61,9.17,9.95Z"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 184.137px 327.096px;
-            "
-            id="elcnr81o4rqs6"
-            class="animable"
-          />
-          <path
-            d="M191.34,326.55h-7.22v1.95l7.81,3.71A10.77,10.77,0,0,0,191.34,326.55Z"
-            style="
-              fill: rgb(38, 50, 56);
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 188.097px 329.38px;
-            "
-            id="el9e97jxbd358"
-            class="animable"
-          />
-          <path
-            d="M71.35,311.33v35.9s13.26,4.29,23.6,8.59a237,237,0,0,1,21.47,10.53H233.1s-11.32.39-13.27-1.36-1.56-5.66,1.95-8,23.61-3.12,23.61-3.12,71.41-3.91,71.8-5.08.39-2.14-1.36-2.73-31-9.17-52.88-12.1-41.17-1.75-45.66-.39-16.39-.39-24.58-1.95a129.7,129.7,0,0,0-15.22-1.95v-7.22h-7.22v-2.14h2.93V310.16a45.68,45.68,0,0,0-18.74,1.76c-10,3.12-20.48,13.65-28.29,18.14s-16.58,6.83-20.87,6.83a21.2,21.2,0,0,1-7.22-1.17v-7.8l3.7-3.91V309.38H83.44s-.19,3.51-3.31,3.71S71.35,311.33,71.35,311.33Z"
-            style="
-              fill: rgb(255, 255, 255);
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 194.375px 337.884px;
-            "
-            id="el0mxizwzokcr"
-            class="animable"
-          />
-          <path
-            d="M98.08,328.17v-.25l3.7-3.91V309.38H83.44s-.19,3.51-3.31,3.71-8.78-1.76-8.78-1.76v33.75C75.53,340,83.41,333.44,98.08,328.17Z"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 86.565px 327.23px;
-            "
-            id="el8b2t9kiyfbb"
-            class="animable"
-          />
-          <polygon
-            points="134.95 351.12 125.33 351.12 137.67 366.35 148.35 366.35 134.95 351.12"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 136.84px 358.735px;
-            "
-            id="elei92yddgl47"
-            class="animable"
-          />
-          <polygon
-            points="151.04 351.12 141.43 351.12 153.76 366.35 164.44 366.35 151.04 351.12"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 152.935px 358.735px;
-            "
-            id="elfh7mbp3hy5e"
-            class="animable"
-          />
-          <path
-            d="M200.37,360.64c-8.63-2.16-13.49-9.18-17.27-16.2s-12.69-14-15.66-13.76-9.71,1.35-9.71,1.35-2.43-1.08-11.88-6.75a35.63,35.63,0,0,0-8-3.54,138.29,138.29,0,0,1-11.31,8.12q2.76.06,6.38.28c8.91.54,11.61,5.4,11.61,5.4a33.85,33.85,0,0,1,5.94-.54c3.24,0,13.22,8.36,15.65,17,1.56,5.55,6.69,11.1,10.15,14.35h47.63C215.53,364.34,205.15,361.83,200.37,360.64Z"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 175.22px 344.045px;
-            "
-            id="elmnr54xo41b"
-            class="animable"
-          />
-          <path
-            d="M233.1,366.35h-5.19C230.69,366.44,233.1,366.35,233.1,366.35Z"
-            style="
-              fill: rgb(38, 50, 56);
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 230.505px 366.37px;
-            "
-            id="elkgc23gpa1pk"
-            class="animable"
-          />
-          <path
-            d="M221.78,357c3.51-2.34,23.61-3.12,23.61-3.12s25.59-1.4,46.22-2.78c-13.05-.69-51.77-2.58-60.66-1.13-10.73,1.76-31.61,6.25-43.32,11.32s-26.53.2-54.82-3.12c-20-2.35-37-4.31-45.25-5.25,2.49.93,5,1.92,7.39,2.91a237,237,0,0,1,21.47,10.53H227.91c-3.25-.09-7-.42-8.08-1.36C217.88,363.23,218.27,359.33,221.78,357Z"
-            style="
-              fill: rgb(38, 50, 56);
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 189.585px 357.898px;
-            "
-            id="elpfjwpv2noh"
-            class="animable"
-          />
-          <circle
-            cx="264.65"
-            cy="349.09"
-            r="19.41"
-            style="fill: rgb(38, 50, 56); transform-origin: 264.65px 349.09px"
-            id="elm3csw4u91tk"
-            class="animable"
-          />
-          <g id="elpjuwkma0h2h">
-            <g style="opacity: 0.31; transform-origin: 264.555px 348.565px" class="animable">
-              <path
-                d="M280.78,338.28,264.4,348.64l19.29-3.38A19.28,19.28,0,0,0,280.78,338.28Z"
-                style="fill: rgb(255, 255, 255); transform-origin: 274.045px 343.46px"
-                id="eldjr9fgib606"
-                class="animable"
-              />
-              <path
-                d="M247.88,358.85l16.77-9.76-19.23,2.64A19.09,19.09,0,0,0,247.88,358.85Z"
-                style="fill: rgb(255, 255, 255); transform-origin: 255.035px 353.97px"
-                id="elwv8304wljk"
-                class="animable"
-              />
-            </g>
-          </g>
-          <path
-            d="M246.87,356.87l9.89-5.06-10.94,2A18.71,18.71,0,0,0,246.87,356.87Z"
-            style="fill: rgb(255, 255, 255); transform-origin: 251.29px 354.34px"
-            id="eldr0oyaj85gl"
-            class="animable"
-          />
-          <path
-            d="M272.18,345.63l11-2.32a19.35,19.35,0,0,0-1.35-3.25Z"
-            style="fill: rgb(255, 255, 255); transform-origin: 277.68px 342.845px"
-            id="eltibux3xxitn"
-            class="animable"
-          />
-          <circle
-            cx="264.65"
-            cy="349.09"
-            r="11.41"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 264.65px 349.09px;
-            "
-            id="elg428hps87o"
-            class="animable"
-          />
-          <circle
-            cx="264.65"
-            cy="349.09"
-            r="3.02"
-            style="fill: rgb(38, 50, 56); transform-origin: 264.65px 349.09px"
-            id="elwcau14pcla"
-            class="animable"
-          />
-          <polygon
-            points="291.05 351.33 295.53 356.6 307.83 356.6 304.9 349.96 291.05 351.33"
-            style="
-              fill: rgb(38, 50, 56);
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 299.44px 353.28px;
-            "
-            id="elb41ptnr6y7u"
-            class="animable"
-          />
-          <path
-            d="M289.49,356.21v9.56H320.9v-8.2s-7.81-.58-15.61-1.95S291.24,354.84,289.49,356.21Z"
-            style="
-              fill: rgb(255, 255, 255);
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 305.195px 360.306px;
-            "
-            id="elyed9g4c0ut"
-            class="animable"
-          />
-          <path
-            d="M221,354.45v9.76H198.56v-2.73s6.83-1.17,10.34-3.52S214.76,354.26,221,354.45Z"
-            style="
-              fill: rgb(255, 255, 255);
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 209.78px 359.321px;
-            "
-            id="el1hzgkr0f5h5"
-            class="animable"
-          />
-          <path
-            d="M213.19,338.26h-8.78s-3.7.78-3.31,4.09,3.12,7,4.68,7H220"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 210.536px 343.805px;
-            "
-            id="el8pvsd8t3yg"
-            class="animable"
-          />
-          <path
-            d="M204.41,342c1-4.48,4.3-3.31,4.3-3.31l-.56-.39h-3.74s-3.7.78-3.31,4.09,3.12,7,4.68,7A9.29,9.29,0,0,1,204.41,342Z"
-            style="
-              fill: rgb(38, 50, 56);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 204.891px 343.845px;
-            "
-            id="elo6ry8sogtl"
-            class="animable"
-          />
-          <path
-            d="M113.69,344.7c11.12-1.76,32-9.17,32-9.17,14.44-6,31.81-5.86,31.81-5.86"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 145.595px 337.185px;
-            "
-            id="elkec8j0frgnn"
-            class="animable"
-          />
-          <path
-            d="M105.49,349.18s33.76-6.44,60.29-10.92,41.37-2.15,47-3.12,8.78-2.54,13.86-2.74"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 166.065px 340.79px;
-            "
-            id="elcybcqccpaed"
-            class="animable"
-          />
-          <path
-            d="M171.63,310l-1.95-3.13s2.35-1.36-.58-1.56-6.44,0-6.83.78,2.54.59,2.54.59V310Z"
-            style="
-              fill: rgb(38, 50, 56);
-              stroke: rgb(38, 50, 56);
-              stroke-miterlimit: 10;
-              transform-origin: 166.932px 307.619px;
-            "
-            id="elnvdm1x87q6e"
-            class="animable"
-          />
-          <circle
-            cx="101.49"
-            cy="349.09"
-            r="19.41"
-            style="fill: rgb(38, 50, 56); transform-origin: 101.49px 349.09px"
-            id="eljotsrg1ij9b"
-            class="animable"
-          />
-          <g id="eltygytnm7tuq">
-            <g style="opacity: 0.31; transform-origin: 101.395px 348.565px" class="animable">
-              <path
-                d="M117.62,338.28l-16.38,10.36,19.29-3.38A19.45,19.45,0,0,0,117.62,338.28Z"
-                style="fill: rgb(255, 255, 255); transform-origin: 110.885px 343.46px"
-                id="el0tbat2vefpy"
-                class="animable"
-              />
-              <path
-                d="M84.72,358.85l16.77-9.76-19.23,2.64A19.09,19.09,0,0,0,84.72,358.85Z"
-                style="fill: rgb(255, 255, 255); transform-origin: 91.875px 353.97px"
-                id="elcksef93bi34"
-                class="animable"
-              />
-            </g>
-          </g>
-          <path
-            d="M83.71,356.87l9.89-5.06-10.94,2A18.71,18.71,0,0,0,83.71,356.87Z"
-            style="fill: rgb(255, 255, 255); transform-origin: 88.13px 354.34px"
-            id="el5ectkycbb5q"
-            class="animable"
-          />
-          <path
-            d="M109,345.63l11-2.32a19.35,19.35,0,0,0-1.35-3.25Z"
-            style="fill: rgb(255, 255, 255); transform-origin: 114.5px 342.845px"
-            id="el7f1z31p0are"
-            class="animable"
-          />
-          <circle
-            cx="101.49"
-            cy="349.09"
-            r="11.41"
-            style="
-              fill: rgb(146, 227, 169);
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 101.49px 349.09px;
-            "
-            id="elc6gtn08eqkr"
-            class="animable"
-          />
-          <circle
-            cx="101.49"
-            cy="349.09"
-            r="3.02"
-            style="fill: rgb(38, 50, 56); transform-origin: 101.49px 349.09px"
-            id="elhlasp3uzm7"
-            class="animable"
-          />
-          <line
-            x1="162.24"
-            y1="314.84"
-            x2="132.92"
-            y2="314.84"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 147.58px 314.84px;
-            "
-            id="elr6oro5ibs7s"
-            class="animable"
-          />
-          <line
-            x1="75.19"
-            y1="323.6"
-            x2="45.87"
-            y2="323.6"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 60.53px 323.6px;
-            "
-            id="elk0bino3twvs"
-            class="animable"
-          />
-          <line
-            x1="75.19"
-            y1="335.87"
-            x2="58.6"
-            y2="335.87"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 66.895px 335.87px;
-            "
-            id="elaxxdpttrc3a"
-            class="animable"
-          />
-          <line
-            x1="136.54"
-            y1="324.77"
-            x2="119.95"
-            y2="324.77"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 128.245px 324.77px;
-            "
-            id="elxwryl0us0h"
-            class="animable"
-          />
-          <line
-            x1="127.16"
-            y1="314.84"
-            x2="115.12"
-            y2="314.84"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              transform-origin: 121.14px 314.84px;
-            "
-            id="elr8dt17u9pwe"
-            class="animable"
-          />
-        </g>
+          <div class="status-chip" :class="{ ready: canOptimize, loading: isSending }">
+            <span v-if="isSending">Generating</span>
+            <span v-else-if="canOptimize">Ready to run</span>
+            <span v-else>Waiting for input</span>
+          </div>
+        </div>
 
-        <g
-          id="freepik--Floor--inject-32"
-          class="animable"
-          style="transform-origin: 250.815px 368.5px"
-        >
-          <line
-            x1="35.8"
-            y1="368.5"
-            x2="465.83"
-            y2="368.5"
-            style="
-              fill: none;
-              stroke: rgb(38, 50, 56);
-              stroke-linecap: round;
-              stroke-linejoin: round;
-              stroke-width: 3px;
-              transform-origin: 250.815px 368.5px;
-            "
-            id="elzz671ui4tqe"
-            class="animable"
-          />
-        </g>
+        <article v-if="result" class="result-card">
+          <div class="result-summary">
+            <div class="summary-block">
+              <span>Device</span>
+              <strong>{{ result.device_label }}</strong>
+            </div>
+            <div class="summary-block">
+              <span>Issue category</span>
+              <strong>{{ result.issue_label }}</strong>
+            </div>
+            <div class="summary-block">
+              <span>Why it matters</span>
+              <strong>{{ result.device_summary }}</strong>
+            </div>
+          </div>
 
-        <defs>
-          <filter id="active" height="200%">
-            <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="2" />
-            <feFlood flood-color="#32DFEC" flood-opacity="1" result="PINK" />
-            <feComposite in="PINK" in2="DILATED" operator="in" result="OUTLINE" />
-            <feMerge>
-              <feMergeNode in="OUTLINE" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <filter id="hover" height="200%">
-            <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="2" />
-            <feFlood flood-color="#ff0000" flood-opacity="0.5" result="PINK" />
-            <feComposite in="PINK" in2="DILATED" operator="in" result="OUTLINE" />
-            <feMerge>
-              <feMergeNode in="OUTLINE" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-            <feColorMatrix
-              type="matrix"
-              values="0 0 0 0 0
-                      0 1 0 0 0
-                      0 0 0 0 0
-                      0 0 0 1 0"
-            />
-          </filter>
-        </defs>
-      </svg>
+          <div class="result-section">
+            <h3>What may be affecting your device</h3>
+            <p>{{ result.issue_explanation }}</p>
+          </div>
+
+          <div class="result-section">
+            <h3>Optimisation tips</h3>
+            <ul class="tips-list">
+              <li v-for="tip in result.suggestions" :key="tip">{{ tip }}</li>
+            </ul>
+          </div>
+        </article>
+
+        <article v-else class="placeholder-card">
+          <p class="placeholder-title">Your optimisation tips will appear here.</p>
+          <p>
+            Select a device type, write your issue, then click <strong>Get Optimisation Tips</strong>.
+          </p>
+        </article>
+
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+      </main>
     </div>
   </section>
 </template>
 
-<style>
-.chat-hero {
+<script setup>
+import { computed, onMounted, ref, watch } from 'vue'
+
+import { api } from '@/api'
+
+const STORAGE_KEY = 'ecotech-device-optimizer-v2'
+
+const deviceTypes = [
+  {
+    value: 'laptop',
+    label: 'Laptop',
+    hint: 'Good for study, work, and longer sessions',
+  },
+  {
+    value: 'phone',
+    label: 'Phone',
+    hint: 'Good for everyday use and mobility',
+  },
+]
+
+const selectedDeviceType = ref('')
+const issueText = ref('')
+const result = ref(null)
+const errorMessage = ref('')
+const isSending = ref(false)
+
+const resultTitle = computed(() => {
+  if (result.value) {
+    return `${result.value.device_label} - ${result.value.issue_label}`
+  }
+
+  if (selectedDeviceType.value && issueText.value.trim()) {
+    const device = getDeviceLabel(selectedDeviceType.value)
+    return `${device} - Ready for analysis`
+  }
+
+  return 'No results yet'
+})
+
+const canOptimize = computed(() => Boolean(selectedDeviceType.value && issueText.value.trim()))
+
+function getDeviceLabel(value) {
+  const item = deviceTypes.find((entry) => entry.value === value)
+  return item ? item.label : 'Device'
+}
+
+function loadState() {
+  if (typeof window === 'undefined') return
+
+  const raw = window.sessionStorage.getItem(STORAGE_KEY)
+  if (!raw) return
+
+  try {
+    const parsed = JSON.parse(raw)
+    selectedDeviceType.value = parsed.selectedDeviceType || ''
+    issueText.value = parsed.issueText || ''
+    result.value = parsed.result || null
+  } catch {
+    selectedDeviceType.value = ''
+    issueText.value = ''
+    result.value = null
+  }
+}
+
+function persistState() {
+  if (typeof window === 'undefined') return
+
+  window.sessionStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({
+      selectedDeviceType: selectedDeviceType.value,
+      issueText: issueText.value,
+      result: result.value,
+    }),
+  )
+}
+
+function resetForm() {
+  selectedDeviceType.value = ''
+  issueText.value = ''
+  result.value = null
+  errorMessage.value = ''
+  persistState()
+}
+
+async function getTips() {
+  if (!selectedDeviceType.value || !issueText.value.trim()) {
+    errorMessage.value = 'Please select a device type and describe the issue before getting optimisation tips.'
+    result.value = null
+    persistState()
+    return
+  }
+
+  if (isSending.value) return
+
+  isSending.value = true
+  errorMessage.value = ''
+
+  try {
+    const response = await api.getDeviceOptimizationTips({
+      device_type: selectedDeviceType.value,
+      issue_text: issueText.value.trim(),
+    })
+
+    result.value = response
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'Something went wrong.'
+    result.value = null
+  } finally {
+    isSending.value = false
+    persistState()
+  }
+}
+
+watch([selectedDeviceType, issueText, result], persistState, { deep: true })
+
+onMounted(() => {
+  loadState()
+  persistState()
+})
+</script>
+
+<style scoped>
+.device-optimizer-page {
+  min-height: 100vh;
+  padding: 32px 24px 48px;
+  background:
+    radial-gradient(circle at top left, rgba(35, 123, 87, 0.2), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(219, 169, 79, 0.14), transparent 24%),
+    linear-gradient(180deg, #f7fbf8 0%, #edf4ee 100%);
+  color: #173023;
+}
+
+.hero-card,
+.panel,
+.results-panel {
+  border: 1px solid rgba(23, 48, 35, 0.1);
+  box-shadow: 0 18px 50px rgba(23, 48, 35, 0.08);
+}
+
+.hero-card {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  gap: 40px;
-  padding: 60px 80px;
-  text-align: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
 }
 
-.chat-hero-left {
-  flex: 1;
+.hero-copy {
+  max-width: 760px;
 }
 
-.chat-hero-right {
-  flex: 1;
-  max-width: 420px;
+.eyebrow,
+.chip-label {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #2b7a59;
 }
 
-.chat-hero-right svg {
-  width: 100%;
-  height: auto;
+.hero-copy h1 {
+  margin: 0;
+  font-size: clamp(2.1rem, 4vw, 3.8rem);
+  line-height: 1.02;
+}
+
+.lede {
+  margin: 14px 0 0;
+  max-width: 66ch;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: #51655c;
+}
+
+.hero-meta {
+  display: grid;
+  gap: 12px;
+  min-width: 250px;
+}
+
+.meta-chip {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #f7fff9 0%, #e8f4ec 100%);
+  border: 1px solid rgba(47, 125, 87, 0.16);
+}
+
+.meta-chip strong {
   display: block;
+  font-size: 1rem;
+  color: #173626;
 }
 
-svg#freepik_stories-fast-loading:not(.animated) .animable {
-  opacity: 0;
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) 1fr;
+  gap: 20px;
+  margin-top: 20px;
 }
 
-svg#freepik_stories-fast-loading.animated #freepik--Device--inject-32 {
-  animation: 1.5s 1 forwards ease-in slideLeft;
-  animation-delay: 0s;
+.sidebar {
+  display: grid;
+  gap: 16px;
 }
 
-svg#freepik_stories-fast-loading.animated #freepik--Car--inject-32 {
-  animation: 1s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) lightSpeedRight;
-  animation-delay: 0s;
+.panel,
+.results-panel {
+  padding: 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.86);
 }
 
-@keyframes slideLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-30px);
+.panel-heading h2,
+.results-header h2 {
+  margin: 0;
+}
+
+.panel-heading p {
+  margin: 6px 0 0;
+  color: #5f7167;
+  line-height: 1.5;
+}
+
+.choice-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.choice-button,
+.primary-button,
+.secondary-button {
+  border: 0;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.choice-button {
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #f4f8f5;
+  color: #214132;
+}
+
+.choice-button span {
+  display: block;
+  font-weight: 700;
+}
+
+.choice-button small {
+  display: block;
+  margin-top: 4px;
+  color: #60746a;
+  line-height: 1.35;
+}
+
+.choice-button.active {
+  background: linear-gradient(135deg, #c9efcf 0%, #9fe0ae 100%);
+  box-shadow: 0 10px 20px rgba(63, 148, 82, 0.16);
+}
+
+.choice-button:hover,
+.primary-button:hover,
+.secondary-button:hover {
+  transform: translateY(-1px);
+}
+
+.issue-field {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  color: #294337;
+}
+
+.issue-field span {
+  font-weight: 700;
+}
+
+.issue-field textarea,
+.choice-button {
+  width: 100%;
+}
+
+.issue-field textarea {
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(22, 48, 35, 0.14);
+  background: #fff;
+  color: #173023;
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+}
+
+.issue-field textarea:focus {
+  border-color: rgba(31, 122, 81, 0.45);
+  box-shadow: 0 0 0 4px rgba(31, 122, 81, 0.08);
+}
+
+.panel.compact {
+  display: grid;
+  gap: 10px;
+}
+
+.primary-button,
+.secondary-button {
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-weight: 700;
+}
+
+.primary-button {
+  background: #1f7a51;
+  color: #fff;
+}
+
+.primary-button:disabled {
+  cursor: not-allowed;
+  background: #93b8a1;
+}
+
+.secondary-button {
+  background: #edf4ef;
+  color: #234032;
+}
+
+.panel-note {
+  margin: 0;
+  color: #62776d;
+  line-height: 1.55;
+}
+
+.results-panel {
+  display: grid;
+  gap: 16px;
+  min-height: 72vh;
+}
+
+.results-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.status-chip {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #eef3ef;
+  color: #5f7167;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.status-chip.ready {
+  background: #d4eed9;
+  color: #1f6a48;
+}
+
+.status-chip.loading {
+  background: #fff0d1;
+  color: #91670f;
+}
+
+.result-card,
+.placeholder-card {
+  padding: 20px;
+  border-radius: 22px;
+  background: #f7fbf8;
+  border: 1px solid rgba(23, 48, 35, 0.08);
+}
+
+.placeholder-card {
+  display: grid;
+  align-content: start;
+  min-height: 300px;
+}
+
+.placeholder-title {
+  margin-top: 0;
+  font-size: 1.12rem;
+  font-weight: 700;
+}
+
+.result-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.summary-block {
+  padding: 14px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #eef6f0 100%);
+  border: 1px solid rgba(47, 125, 87, 0.12);
+}
+
+.summary-block span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5d7267;
+}
+
+.summary-block strong {
+  display: block;
+  color: #173626;
+  line-height: 1.45;
+}
+
+.result-section + .result-section {
+  margin-top: 16px;
+}
+
+.result-section h3 {
+  margin: 0 0 8px;
+}
+
+.result-section p {
+  margin: 0;
+  line-height: 1.7;
+  color: #244134;
+}
+
+.tips-list {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 10px;
+  color: #244134;
+}
+
+.error-message {
+  margin: 0;
+  color: #ad3b3b;
+  font-weight: 600;
+}
+
+@media (max-width: 1080px) {
+  .hero-card {
+    flex-direction: column;
   }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .results-panel {
+    min-height: auto;
   }
 }
 
-@keyframes lightSpeedRight {
-  from {
-    transform: translate3d(50%, 0, 0) skewX(-20deg);
-    opacity: 0;
+@media (max-width: 760px) {
+  .device-optimizer-page {
+    padding: 18px 14px 28px;
   }
-  60% {
-    transform: skewX(10deg);
-    opacity: 1;
+
+  .hero-card,
+  .panel,
+  .results-panel {
+    border-radius: 20px;
   }
-  80% {
-    transform: skewX(-2deg);
+
+  .results-header {
+    flex-direction: column;
   }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+
+  .result-summary {
+    grid-template-columns: 1fr;
   }
-}
-.page-title {
-  font-size: 2.5rem;
-  font-weight: 1000;
-  text-align: center;
 }
 </style>

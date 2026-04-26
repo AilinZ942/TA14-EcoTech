@@ -260,7 +260,7 @@ async function loadFacilities() {
   loadError.value = ''
 
   try {
-    const response = await api.searchDisposalLocations(buildRequestPayload(), {
+    const response = await api.searchDisposalLocations({
       signal: controller.signal,
     })
     const rows = Array.isArray(response?.items) ? response.items : []
