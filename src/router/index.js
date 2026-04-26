@@ -30,9 +30,13 @@ const routes = [
     component: ExtendUsage,
   },
   {
-    path: '/ai-chat',
-    name: 'AIChat',
+    path: '/device-optimizer',
+    name: 'DeviceOptimizer',
     component: AIChat,
+  },
+  {
+    path: '/ai-chat',
+    redirect: '/device-optimizer',
   },
   {
     path: '/safe-guidance',

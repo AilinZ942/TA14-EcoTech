@@ -1,58 +1,45 @@
-const API_BASE =
-  import.meta.env.VITE_API_BASE ||
-  import.meta.env.VITE_API_URL ||
-  'http://localhost:8000/api'
+const API_SITE = import.meta.env.VITE_API_SITE
 
-async function request(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, {
+const AI_API_SITE ='http://localhost:8000/api'
+
+async function request(baseUrl, path, options = {}) {
+  const requestOptions = {
+    ...options,
     headers: {
       'Content-Type': 'application/json',
       ...(options.headers || {}),
     },
-    ...options,
-  })
+  }
+
+  const response = await fetch(`${baseUrl}${path}`, requestOptions)
 
   if (!response.ok) {
-    const text = await response.text()
-    throw new Error(text || `API request failed: ${response.status}`)
+    throw new Error(`API request failed: ${response.status}`)
   }
 
   return response.json()
 }
 
+// API
 export const api = {
-  // Health
-  getHealthAll() {
-    return request('/health/all')
-  },
-
   // Emissions
   getHeavyMetalState() {
-    return request('/emissions/state')
+    return request(API_SITE, '/emissions/state')
   },
 
   getHeavyMetalFacility() {
-    return request('/emissions/facility')
+    return request(API_SITE, '/emissions/facility')
   },
 
   // Disposal locations
-  searchDisposalLocations(params = {}) {
-    const query = new URLSearchParams()
-
-    if (params.suburb) query.append('suburb', params.suburb)
-    if (params.postcode) query.append('postcode', params.postcode)
-    if (params.state) query.append('state', params.state)
-    if (params.limit) query.append('limit', params.limit)
-
-    const qs = query.toString()
-    return request(`/map/disposal-locations/search${qs ? `?${qs}` : ''}`)
+  searchDisposalLocations() {
+    return request(API_SITE, '/map/disposal-locations')
   },
 
-  getDisposalLocationsByPostcode(postcode) {
-    return request(`/map/disposal-locations/${postcode}`)
-  },
-
-  getPerson() {
-    return request('/getperson')
-  },
+  getDeviceOptimizationTips(payload) {
+    return request(AI_API_SITE, '/ai/device-optimizer', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    })
+  }
 }
