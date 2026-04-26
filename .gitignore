@@ -46,6 +46,7 @@ __screenshots__/
 database/
 
 backend/.venv/
+backend/.env.local/
 
 mssql_geojson_loader/
 
