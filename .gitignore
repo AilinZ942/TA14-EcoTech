@@ -39,7 +39,7 @@ __screenshots__/
 *.timestamp-*-*.mjs
 
 #.env files
-.env.local
+.env
 
 # Python virtual environment
 .venv/
