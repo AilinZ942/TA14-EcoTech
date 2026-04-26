@@ -39,16 +39,16 @@ __screenshots__/
 *.timestamp-*-*.mjs
 
 #.env files
-.env
+.env.local
 
 # Python virtual environment
 .venv/
-database/
+
 
 backend/.venv/
-backend/.env.local/
+backend/.env.local
 
-mssql_geojson_loader/
+location/
 
 # Azurite artifacts
 __blobstorage__/
