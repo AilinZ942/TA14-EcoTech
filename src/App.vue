@@ -9,7 +9,7 @@
     <div class="links">
       <router-link to="/">Home</router-link>
       <router-link to="/dashboard">Dashboard</router-link>
-      <router-link to="/repair-check">Repair Check</router-link>
+      <!--<router-link to="/repair-check">Repair Check</router-link> -->
       <router-link to="/extend-usage">Extend Usage</router-link>
       <router-link to="/device-optimizer">AI Device Optimizer</router-link>
       <router-link to="/safe-guidance">Safe Guidance</router-link>
@@ -37,8 +37,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  text-decoration: none;   /* remove underline */
-  color: inherit;          /* keep normal text color */
+  text-decoration: none; /* remove underline */
+  color: inherit; /* keep normal text color */
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
