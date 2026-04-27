@@ -10,7 +10,9 @@
         Select an item and place it into the correct bin to test your recycling knowledge.
       </p>
 
-      <p class="cover-hint">Click or drag items into the correct bins.</p>
+      <p class="cover-hint">
+        Click or drag items into the correct bins. Only your first attempt for each item counts.
+      </p>
 
       <button class="primary-btn" @click="startGame">Start Game</button>
     </section>
@@ -18,11 +20,12 @@
     <!-- Game -->
     <section v-else-if="started && !finished" class="game-card">
       <div class="top-actions">
-        <button class="back-btn" @click="goHome">← Back</button>
+        <button class="back-btn" @click="goHome">← Back to Start</button>
       </div>
 
       <div class="top-bar">
         <span>{{ unsortedItems.length }} items remaining</span>
+        <span>Score: {{ score }}</span>
       </div>
 
       <div class="items-grid">
@@ -53,7 +56,13 @@
           v-for="bin in bins"
           :key="bin.name"
           class="bin-box"
-          :class="bin.className"
+          :class="[
+            bin.className,
+            {
+              correctFlash: feedbackBin === bin.name && feedbackType === 'correct',
+              wrongFlash: feedbackBin === bin.name && feedbackType === 'wrong',
+            },
+          ]"
           @click="placeItem(bin.name)"
           @dragover.prevent
           @drop="dropItem(bin.name)"
@@ -89,18 +98,20 @@
       <div class="final-score">{{ score }} / {{ items.length * 10 }}</div>
 
       <p class="cover-desc">
-        You correctly sorted {{ correctCount }} out of {{ items.length }} items.
+        You got {{ correctCount }} out of {{ items.length }} items correct on the first attempt.
       </p>
 
       <div class="result-summary">
         <p v-if="correctCount === items.length">
-          Excellent! You have a strong understanding of e-waste sorting.
+          Excellent! You sorted every item correctly on the first try.
         </p>
         <p v-else-if="correctCount >= 6">
-          Good effort! Review the guide below to improve your sorting knowledge.
+          Good effort! You understand most e-waste sorting rules, but some items need extra
+          attention.
         </p>
         <p v-else>
-          Keep learning! Some electronic items need special disposal to reduce environmental impact.
+          Keep practising! Some electronic items need special disposal to reduce environmental
+          impact.
         </p>
       </div>
 
@@ -126,6 +137,11 @@
         <button class="secondary-btn" @click="goHome">Back to Start</button>
       </div>
     </section>
+
+    <!-- Toast -->
+    <div v-if="showToast" class="toast" :class="toastType">
+      {{ toastText }}
+    </div>
   </div>
 </template>
 
@@ -136,6 +152,14 @@ const started = ref(false)
 const finished = ref(false)
 const selectedItem = ref(null)
 const draggedItem = ref(null)
+
+const score = ref(0)
+const feedbackBin = ref('')
+const feedbackType = ref('')
+
+const showToast = ref(false)
+const toastText = ref('')
+const toastType = ref('')
 
 const bins = [
   { name: 'E-Waste', icon: '⚡', className: 'ewaste-bin' },
@@ -162,6 +186,8 @@ const items = ref(
     ...item,
     sorted: false,
     selectedBin: '',
+    firstAttempted: false,
+    firstCorrect: false,
   })),
 )
 
@@ -176,12 +202,8 @@ const unsortedItems = computed(() => {
   return items.value.filter((item) => !item.sorted)
 })
 
-const score = computed(() => {
-  return items.value.filter((item) => item.selectedBin === item.answer).length * 10
-})
-
 const correctCount = computed(() => {
-  return score.value / 10
+  return items.value.filter((item) => item.firstCorrect).length
 })
 
 const resultTitle = computed(() => {
@@ -211,21 +233,58 @@ function dropItem(binName) {
   draggedItem.value = null
 }
 
+function showFeedback(text, type) {
+  toastText.value = text
+  toastType.value = type
+  showToast.value = true
+
+  setTimeout(() => {
+    showToast.value = false
+  }, 1200)
+}
+
 function placeItem(binName) {
   if (!selectedItem.value) return
 
   const item = selectedItem.value
-
-  sortedItems.value[binName].push(item)
-
   const target = items.value.find((i) => i.id === item.id)
 
-  if (target) {
+  if (!target) return
+
+  feedbackBin.value = binName
+
+  if (!target.firstAttempted) {
+    target.firstAttempted = true
+
+    if (target.answer === binName) {
+      target.firstCorrect = true
+      score.value += 10
+      showFeedback('Correct! +10', 'correct')
+    } else {
+      showFeedback('Wrong! Try again', 'wrong')
+    }
+  } else if (target.answer === binName) {
+    showFeedback('Correct!', 'correct')
+  } else {
+    showFeedback('Wrong! Try again', 'wrong')
+  }
+
+  if (target.answer === binName) {
+    feedbackType.value = 'correct'
+
+    sortedItems.value[binName].push(target)
     target.sorted = true
     target.selectedBin = binName
+  } else {
+    feedbackType.value = 'wrong'
   }
 
   selectedItem.value = null
+
+  setTimeout(() => {
+    feedbackBin.value = ''
+    feedbackType.value = ''
+  }, 700)
 }
 
 function returnItem(item, binName) {
@@ -249,14 +308,22 @@ function finishGame() {
 }
 
 function resetGame() {
+  score.value = 0
   selectedItem.value = null
   draggedItem.value = null
+  feedbackBin.value = ''
+  feedbackType.value = ''
+  showToast.value = false
+  toastText.value = ''
+  toastType.value = ''
   finished.value = false
 
   items.value = initialItems.map((item) => ({
     ...item,
     sorted: false,
     selectedBin: '',
+    firstAttempted: false,
+    firstCorrect: false,
   }))
 
   sortedItems.value = {
@@ -373,7 +440,7 @@ function goHome() {
 
 .top-bar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   color: #2f8f5b;
   font-weight: 800;
   font-size: 18px;
@@ -459,6 +526,44 @@ function goHome() {
   background: rgba(255, 255, 255, 0.75);
   color: #123524;
   margin: 0 auto 18px;
+}
+
+.correctFlash {
+  animation: correctFlash 0.7s ease;
+}
+
+.wrongFlash {
+  animation: wrongFlash 0.7s ease;
+}
+
+@keyframes correctFlash {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.04);
+    background: #bbf7d0;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes wrongFlash {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-8px);
+    background: #fecaca;
+  }
+  50% {
+    transform: translateX(8px);
+    background: #fecaca;
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .ewaste-bin {
@@ -593,6 +698,40 @@ function goHome() {
   gap: 16px;
 }
 
+.toast {
+  position: fixed;
+  top: 115px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  padding: 14px 30px;
+  border-radius: 999px;
+  color: white;
+  font-size: 18px;
+  font-weight: 900;
+  z-index: 9999;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.2);
+  animation: popToast 0.3s ease forwards;
+}
+
+.toast.correct {
+  background: #22c55e;
+}
+
+.toast.wrong {
+  background: #ef4444;
+}
+
+@keyframes popToast {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.75);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
 @media (max-width: 1000px) {
   .items-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -627,6 +766,11 @@ function goHome() {
   .result-actions {
     flex-direction: column;
     gap: 12px;
+  }
+
+  .toast {
+    top: 90px;
+    font-size: 16px;
   }
 }
 </style>
