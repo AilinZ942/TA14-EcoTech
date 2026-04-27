@@ -11,6 +11,7 @@ import {
   getCategoryOptions,
   getFacilityBounds,
 } from '../lib/ewasteMapModel'
+import { getLocationSuggestions } from '../lib/locationLookup'
 
 const mapboxAccessToken = String(import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || '').trim()
 const mapContainerRef = ref(null)
@@ -20,14 +21,25 @@ const searchTerm = ref('')
 const selectedCategory = ref('')
 const facilityRows = ref([])
 const facilityMarkers = ref([])
+const mapDatasets = ref({
+  clean_ewaste_facilities_geocoded: [],
+  ewaste_recycling_locations_curated: [],
+})
+const mapDatasetMeta = ref({
+  focusAreas: {},
+  fallbackMessages: {},
+})
+const selectedDataset = ref('clean_ewaste_facilities_geocoded')
 const selectedMarkerId = ref('')
 const activePipeline = ref('api')
+const locationSuggestions = getLocationSuggestions()
 
 let map = null
 let mapReady = false
 let activePopup = null
 let activeRequestController = null
 let requestTimer = null
+let backendFilterTimer = null
 let renderedMarkers = []
 
 const categoryOptions = computed(() => {
@@ -39,8 +51,6 @@ const categoryOptions = computed(() => {
 const hasToken = computed(() => Boolean(mapboxAccessToken))
 
 const visibleMarkers = computed(() => {
-  const needle = searchTerm.value.trim().toLowerCase()
-
   return facilityMarkers.value.filter((marker) => {
     if (marker.category === 'transfer_station' || marker.category === 'repair_reuse') {
       return false
@@ -50,24 +60,7 @@ const visibleMarkers = computed(() => {
       return false
     }
 
-    if (!needle) {
-      return true
-    }
-
-    const haystack = [
-      marker.facilityName,
-      marker.address,
-      marker.suburb,
-      marker.postcode,
-      marker.state,
-      marker.categoryLabel,
-      marker.source,
-    ]
-      .filter(Boolean)
-      .join(' ')
-      .toLowerCase()
-
-    return haystack.includes(needle)
+    return true
   })
 })
 
@@ -84,8 +77,27 @@ const tokenHelpText = computed(() =>
 )
 
 const visibleCount = computed(() => visibleMarkers.value.length)
+const selectedFocusArea = computed(
+  () => mapDatasetMeta.value.focusAreas?.[selectedDataset.value] || null,
+)
+const selectedFallbackMessage = computed(
+  () => mapDatasetMeta.value.fallbackMessages?.[selectedDataset.value] || '',
+)
+const datasetOptions = computed(() => [
+  {
+    value: 'clean_ewaste_facilities_geocoded',
+    label: 'Existing data',
+    count: mapDatasets.value.clean_ewaste_facilities_geocoded.length,
+  },
+  {
+    value: 'ewaste_recycling_locations_curated',
+    label: 'Additional data',
+    count: mapDatasets.value.ewaste_recycling_locations_curated.length,
+  },
+])
 
 const pipelineLabel = computed(() => {
+  if (activePipeline.value === 'pseudo-cloud-db') return 'Pseudo cloud DB'
   if (activePipeline.value === 'azure') return 'Azure API'
   return activePipeline.value || 'Unknown'
 })
@@ -94,8 +106,8 @@ function buildRequestPayload() {
   return {
     resourceType: 'disposal',
     state: '',
-    category: '',
-    searchText: '',
+    category: selectedCategory.value,
+    searchText: searchTerm.value,
     limit: 1000,
   }
 }
@@ -119,6 +131,8 @@ function popupHtml(marker) {
     ['Postcode', marker.postcode || 'Not provided'],
     ['State', marker.state || 'Not provided'],
     ['Category', marker.categoryLabel || getCategoryLabel(marker.category)],
+    ['Phone', marker.row?.national_phone_number || ''],
+    ['Accepted', marker.row?.accepted_items || ''],
   ]
 
   return `
@@ -126,6 +140,7 @@ function popupHtml(marker) {
       <p class="map-popup__eyebrow">Disposal Site</p>
       <h3>${escapeHtml(marker.facilityName)}</h3>
       ${rows
+        .filter(([, value]) => value)
         .map(
           ([label, value]) => `
             <div class="map-popup__row">
@@ -135,6 +150,8 @@ function popupHtml(marker) {
           `,
         )
         .join('')}
+      ${marker.row?.website_uri ? `<a class="map-popup__link" href="${escapeHtml(marker.row.website_uri)}" target="_blank" rel="noopener noreferrer">Website</a>` : ''}
+      ${marker.row?.google_maps_uri ? `<a class="map-popup__link" href="${escapeHtml(marker.row.google_maps_uri)}" target="_blank" rel="noopener noreferrer">Google Maps</a>` : ''}
     </article>
   `
 }
@@ -242,14 +259,102 @@ function renderMarkers() {
   fitMapToMarkers(visibleMarkers.value)
 }
 
-async function loadFacilities() {
-  if (!hasToken.value) {
-    loadError.value = ''
-    facilityRows.value = []
-    facilityMarkers.value = []
-    return
+function refreshMapPresentation() {
+  renderMarkers()
+  renderFocusArea()
+}
+
+function removeFocusArea() {
+  if (!map) return
+
+  const layers = ['focus-area-line', 'focus-area-fill']
+  const sources = ['focus-area']
+
+  layers.forEach((layer) => {
+    if (map.getLayer(layer)) map.removeLayer(layer)
+  })
+
+  sources.forEach((source) => {
+    if (map.getSource(source)) map.removeSource(source)
+  })
+}
+
+function renderFocusArea() {
+  if (!map || !mapReady) return
+
+  removeFocusArea()
+
+  const geojson = buildFocusAreaGeoJson()
+  if (!geojson) return
+
+  map.addSource('focus-area', {
+    type: 'geojson',
+    data: geojson,
+  })
+
+  map.addLayer({
+    id: 'focus-area-fill',
+    type: 'fill',
+    source: 'focus-area',
+    paint: {
+      'fill-color': '#2e7d32',
+      'fill-opacity': 0.14,
+    },
+  })
+
+  map.addLayer({
+    id: 'focus-area-line',
+    type: 'line',
+    source: 'focus-area',
+    paint: {
+      'line-color': '#2e7d32',
+      'line-width': 3,
+      'line-opacity': 0.9,
+    },
+  })
+}
+
+function buildFocusAreaGeoJson() {
+  const focusArea = selectedFocusArea.value
+  if (!focusArea || focusArea.type === 'none') return null
+
+  if (focusArea.bounds) {
+    return boundsToGeoJson(focusArea.bounds, focusArea.label, 0)
   }
 
+  const bounds = getFacilityBounds(visibleMarkers.value)
+  if (!bounds) return null
+
+  return boundsToGeoJson(bounds, focusArea.label, 0.025)
+}
+
+function boundsToGeoJson(bounds, label, padding = 0) {
+  return {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        properties: {
+          label,
+        },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [bounds.minLongitude - padding, bounds.minLatitude - padding],
+              [bounds.maxLongitude + padding, bounds.minLatitude - padding],
+              [bounds.maxLongitude + padding, bounds.maxLatitude + padding],
+              [bounds.minLongitude - padding, bounds.maxLatitude + padding],
+              [bounds.minLongitude - padding, bounds.minLatitude - padding],
+            ],
+          ],
+        },
+      },
+    ],
+  }
+}
+
+async function loadFacilities() {
   if (activeRequestController) {
     activeRequestController.abort()
   }
@@ -260,24 +365,26 @@ async function loadFacilities() {
   loadError.value = ''
 
   try {
-    const response = await api.searchDisposalLocations({
+    const response = await api.getMapLocationDatasets(buildRequestPayload(), {
       signal: controller.signal,
     })
-    const rows = Array.isArray(response?.items) ? response.items : []
 
-    facilityRows.value = rows
-    facilityMarkers.value = buildFacilityMarkers(rows)
-    activePipeline.value = response?.meta?.pipeline || 'api'
-
-    if (
-      selectedMarkerId.value &&
-      !facilityMarkers.value.some((marker) => marker.id === selectedMarkerId.value)
-    ) {
-      selectedMarkerId.value = ''
+    mapDatasets.value = {
+      clean_ewaste_facilities_geocoded:
+        response?.datasets?.clean_ewaste_facilities_geocoded || [],
+      ewaste_recycling_locations_curated:
+        response?.datasets?.ewaste_recycling_locations_curated || [],
+    }
+    mapDatasetMeta.value = {
+      focusAreas: response?.meta?.focusAreas || {},
+      fallbackMessages: response?.meta?.fallbackMessages || {},
     }
 
+    applySelectedDataset()
+    activePipeline.value = response?.meta?.pipeline || 'api'
+
     await nextTick()
-    renderMarkers()
+    refreshMapPresentation()
   } catch (error) {
     if (error?.name === 'AbortError') return
 
@@ -295,6 +402,31 @@ async function loadFacilities() {
       isLoading.value = false
     }
   }
+}
+
+function applySelectedDataset() {
+  const rows = mapDatasets.value[selectedDataset.value] || []
+
+  facilityRows.value = rows
+  facilityMarkers.value = buildFacilityMarkers(rows)
+
+  if (
+    selectedMarkerId.value &&
+    !facilityMarkers.value.some((marker) => marker.id === selectedMarkerId.value)
+  ) {
+    selectedMarkerId.value = ''
+  }
+}
+
+function queueBackendFilterLoad() {
+  if (backendFilterTimer) {
+    window.clearTimeout(backendFilterTimer)
+  }
+
+  backendFilterTimer = window.setTimeout(() => {
+    backendFilterTimer = null
+    loadFacilities()
+  }, 260)
 }
 
 function queueMarkerRefresh() {
@@ -323,7 +455,7 @@ function initialiseMap() {
 
   map.on('load', () => {
     mapReady = true
-    renderMarkers()
+    refreshMapPresentation()
   })
 }
 
@@ -336,12 +468,27 @@ function openDirections() {
   if (!selectedMarker.value) return
 
   const { longitude, latitude } = selectedMarker.value
-  const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
+  const url =
+    selectedMarker.value.row?.google_maps_uri ||
+    `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 watch(visibleMarkers, () => {
   queueMarkerRefresh()
+  if (mapReady) renderFocusArea()
+})
+
+watch(selectedDataset, async () => {
+  selectedMarkerId.value = ''
+  applySelectedDataset()
+  await nextTick()
+  refreshMapPresentation()
+})
+
+watch([searchTerm, selectedCategory], () => {
+  selectedMarkerId.value = ''
+  queueBackendFilterLoad()
 })
 
 onMounted(async () => {
@@ -354,12 +501,17 @@ onBeforeUnmount(() => {
     window.clearTimeout(requestTimer)
   }
 
+  if (backendFilterTimer) {
+    window.clearTimeout(backendFilterTimer)
+  }
+
   if (activeRequestController) {
     activeRequestController.abort()
   }
 
   removeRenderedMarkers()
   closePopup()
+  removeFocusArea()
 
   if (map) {
     map.remove()
@@ -393,13 +545,35 @@ onBeforeUnmount(() => {
     <div class="content-grid">
       <section class="map-panel">
         <div class="toolbar-card">
+          <fieldset class="source-switch">
+            <legend>Map data</legend>
+            <label
+              v-for="dataset in datasetOptions"
+              :key="dataset.value"
+              class="source-option"
+              :class="{ active: selectedDataset === dataset.value }"
+            >
+              <input v-model="selectedDataset" type="radio" :value="dataset.value" />
+              <span>{{ dataset.label }}</span>
+              <strong>{{ dataset.count }}</strong>
+            </label>
+          </fieldset>
+
           <label>
-            <span>Search</span>
+            <span>Location</span>
             <input
               v-model.trim="searchTerm"
               type="search"
-              placeholder="Facility, suburb, address, postcode"
+              list="location-filter-options"
+              placeholder="State, council, suburb, postcode"
             />
+            <datalist id="location-filter-options">
+              <option
+                v-for="suggestion in locationSuggestions"
+                :key="suggestion"
+                :value="suggestion"
+              />
+            </datalist>
           </label>
 
           <label>
@@ -437,6 +611,12 @@ onBeforeUnmount(() => {
             <p>{{ loadError }}</p>
           </div>
 
+          <div v-else-if="selectedFallbackMessage || selectedFocusArea?.label" class="map-overlay map-overlay--focus">
+            <h2>{{ selectedFocusArea?.label || 'Focused area' }}</h2>
+            <p v-if="selectedFallbackMessage">{{ selectedFallbackMessage }}</p>
+            <p v-else>Only locations returned for this focused search area are shown.</p>
+          </div>
+
           <div ref="mapContainerRef" class="map-container" />
         </div>
       </section>
@@ -472,6 +652,34 @@ onBeforeUnmount(() => {
                 <span>Category</span>
                 <strong>{{ selectedMarker.categoryLabel }}</strong>
               </div>
+              <div class="detail-row">
+                <span>Dataset</span>
+                <strong>{{ selectedMarker.row.source_table || selectedMarker.source || 'Not provided' }}</strong>
+              </div>
+              <div v-if="selectedMarker.row.national_phone_number" class="detail-row">
+                <span>Phone</span>
+                <strong>{{ selectedMarker.row.national_phone_number }}</strong>
+              </div>
+              <div v-if="selectedMarker.row.accepted_items" class="detail-row">
+                <span>Accepted items</span>
+                <strong>{{ selectedMarker.row.accepted_items }}</strong>
+              </div>
+              <div v-if="selectedMarker.row.website_uri" class="detail-row">
+                <span>Website</span>
+                <strong>
+                  <a :href="selectedMarker.row.website_uri" target="_blank" rel="noopener noreferrer">
+                    Open website
+                  </a>
+                </strong>
+              </div>
+              <div v-if="selectedMarker.row.google_maps_uri" class="detail-row">
+                <span>Google Maps</span>
+                <strong>
+                  <a :href="selectedMarker.row.google_maps_uri" target="_blank" rel="noopener noreferrer">
+                    View listing
+                  </a>
+                </strong>
+              </div>
             </div>
 
             <div class="panel-actions">
@@ -492,6 +700,9 @@ onBeforeUnmount(() => {
         <section class="panel-card">
           <p class="section-label">Visible categories</p>
           <h2>What is currently shown</h2>
+          <p v-if="selectedFocusArea?.label" class="support-copy selected-copy">
+            Focused area: {{ selectedFocusArea.label }}
+          </p>
           <div class="category-list">
             <div v-for="entry in categorySummary" :key="entry.key" class="category-row">
               <span class="category-label">
@@ -673,9 +884,69 @@ h2 {
 
 .toolbar-card {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(180px, 0.7fr) auto;
+  grid-template-columns: minmax(260px, 0.95fr) minmax(0, 1.1fr) minmax(180px, 0.7fr) auto;
   gap: 18px;
   align-items: end;
+}
+
+.source-switch {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  min-width: 0;
+  padding: 6px;
+  margin: 0;
+  border: 1px solid #deebdf;
+  border-radius: 18px;
+  background: #f4faf5;
+}
+
+.source-switch legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.source-option {
+  flex: 1 1 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 8px;
+  align-items: center;
+  min-width: 0;
+  min-height: 52px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  color: #557260;
+  cursor: pointer;
+}
+
+.source-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.source-option span {
+  margin: 0;
+  overflow: hidden;
+  color: inherit;
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.source-option strong {
+  color: inherit;
+  font-size: 13px;
+}
+
+.source-option.active {
+  background: #2e7d32;
+  color: #ffffff;
+  box-shadow: 0 8px 16px rgba(46, 125, 50, 0.18);
 }
 
 label {
@@ -827,6 +1098,11 @@ button {
   border-color: #efcaca;
 }
 
+.map-overlay--focus {
+  background: rgba(232, 245, 233, 0.95);
+  border-color: #bdd8c0;
+}
+
 .detail-list,
 .category-list {
   display: grid;
@@ -855,6 +1131,15 @@ button {
   font-weight: 700;
   text-align: right;
   color: #173a29;
+}
+
+.detail-row a {
+  color: #2e7d32;
+  text-decoration: none;
+}
+
+.detail-row a:hover {
+  text-decoration: underline;
 }
 
 .category-label {
@@ -939,6 +1224,23 @@ button {
   text-align: right;
   font-size: 13px;
   color: #173a29;
+}
+
+:deep(.map-popup__link) {
+  display: inline-flex;
+  margin-top: 10px;
+  margin-right: 8px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+:deep(.map-popup__link:hover) {
+  background: #dff0e1;
 }
 
 @media (max-width: 1200px) {

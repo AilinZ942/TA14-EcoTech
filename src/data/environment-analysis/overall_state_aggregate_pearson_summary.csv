@@ -1,0 +1,4 @@
+waste_metric,top_pollutant_metric,top_pearson_corr,n_states_used
+ewaste_proxy_tonnes,copper_land_kg,0.8356258110993708,8
+hazardous_disposal_tonnes,copper_land_kg,0.821337360509805,8
+hazardous_recycling_tonnes,pm25_air_kg,0.8768361004566848,8

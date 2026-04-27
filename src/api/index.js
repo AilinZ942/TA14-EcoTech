@@ -1,3 +1,5 @@
+import { getMapLocationDatasets } from './pseudoCloudDatabase'
+
 const API_SITE = import.meta.env.VITE_API_SITE
 
 const AI_API_SITE ='http://localhost:8000/api'
@@ -34,6 +36,10 @@ export const api = {
   // Disposal locations
   searchDisposalLocations() {
     return request(API_SITE, '/map/disposal-locations')
+  },
+
+  getMapLocationDatasets(params = {}) {
+    return getMapLocationDatasets(params)
   },
 
   getDeviceOptimizationTips(payload) {

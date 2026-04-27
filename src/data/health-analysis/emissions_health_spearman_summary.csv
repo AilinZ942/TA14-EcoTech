@@ -1,0 +1,13 @@
+health_metric,top_emissions_metric,top_spearman_corr,n_state_year_pairs
+age_standardised_rate_per_100000,total_land_emission_kg,-0.28903794768886354,40
+crude_rate_per_100000,zinc_water_kg,0.8193245778611633,40
+deaths,total_water_emission_kg,0.9045028142589119,40
+median_age,copper_water_kg,0.5399699858223617,40
+pad_asr_per_100000,chromium_water_kg,0.35236174343374604,40
+pad_percent,copper_water_kg,-0.5410782443573122,40
+potential_years_of_life_lost,total_water_emission_kg,0.9369606003752347,40
+potentially_avoidable_deaths,total_water_emission_kg,0.9311881430573384,40
+premature_deaths,total_water_emission_kg,0.930769230769231,40
+premature_deaths_asr_per_100000,chromium_water_kg,0.3502978567576165,40
+premature_deaths_percent,copper_water_kg,-0.547204574287236,40
+pyll_rate_per_1000,chromium_water_kg,0.4003940151691235,40
