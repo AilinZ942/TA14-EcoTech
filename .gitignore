@@ -46,11 +46,7 @@ __screenshots__/
 
 
 backend/.venv/
-<<<<<<< HEAD
 backend/.env.local
-=======
-backend/.env.local/
->>>>>>> c817d1f (update gitignore)
 
 location/
 

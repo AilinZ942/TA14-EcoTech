@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar">
+  <nav v-if="showNavbar" class="navbar">
     <!-- FULL logo clickable -->
     <router-link to="/" class="logo">
       <img src="@/assets/Logo.png" alt="EcoTech Logo" class="logo-img" />
@@ -14,13 +14,37 @@
       <router-link to="/device-optimizer">AI Device Optimizer</router-link>
       <router-link to="/safe-guidance">Safe Guidance</router-link>
       <router-link to="/disposal-locations">Disposal Locations</router-link>
+      <button type="button" class="logout-button" @click="handleLogout">Logout</button>
     </div>
   </nav>
 
   <router-view />
 </template>
 
-<script setup></script>
+<script setup>
+import { computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { authAPI, initCSRF } from './api/index.js'
+
+const router = useRouter()
+
+onMounted(() => {
+  initCSRF() // apply CSRF token to all API requests after app is mounted
+})
+
+const route = useRoute()
+const showNavbar = computed(() => route.path !== '/login')
+
+async function handleLogout() {
+  try {
+    await authAPI.logout()
+  } catch (error) {
+    console.error('Logout request failed:', error)
+  } finally {
+    router.replace('/login')
+  }
+}
+</script>
 
 <style scoped>
 .navbar {
@@ -79,6 +103,25 @@
     color 0.2s ease;
 }
 
+.logout-button {
+  border: 0;
+  background: #0f766e;
+  color: #ffffff;
+  font-size: 16px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #115e59;
+  transform: translateY(-1px);
+}
+
 .links a:hover {
   background: #ecfdf5;
   color: #16a34a;
@@ -103,6 +146,11 @@
   }
 
   .links a {
+    font-size: 15px;
+    padding: 7px 12px;
+  }
+
+  .logout-button {
     font-size: 15px;
     padding: 7px 12px;
   }
