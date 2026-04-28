@@ -43,8 +43,19 @@ __screenshots__/
 
 # Python virtual environment
 .venv/
-database/
 
-sql/
 
-mssql_geojson_loader/
+backend/.venv/
+<<<<<<< HEAD
+backend/.env.local
+=======
+backend/.env.local/
+>>>>>>> c817d1f (update gitignore)
+
+location/
+
+# Azurite artifacts
+__blobstorage__/
+__queuestorage__/
+__azurite_db*__.json
+AzuriteConfig
