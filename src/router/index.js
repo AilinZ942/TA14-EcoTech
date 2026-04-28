@@ -7,6 +7,7 @@ import ExtendUsage from '@/views/ExtendUsage.vue'
 import AIChat from '@/views/AIChat.vue'
 import SafeGuidance from '@/views/SafeGuidance.vue'
 import DisposalLocations from '@/views/DisposalLocations.vue'
+import Game from '@/views/Game.vue'
 
 const routes = [
   {
@@ -47,6 +48,11 @@ const routes = [
     path: '/disposal-locations',
     name: 'DisposalLocations',
     component: DisposalLocations,
+  },
+  {
+    path: '/game',
+    name: 'Game',
+    component: Game,
   },
 ]
 
