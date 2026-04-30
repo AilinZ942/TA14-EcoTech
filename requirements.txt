@@ -1,2 +1,10 @@
-requests==2.32.3
-npm install leaflet
+# Python dependencies for the Flask backend and backend data scripts.
+Flask>=3.0
+Flask-Cors>=4.0
+Flask-WTF>=1.2
+python-dotenv>=1.0
+psycopg2-binary>=2.9
+requests>=2.32
+llama-cpp-python>=0.2
+huggingface-hub>=0.23
+pyshp>=2.3

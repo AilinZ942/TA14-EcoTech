@@ -11,6 +11,8 @@ import Game from '@/views/Game.vue'
 import Login from '@/views/Login.vue'
 import { authAPI } from '@/api'
 
+const TEMP_MAP_PREVIEW = import.meta.env.DEV && import.meta.env.VITE_TEMP_MAP_PREVIEW === '1'
+
 const routes = [
   {
     path: '/login',
@@ -30,6 +32,12 @@ const routes = [
     name: 'Dashboard',
     component: Dashboard,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/health-preview',
+    name: 'HealthPreview',
+    component: Dashboard,
+    meta: { requiresAuth: false }
   },
   {
     path: '/repair-check',
@@ -79,6 +87,10 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
+  if (TEMP_MAP_PREVIEW && to.path === '/disposal-locations') {
+    return true
+  }
+
   let isLoggedIn = false
 
   try {

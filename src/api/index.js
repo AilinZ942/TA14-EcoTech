@@ -1,4 +1,5 @@
 const API_SITE = 'http://localhost:8000/api' //Server URL from environment variable
+const TEMP_MAP_PREVIEW = import.meta.env.DEV && import.meta.env.VITE_TEMP_MAP_PREVIEW === '1'
 
 
 
@@ -66,6 +67,10 @@ export const authAPI = {
 }
 
 export const api = {
+  getHealthAll() {
+    return request(API_SITE, '/health/all')
+  },
+
   getHeavyMetalState() {
     return request(API_SITE, '/emissions/state')
   },
@@ -74,8 +79,24 @@ export const api = {
     return request(API_SITE, '/emissions/facility')
   },
 
-  searchDisposalLocations() {
-    return request(API_SITE, '/map/disposal-locations')
+  searchDisposalLocation(options = {}) {
+    if (TEMP_MAP_PREVIEW) {
+      return import('./tempMapPreview').then(({ getTempMapPreview }) =>
+        getTempMapPreview(options.searchText, options.searchRange),
+      )
+    }
+
+    const { searchText, searchRange, ...fetchOptions } = options
+    const params = new URLSearchParams()
+    if (searchText) params.set('searchText', searchText)
+    if (searchRange) params.set('searchRange', searchRange)
+    const suffix = params.toString() ? `?${params}` : ''
+
+    return request(API_SITE, `/map/disposal-locations${suffix}`, fetchOptions)
+  },
+
+  searchDisposalLocations(options = {}) {
+    return this.searchDisposalLocation(options)
   },
 
   getDeviceOptimizationTips(payload) {

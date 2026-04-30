@@ -191,7 +191,7 @@ async function loadFacilities() {
   loadError.value = ''
 
   try {
-    const response = await api.searchDisposalLocations({ signal: controller.signal })
+    const response = await api.searchDisposalLocation({ signal: controller.signal })
     const rows = Array.isArray(response?.items) ? response.items : []
 
     facilityRows.value = rows

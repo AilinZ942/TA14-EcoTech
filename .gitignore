@@ -55,3 +55,15 @@ __blobstorage__/
 __queuestorage__/
 __azurite_db*__.json
 AzuriteConfig
+
+# Large local GIS source data. Keep only the CSV files needed by the map
+# preview and backend CSV fallback.
+backend/data_for_map/**
+!backend/data_for_map/
+!backend/data_for_map/australian_postcodes.csv
+!backend/data_for_map/clean_ewaste_facilities_geocoded.csv
+!backend/data_for_map/ewaste_recycling_locations_curated.csv
+!backend/data_for_map/location_lookup.csv
+
+# Local exported preview artifact.
+health_page_preview.pdf
