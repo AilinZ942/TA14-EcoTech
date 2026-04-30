@@ -83,9 +83,19 @@
         </div>
       </div>
 
-      <button v-if="unsortedItems.length === 0" class="primary-btn finish-btn" @click="finishGame">
-        View Result
-      </button>
+      <div class="game-actions">
+        <button
+          v-if="unsortedItems.length > 0"
+          class="secondary-btn"
+          @click="showEndConfirm = true"
+        >
+          View Result Early
+        </button>
+
+        <button v-if="unsortedItems.length === 0" class="primary-btn" @click="finishGame">
+          View Result
+        </button>
+      </div>
     </section>
 
     <!-- Result -->
@@ -138,6 +148,19 @@
       </div>
     </section>
 
+    <!-- Early End Confirm Modal -->
+    <div v-if="showEndConfirm" class="confirm-overlay">
+      <div class="confirm-box">
+        <h3>End the game early?</h3>
+        <p>Your current score will be shown on the result page.</p>
+
+        <div class="confirm-actions">
+          <button class="secondary-btn" @click="showEndConfirm = false">Cancel</button>
+          <button class="primary-btn" @click="finishGameEarly">End Game</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Toast -->
     <div v-if="showToast" class="toast" :class="toastType">
       {{ toastText }}
@@ -152,6 +175,7 @@ const started = ref(false)
 const finished = ref(false)
 const selectedItem = ref(null)
 const draggedItem = ref(null)
+const showEndConfirm = ref(false)
 
 const score = ref(0)
 const feedbackBin = ref('')
@@ -169,16 +193,165 @@ const bins = [
 ]
 
 const initialItems = [
-  { id: 1, name: 'Old Phone', icon: '📱', answer: 'E-Waste' },
-  { id: 2, name: 'Loose Battery', icon: '🔋', answer: 'Battery Bin' },
-  { id: 3, name: 'Working Tablet', icon: '📲', answer: 'Repair / Reuse' },
-  { id: 4, name: 'Broken Charger', icon: '🔌', answer: 'E-Waste' },
-  { id: 5, name: 'Old Laptop', icon: '💻', answer: 'Repair / Reuse' },
-  { id: 6, name: 'Headphones', icon: '🎧', answer: 'E-Waste' },
-  { id: 7, name: 'Keyboard', icon: '⌨️', answer: 'E-Waste' },
-  { id: 8, name: 'Laptop Battery', icon: '🔋', answer: 'Battery Bin' },
-  { id: 9, name: 'Old Monitor', icon: '🖥️', answer: 'E-Waste' },
-  { id: 10, name: 'Phone Case', icon: '📦', answer: 'General Waste' },
+  {
+    id: 1,
+    name: 'Old Phone',
+    icon: '📱',
+    answer: 'E-Waste',
+    okMsg:
+      'Correct! Old phones contain gold, copper and toxic heavy metals — e-waste recycling recovers them safely.',
+    errMsg: {
+      battery:
+        "The phone has a battery inside, but don't dismantle it yourself. The whole device goes to E-Waste.",
+      repair:
+        "This phone is old and no longer functional — it's not worth refurbishing. It belongs in E-Waste.",
+      general:
+        'Never throw phones in general waste. They contain toxic metals that leach into soil and groundwater.',
+    },
+  },
+  {
+    id: 2,
+    name: 'Loose Battery',
+    icon: '🔋',
+    answer: 'Battery Bin',
+    okMsg:
+      'Correct! Any loose battery — regardless of size — must go to a dedicated Battery Bin to prevent toxic leakage.',
+    errMsg: {
+      ewaste:
+        'Loose batteries need their own separate bin — dropping them in with e-waste creates a fire and leakage risk.',
+      repair:
+        "A loose battery can't be reused on its own safely. It must go to the Battery Bin for proper disposal.",
+      general:
+        'Never put loose batteries in general waste — they can rupture, leak acid and contaminate the entire landfill.',
+    },
+  },
+  {
+    id: 3,
+    name: 'Working Tablet',
+    icon: '📲',
+    answer: 'Repair / Reuse',
+    okMsg:
+      'Excellent! A working tablet can be donated or refurbished — keeping it in use is far better than recycling it.',
+    errMsg: {
+      ewaste:
+        "Don't recycle a working device! This tablet still functions — donate or refurbish it instead.",
+      battery:
+        "The tablet's battery is inside the device. Since it still works, the whole unit goes to Repair / Reuse.",
+      general:
+        'A working tablet is valuable electronics — putting it in general waste is wasteful and potentially illegal.',
+    },
+  },
+  {
+    id: 4,
+    name: 'Broken Charger',
+    icon: '🔌',
+    answer: 'E-Waste',
+    okMsg:
+      'Right! Chargers contain copper wiring and electronic components — they need specialist e-waste recycling.',
+    errMsg: {
+      battery:
+        "A charger isn't a battery — it contains copper wiring and circuit components that go to E-Waste.",
+      repair:
+        "A broken charger is a fire hazard — it's not safe to repair at home. Send it to E-Waste.",
+      general:
+        "Chargers contain copper and mixed plastics that can be recovered — they're e-waste, not general waste.",
+    },
+  },
+  {
+    id: 5,
+    name: 'Old Laptop',
+    icon: '💻',
+    answer: 'E-Waste',
+    okMsg:
+      'Spot on! Old laptops contain lead, mercury and lithium — certified e-waste facilities handle them safely.',
+    errMsg: {
+      battery:
+        "The laptop has a battery inside, but don't dismantle it yourself. The whole unit goes to E-Waste.",
+      repair:
+        "An old, non-functional laptop isn't worth repairing. It belongs in E-Waste for safe material recovery.",
+      general:
+        'Laptops contain lead and mercury — putting them in general waste is illegal and environmentally harmful.',
+    },
+  },
+  {
+    id: 6,
+    name: 'Headphones',
+    icon: '🎧',
+    answer: 'E-Waste',
+    okMsg:
+      'Correct! Headphones contain electronic drivers, copper wiring and sometimes batteries — always e-recycle them.',
+    errMsg: {
+      battery:
+        'Headphones contain more than just a battery — the drivers and wiring make them e-waste, not battery bin material.',
+      repair: "Old, broken headphones aren't worth refurbishing for reuse. They belong in E-Waste.",
+      general:
+        "Headphones contain electronic components and copper — they're e-waste, not something you can bin normally.",
+    },
+  },
+  {
+    id: 7,
+    name: 'Keyboard',
+    icon: '⌨️',
+    answer: 'E-Waste',
+    okMsg:
+      'Right! Keyboards contain printed circuit boards and electronic switches — they need e-waste recycling.',
+    errMsg: {
+      battery:
+        "A keyboard doesn't run on removable batteries — it contains circuit boards that go to E-Waste.",
+      repair:
+        'An old keyboard has very little refurbishment value. It belongs in E-Waste for PCB and component recovery.',
+      general:
+        "Keyboards contain circuit boards and plastic that can be recovered — they're e-waste, not general rubbish.",
+    },
+  },
+  {
+    id: 8,
+    name: 'Laptop Battery',
+    icon: '🔋',
+    answer: 'Battery Bin',
+    okMsg:
+      'Great! Lithium laptop batteries need their own dedicated recycling stream — never mix them with e-waste.',
+    errMsg: {
+      ewaste:
+        'Close, but batteries need their own separate bin — mixing lithium with general e-waste is a serious fire risk.',
+      repair:
+        "A depleted laptop battery can't be safely recharged or reused. It must go to the Battery Bin.",
+      general:
+        'Never put lithium batteries in general waste — they can catch fire and leak toxic chemicals in landfill.',
+    },
+  },
+  {
+    id: 9,
+    name: 'Old Monitor',
+    icon: '🖥️',
+    answer: 'E-Waste',
+    okMsg:
+      'Correct! Monitors contain lead, mercury and rare metals — they must go to a certified e-waste facility.',
+    errMsg: {
+      battery:
+        "Monitors don't run on batteries — they contain hazardous materials like lead that require E-Waste disposal.",
+      repair:
+        'An old monitor has little reuse value and contains toxic materials — E-Waste is the only safe option.',
+      general:
+        'Monitors contain lead and mercury — putting them in general waste is dangerous and illegal in most regions.',
+    },
+  },
+  {
+    id: 10,
+    name: 'Phone Case',
+    icon: '📦',
+    answer: 'General Waste',
+    okMsg:
+      'Exactly! A phone case is just moulded plastic or silicone — no electronics or battery, so general waste it is.',
+    errMsg: {
+      ewaste:
+        "A phone case has no circuit boards or wiring inside. It's just plastic — it belongs in General Waste.",
+      battery:
+        "There's no battery in a phone case — it's moulded rubber or plastic. It goes straight to General Waste.",
+      repair:
+        "A phone case has no electronic components and nothing worth repairing. It's simply General Waste.",
+    },
+  },
 ]
 
 const items = ref(
@@ -238,9 +411,12 @@ function showFeedback(text, type) {
   toastType.value = type
   showToast.value = true
 
-  setTimeout(() => {
-    showToast.value = false
-  }, 1200)
+  setTimeout(
+    () => {
+      showToast.value = false
+    },
+    type === 'wrong' ? 3000 : 2000,
+  )
 }
 
 function placeItem(binName) {
@@ -251,6 +427,15 @@ function placeItem(binName) {
 
   if (!target) return
 
+  const binMap = {
+    'E-Waste': 'ewaste',
+    'Battery Bin': 'battery',
+    'Repair / Reuse': 'repair',
+    'General Waste': 'general',
+  }
+
+  const binKey = binMap[binName]
+
   feedbackBin.value = binName
 
   if (!target.firstAttempted) {
@@ -259,14 +444,14 @@ function placeItem(binName) {
     if (target.answer === binName) {
       target.firstCorrect = true
       score.value += 10
-      showFeedback('Correct! +10', 'correct')
+      showFeedback(target.okMsg || 'Correct! +10', 'correct')
     } else {
-      showFeedback('Wrong! Try again', 'wrong')
+      showFeedback(target.errMsg?.[binKey] || 'Wrong! Try again', 'wrong')
     }
   } else if (target.answer === binName) {
-    showFeedback('Correct!', 'correct')
+    showFeedback(target.okMsg || 'Correct!', 'correct')
   } else {
-    showFeedback('Wrong! Try again', 'wrong')
+    showFeedback(target.errMsg?.[binKey] || 'Wrong! Try again', 'wrong')
   }
 
   if (target.answer === binName) {
@@ -307,6 +492,11 @@ function finishGame() {
   finished.value = true
 }
 
+function finishGameEarly() {
+  showEndConfirm.value = false
+  finished.value = true
+}
+
 function resetGame() {
   score.value = 0
   selectedItem.value = null
@@ -317,6 +507,7 @@ function resetGame() {
   toastText.value = ''
   toastType.value = ''
   finished.value = false
+  showEndConfirm.value = false
 
   items.value = initialItems.map((item) => ({
     ...item,
@@ -618,8 +809,12 @@ function goHome() {
   color: #374151;
 }
 
-.finish-btn {
+.game-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
   margin-top: 30px;
+  flex-wrap: wrap;
 }
 
 .final-score {
@@ -698,18 +893,61 @@ function goHome() {
   gap: 16px;
 }
 
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.confirm-box {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+}
+
+.confirm-box h3 {
+  font-size: 24px;
+  color: #123524;
+  margin-bottom: 12px;
+}
+
+.confirm-box p {
+  color: #5b6770;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
 .toast {
   position: fixed;
-  top: 115px;
+  top: 110px;
   left: 50%;
   transform: translateX(-50%) scale(0.9);
-  padding: 14px 30px;
-  border-radius: 999px;
+  max-width: 720px;
+  width: calc(100% - 40px);
+  padding: 18px 26px;
+  border-radius: 18px;
   color: white;
-  font-size: 18px;
-  font-weight: 900;
+  font-size: 15.5px;
+  line-height: 1.6;
+  font-weight: 700;
+  text-align: center;
   z-index: 9999;
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.2);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.25);
   animation: popToast 0.3s ease forwards;
 }
 
@@ -763,14 +1001,16 @@ function goHome() {
     grid-template-columns: 1fr;
   }
 
-  .result-actions {
+  .result-actions,
+  .confirm-actions {
     flex-direction: column;
     gap: 12px;
   }
 
   .toast {
     top: 90px;
-    font-size: 16px;
+    font-size: 14.5px;
+    padding: 14px 20px;
   }
 }
 </style>
