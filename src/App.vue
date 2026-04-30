@@ -2,7 +2,7 @@
   <nav v-if="showNavbar" class="navbar">
     <!-- FULL logo clickable -->
     <router-link to="/" class="logo">
-      <img src="@/assets/Logo.png" alt="EcoTech Logo" class="logo-img" />
+      <img src="@/assets/logo test.png" alt="EcoTech Logo" class="logo-img" />
       <span class="logo-text">EcoTech</span>
     </router-link>
 
