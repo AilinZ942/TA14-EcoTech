@@ -17,17 +17,21 @@ const mapContainerRef = ref(null)
 const isLoading = ref(false)
 const loadError = ref('')
 const searchTerm = ref('')
+const selectedSearchRange = ref('exact')
 const selectedCategory = ref('')
+const selectedSource = ref('all')
 const facilityRows = ref([])
 const facilityMarkers = ref([])
 const selectedMarkerId = ref('')
 const activePipeline = ref('api')
+const searchMeta = ref(null)
 
 let map = null
 let mapReady = false
 let activePopup = null
 let activeRequestController = null
 let requestTimer = null
+let backendFilterTimer = null
 let renderedMarkers = []
 
 const categoryOptions = computed(() => {
@@ -37,11 +41,48 @@ const categoryOptions = computed(() => {
 })
 
 const hasToken = computed(() => Boolean(mapboxAccessToken))
+const backendSearchApplied = computed(
+  () => searchMeta.value?.query === searchTerm.value.trim(),
+)
+const selectedFocusArea = computed(() => searchMeta.value?.focus_area || null)
+const selectedFallbackMessage = computed(() => searchMeta.value?.message || '')
+
+const sourceOptions = computed(() => {
+  const counts = facilityMarkers.value.reduce(
+    (acc, marker) => {
+      acc.all += 1
+      if (marker.source === 'local_csv_geocoded') acc.existing += 1
+      if (marker.source === 'local_csv_curated') acc.additional += 1
+      if (marker.source === 'cloud_database') acc.cloud += 1
+      return acc
+    },
+    { all: 0, existing: 0, additional: 0, cloud: 0 },
+  )
+
+  return [
+    { value: 'all', label: 'All data', count: counts.all },
+    { value: 'existing', label: 'Existing data', count: counts.existing },
+    { value: 'additional', label: 'Additional data', count: counts.additional },
+    { value: 'cloud', label: 'Cloud DB', count: counts.cloud },
+  ].filter((source) => source.value === 'all' || source.count > 0)
+})
 
 const visibleMarkers = computed(() => {
-  const needle = searchTerm.value.trim().toLowerCase()
+  const needle = backendSearchApplied.value ? '' : searchTerm.value.trim().toLowerCase()
 
   return facilityMarkers.value.filter((marker) => {
+    if (selectedSource.value === 'existing' && marker.source !== 'local_csv_geocoded') {
+      return false
+    }
+
+    if (selectedSource.value === 'additional' && marker.source !== 'local_csv_curated') {
+      return false
+    }
+
+    if (selectedSource.value === 'cloud' && marker.source !== 'cloud_database') {
+      return false
+    }
+
     if (marker.category === 'transfer_station' || marker.category === 'repair_reuse') {
       return false
     }
@@ -62,6 +103,12 @@ const visibleMarkers = computed(() => {
       marker.state,
       marker.categoryLabel,
       marker.source,
+      marker.row?.accepted_items,
+      marker.row?.ewaste_match_text,
+      marker.row?.source_file,
+      marker.row?.council,
+      marker.row?.region,
+      marker.row?.lga_region,
     ]
       .filter(Boolean)
       .join(' ')
@@ -84,6 +131,16 @@ const tokenHelpText = computed(() =>
 )
 
 const visibleCount = computed(() => visibleMarkers.value.length)
+
+const searchRangeOptions = [
+  { value: 'exact', label: 'Exact only' },
+  { value: '10', label: 'Within 10km' },
+  { value: '20', label: 'Within 20km' },
+  { value: '50', label: 'Within 50km' },
+  { value: '100', label: 'Within 100km' },
+  { value: 'state', label: 'State-wide' },
+  { value: 'auto', label: 'Auto widen' },
+]
 
 const pipelineLabel = computed(() => {
   if (activePipeline.value === 'azure') return 'Azure API'
@@ -119,6 +176,9 @@ function popupHtml(marker) {
     ['Postcode', marker.postcode || 'Not provided'],
     ['State', marker.state || 'Not provided'],
     ['Category', marker.categoryLabel || getCategoryLabel(marker.category)],
+    ['Phone', marker.row?.national_phone_number || ''],
+    ['Accepted', marker.row?.accepted_items || marker.row?.ewaste_match_text || ''],
+    ['Source', marker.source || marker.row?.source || ''],
   ]
 
   return `
@@ -126,6 +186,7 @@ function popupHtml(marker) {
       <p class="map-popup__eyebrow">Disposal Site</p>
       <h3>${escapeHtml(marker.facilityName)}</h3>
       ${rows
+        .filter(([, value]) => value)
         .map(
           ([label, value]) => `
             <div class="map-popup__row">
@@ -135,6 +196,8 @@ function popupHtml(marker) {
           `,
         )
         .join('')}
+      ${marker.row?.website_uri ? `<a class="map-popup__link" href="${escapeHtml(marker.row.website_uri)}" target="_blank" rel="noopener noreferrer">Website</a>` : ''}
+      ${marker.row?.google_maps_uri ? `<a class="map-popup__link" href="${escapeHtml(marker.row.google_maps_uri)}" target="_blank" rel="noopener noreferrer">Google Maps</a>` : ''}
     </article>
   `
 }
@@ -242,6 +305,84 @@ function renderMarkers() {
   fitMapToMarkers(visibleMarkers.value)
 }
 
+function refreshMapPresentation() {
+  renderMarkers()
+  renderFocusArea()
+}
+
+function removeFocusArea() {
+  if (!map) return
+
+  const layers = ['focus-area-line', 'focus-area-fill']
+  layers.forEach((layer) => {
+    if (map.getLayer(layer)) map.removeLayer(layer)
+  })
+
+  if (map.getSource('focus-area')) {
+    map.removeSource('focus-area')
+  }
+}
+
+function renderFocusArea() {
+  if (!map || !mapReady) return
+
+  removeFocusArea()
+
+  const bounds = selectedFocusArea.value?.bounds
+  if (!bounds) return
+
+  map.addSource('focus-area', {
+    type: 'geojson',
+    data: boundsToGeoJson(bounds),
+  })
+
+  map.addLayer({
+    id: 'focus-area-fill',
+    type: 'fill',
+    source: 'focus-area',
+    paint: {
+      'fill-color': '#2e7d32',
+      'fill-opacity': 0.14,
+    },
+  })
+
+  map.addLayer({
+    id: 'focus-area-line',
+    type: 'line',
+    source: 'focus-area',
+    paint: {
+      'line-color': '#2e7d32',
+      'line-width': 3,
+      'line-opacity': 0.9,
+    },
+  })
+}
+
+function boundsToGeoJson(bounds) {
+  const padding = 0.025
+  return {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [bounds.minLongitude - padding, bounds.minLatitude - padding],
+              [bounds.maxLongitude + padding, bounds.minLatitude - padding],
+              [bounds.maxLongitude + padding, bounds.maxLatitude + padding],
+              [bounds.minLongitude - padding, bounds.maxLatitude + padding],
+              [bounds.minLongitude - padding, bounds.minLatitude - padding],
+            ],
+          ],
+        },
+      },
+    ],
+  }
+}
+
 async function loadFacilities() {
   if (!hasToken.value) {
     loadError.value = ''
@@ -260,14 +401,17 @@ async function loadFacilities() {
   loadError.value = ''
 
   try {
-    const response = await api.searchDisposalLocations({
+    const response = await api.searchDisposalLocation({
       signal: controller.signal,
+      searchText: searchTerm.value.trim(),
+      searchRange: selectedSearchRange.value,
     })
     const rows = Array.isArray(response?.items) ? response.items : []
 
     facilityRows.value = rows
     facilityMarkers.value = buildFacilityMarkers(rows)
     activePipeline.value = response?.meta?.pipeline || 'api'
+    searchMeta.value = response?.meta?.search || null
 
     if (
       selectedMarkerId.value &&
@@ -277,7 +421,7 @@ async function loadFacilities() {
     }
 
     await nextTick()
-    renderMarkers()
+    refreshMapPresentation()
   } catch (error) {
     if (error?.name === 'AbortError') return
 
@@ -287,14 +431,28 @@ async function loadFacilities() {
     facilityMarkers.value = []
     selectedMarkerId.value = ''
     activePipeline.value = 'api'
+    searchMeta.value = null
     removeRenderedMarkers()
     closePopup()
+    removeFocusArea()
   } finally {
     if (activeRequestController === controller) {
       activeRequestController = null
       isLoading.value = false
     }
   }
+}
+
+function queueBackendFilterLoad() {
+  if (backendFilterTimer) {
+    window.clearTimeout(backendFilterTimer)
+  }
+
+  backendFilterTimer = window.setTimeout(() => {
+    backendFilterTimer = null
+    selectedMarkerId.value = ''
+    loadFacilities()
+  }, 260)
 }
 
 function queueMarkerRefresh() {
@@ -323,11 +481,13 @@ function initialiseMap() {
 
   map.on('load', () => {
     mapReady = true
-    renderMarkers()
+    refreshMapPresentation()
   })
 }
 
 function resetFilters() {
+  selectedSource.value = 'all'
+  selectedSearchRange.value = 'exact'
   selectedCategory.value = ''
   searchTerm.value = ''
 }
@@ -336,12 +496,25 @@ function openDirections() {
   if (!selectedMarker.value) return
 
   const { longitude, latitude } = selectedMarker.value
-  const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
+  const url =
+    selectedMarker.value.row?.google_maps_uri ||
+    `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 watch(visibleMarkers, () => {
   queueMarkerRefresh()
+  if (mapReady) renderFocusArea()
+})
+
+watch(searchTerm, () => {
+  queueBackendFilterLoad()
+})
+
+watch(selectedSearchRange, () => {
+  if (searchTerm.value.trim()) {
+    queueBackendFilterLoad()
+  }
 })
 
 onMounted(async () => {
@@ -354,12 +527,17 @@ onBeforeUnmount(() => {
     window.clearTimeout(requestTimer)
   }
 
+  if (backendFilterTimer) {
+    window.clearTimeout(backendFilterTimer)
+  }
+
   if (activeRequestController) {
     activeRequestController.abort()
   }
 
   removeRenderedMarkers()
   closePopup()
+  removeFocusArea()
 
   if (map) {
     map.remove()
@@ -393,13 +571,40 @@ onBeforeUnmount(() => {
     <div class="content-grid">
       <section class="map-panel">
         <div class="toolbar-card">
+          <fieldset class="source-switch">
+            <legend>Map data</legend>
+            <label
+              v-for="source in sourceOptions"
+              :key="source.value"
+              class="source-option"
+              :class="{ active: selectedSource === source.value }"
+            >
+              <input v-model="selectedSource" type="radio" :value="source.value" />
+              <span>{{ source.label }}</span>
+              <strong>{{ source.count }}</strong>
+            </label>
+          </fieldset>
+
           <label>
-            <span>Search</span>
+            <span>Location</span>
             <input
               v-model.trim="searchTerm"
               type="search"
-              placeholder="Facility, suburb, address, postcode"
+              placeholder="Facility, state, suburb, postcode"
             />
+          </label>
+
+          <label>
+            <span>Search range</span>
+            <select v-model="selectedSearchRange">
+              <option
+                v-for="range in searchRangeOptions"
+                :key="range.value"
+                :value="range.value"
+              >
+                {{ range.label }}
+              </option>
+            </select>
           </label>
 
           <label>
@@ -437,6 +642,12 @@ onBeforeUnmount(() => {
             <p>{{ loadError }}</p>
           </div>
 
+          <div v-else-if="selectedFallbackMessage || selectedFocusArea?.label" class="map-overlay map-overlay--focus">
+            <h2>{{ selectedFocusArea?.label || 'Search area' }}</h2>
+            <p v-if="selectedFallbackMessage">{{ selectedFallbackMessage }}</p>
+            <p v-else>Showing locations for the matched search area.</p>
+          </div>
+
           <div ref="mapContainerRef" class="map-container" />
         </div>
       </section>
@@ -472,6 +683,46 @@ onBeforeUnmount(() => {
                 <span>Category</span>
                 <strong>{{ selectedMarker.categoryLabel }}</strong>
               </div>
+              <div class="detail-row">
+                <span>Source</span>
+                <strong>{{ selectedMarker.row.source || selectedMarker.source || 'Not provided' }}</strong>
+              </div>
+              <div v-if="selectedMarker.row.national_phone_number" class="detail-row">
+                <span>Phone</span>
+                <strong>{{ selectedMarker.row.national_phone_number }}</strong>
+              </div>
+              <div v-if="selectedMarker.row.accepted_items || selectedMarker.row.ewaste_match_text" class="detail-row">
+                <span>Accepted items</span>
+                <strong>{{ selectedMarker.row.accepted_items || selectedMarker.row.ewaste_match_text }}</strong>
+              </div>
+              <div v-if="selectedMarker.row.note" class="detail-row">
+                <span>Note</span>
+                <strong>{{ selectedMarker.row.note }}</strong>
+              </div>
+              <div v-if="selectedMarker.row.website_uri" class="detail-row">
+                <span>Website</span>
+                <strong>
+                  <a :href="selectedMarker.row.website_uri" target="_blank" rel="noopener noreferrer">
+                    Open website
+                  </a>
+                </strong>
+              </div>
+              <div v-if="selectedMarker.row.google_maps_uri" class="detail-row">
+                <span>Google Maps</span>
+                <strong>
+                  <a :href="selectedMarker.row.google_maps_uri" target="_blank" rel="noopener noreferrer">
+                    View listing
+                  </a>
+                </strong>
+              </div>
+              <div v-if="selectedMarker.row.source_file" class="detail-row">
+                <span>Source file</span>
+                <strong>{{ selectedMarker.row.source_file }}</strong>
+              </div>
+              <div v-if="selectedMarker.row.coord_source" class="detail-row">
+                <span>Coord source</span>
+                <strong>{{ selectedMarker.row.coord_source }}</strong>
+              </div>
             </div>
 
             <div class="panel-actions">
@@ -492,6 +743,12 @@ onBeforeUnmount(() => {
         <section class="panel-card">
           <p class="section-label">Visible categories</p>
           <h2>What is currently shown</h2>
+          <p class="support-copy selected-copy">
+            Source: {{ sourceOptions.find((source) => source.value === selectedSource)?.label || 'All data' }}
+          </p>
+          <p v-if="selectedFocusArea?.label" class="support-copy selected-copy">
+            Focused area: {{ selectedFocusArea.label }}
+          </p>
           <div class="category-list">
             <div v-for="entry in categorySummary" :key="entry.key" class="category-row">
               <span class="category-label">
@@ -651,7 +908,7 @@ h2 {
 
 .content-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.85fr);
+  grid-template-columns: minmax(0, 1.85fr) minmax(300px, 0.72fr);
   gap: 20px;
   align-items: start;
 }
@@ -673,9 +930,70 @@ h2 {
 
 .toolbar-card {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(180px, 0.7fr) auto;
+  grid-template-columns: minmax(92px, 0.35fr) minmax(280px, 1.25fr) minmax(170px, 0.55fr) minmax(180px, 0.6fr) auto;
   gap: 18px;
   align-items: end;
+}
+
+.source-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  min-width: 0;
+  padding: 6px;
+  margin: 0;
+  border: 1px solid #deebdf;
+  border-radius: 18px;
+  background: #f4faf5;
+}
+
+.source-switch legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.source-option {
+  flex: 1 1 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 8px;
+  align-items: center;
+  min-width: 0;
+  min-height: 36px;
+  padding: 7px 10px;
+  border-radius: 14px;
+  color: #557260;
+  cursor: pointer;
+}
+
+.source-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.source-option span {
+  margin: 0;
+  overflow: hidden;
+  color: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.source-option strong {
+  color: inherit;
+  font-size: 13px;
+}
+
+.source-option.active {
+  background: #2e7d32;
+  color: #ffffff;
+  box-shadow: 0 8px 16px rgba(46, 125, 50, 0.18);
 }
 
 label {
@@ -766,6 +1084,8 @@ button {
 
 .map-frame {
   position: relative;
+  width: calc(100% - 18px);
+  margin-left: 18px;
   min-height: 640px;
   border: 1px solid #dcebdc;
   border-radius: 24px;
@@ -827,6 +1147,11 @@ button {
   border-color: #efcaca;
 }
 
+.map-overlay--focus {
+  background: rgba(232, 245, 233, 0.95);
+  border-color: #bdd8c0;
+}
+
 .detail-list,
 .category-list {
   display: grid;
@@ -855,6 +1180,15 @@ button {
   font-weight: 700;
   text-align: right;
   color: #173a29;
+}
+
+.detail-row a {
+  color: #2e7d32;
+  text-decoration: none;
+}
+
+.detail-row a:hover {
+  text-decoration: underline;
 }
 
 .category-label {
@@ -941,6 +1275,23 @@ button {
   color: #173a29;
 }
 
+:deep(.map-popup__link) {
+  display: inline-flex;
+  margin-top: 10px;
+  margin-right: 8px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+:deep(.map-popup__link:hover) {
+  background: #dff0e1;
+}
+
 @media (max-width: 1200px) {
   .content-grid {
     grid-template-columns: 1fr;
@@ -950,6 +1301,11 @@ button {
 @media (max-width: 1024px) {
   .toolbar-card {
     grid-template-columns: 1fr;
+  }
+
+  .map-frame {
+    width: 100%;
+    margin-left: 0;
   }
 
   .hero-card {

@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
 from flask_wtf import CSRFProtect
+from health import health_bp
 from login import auth_bp
 from location import location_bp
 from optimizer import optimizer_bp
@@ -31,7 +32,16 @@ app.config.update(
 
 CORS(app, resources={
     r"/api/*": {
-        "origins": ["http://localhost:5173"],  # allow only the frontend origin
+        "origins": [
+            "http://localhost:5173",
+            "http://localhost:5174",
+            "http://localhost:5175",
+            "http://localhost:5176",
+            "http://127.0.0.1:5173",
+            "http://127.0.0.1:5174",
+            "http://127.0.0.1:5175",
+            "http://127.0.0.1:5176",
+        ],  # allow local Vite preview ports
         "supports_credentials": True,  # 重要：允许携带 cookie
         "allow_headers": ["Content-Type", "X-CSRF-Token"]
     }
@@ -43,6 +53,7 @@ app.config['WTF_CSRF_CHECK_DEFAULT'] = False
 app.config['WTF_CSRF_HEADERS'] = ['X-CSRF-Token']
 
 app.register_blueprint(auth_bp, url_prefix="/api")
+app.register_blueprint(health_bp, url_prefix="/api")
 app.register_blueprint(location_bp, url_prefix="/api/")
 app.register_blueprint(optimizer_bp, url_prefix="/api/")
 

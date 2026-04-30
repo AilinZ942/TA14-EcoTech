@@ -56,8 +56,14 @@ Layer Summary
 
 Current interface contract observed in repo
 ------------------------------------------
-- Frontend method: `api.getPerson()`
+- Frontend method: `api.getHealthAll()`
 - HTTP method: `GET`
-- Endpoint: `/api/GetPerson`
+- Endpoint: `/api/health/all`
 - Response handling: `response.json()`
-- Consumer: `src/views/AIChat.vue`
+- Consumer: `src/views/Dashboard.vue`
+
+- Frontend method: `api.searchDisposalLocation()`
+- HTTP method: `GET`
+- Endpoint: `/api/map/disposal-locations`
+- Response handling: `response.json()`
+- Consumer: `src/views/DisposalLocations.vue`

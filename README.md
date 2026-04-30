@@ -1,231 +1,224 @@
 # TA14-EcoTech
 
-EcoTech is a frontend-focused e-waste awareness application built with Vue 3 and Vite. The current repository contains the web client, route structure, and a thin API layer that connects to a separately hosted backend service on Azure.
+EcoTech is a Vue 3 and Flask prototype for e-waste awareness. The current stage connects two main frontend features to named API methods:
 
-## Overview
+- `api.getHealthAll()` for the health impact dashboard
+- `api.searchDisposalLocation()` for disposal location search and map data
 
-The project is organized as a single-page application (SPA):
-
-- `Vue 3` provides the component model and page rendering.
-- `Vue Router` handles client-side navigation between feature pages.
-- `Vite` handles local development, bundling, and module resolution.
-- A small frontend API wrapper in `src/api/index.js` communicates with an external backend.
-
-At the moment, the repository is frontend-heavy. Most feature pages are scaffolded as placeholders, while the `AI Chat` page is the only page that actively calls the backend API.
+The repo also contains temporary preview routes so teammates can review the health dashboard and disposal map without completing the normal login flow.
 
 ## Tech Stack
 
 ### Frontend
 
 - Node.js `>=20.19.0`
-- Vue `3.5.31`
-- Vue Router `5.0.4`
-- Vite `8.0.3`
-- `@vitejs/plugin-vue` `6.0.5`
+- Vue 3
+- Vue Router
+- Vite
+- Mapbox GL for the disposal map
 
-### Python Environment
+Frontend dependencies are managed by `package.json` and `package-lock.json`.
+
+### Backend
 
 - Python `>=3.10`
-- `requests==2.32.3`
+- Flask
+- Flask-CORS
+- Flask-WTF
+- psycopg2 for PostgreSQL access
+- python-dotenv for local environment variables
 
-The Python virtual environment is local to the repo at `.venv/`. It is not used by the frontend app directly right now, but it is available for backend-related scripts, testing helpers, or future service integration work.
+Python dependencies are listed in both `requirements.txt` and `backend/requirements.txt`.
 
-## Current Architecture
-
-### High-level flow
-
-1. The browser loads the Vite-built Vue application from `index.html`.
-2. `src/main.js` creates the Vue app and installs the router.
-3. `src/App.vue` renders the top navigation bar and the current route view.
-4. `src/router/index.js` maps route paths to page-level Vue components.
-5. Individual views render static content or call the shared API wrapper.
-6. `src/api/index.js` sends HTTP requests to the external Azure backend.
-
-### Text-based architecture graph
-
-See [architecture.txt](/d:/26年课程/5120/project/group_repo/TA14-EcoTech/architecture.txt) for the standalone text graph. A copy is included below for convenience:
+## Project Structure
 
 ```text
-Browser
-  |
-  v
-index.html
-  |
-  v
-src/main.js
-  |
-  v
-Vue App (src/App.vue)
-  |
-  +--> Top Navigation
-  |
-  +--> Vue Router (src/router/index.js)
-         |
-         +--> /                   -> Home.vue
-         +--> /dashboard          -> Dashboard.vue
-         +--> /repair-check       -> RepairCheck.vue
-         +--> /extend-usage       -> ExtendUsage.vue
-         +--> /ai-chat            -> AIChat.vue
-         +--> /safe-guidance      -> SafeGuidance.vue
-         +--> /disposal-locations -> DisposalLocations.vue
-                                       |
-                                       v
-                                  Shared API layer
-                                  (src/api/index.js)
-                                       |
-                                       v
-          Azure-hosted backend: /api/GetPerson
+group_repo_29_04/
+  backend/
+    main.py                 Flask app entry point
+    health.py               /api/health/all endpoint
+    location.py             /api/map/disposal-locations endpoint
+    login.py                auth and CSRF endpoints
+    optimizer.py            AI device optimizer endpoint
+    data_for_map/           local map CSV and boundary data
+  src/
+    api/index.js            shared frontend API wrapper
+    api/tempMapPreview.js   temporary frontend-only disposal map preview data
+    router/index.js         Vue routes and preview auth bypass
+    views/Dashboard.vue     health dashboard
+    views/DisposalLocations.vue
+    views/EwasteAustraliaMap.vue
+  .env.local                local Vite preview variables
 ```
 
-## Frontend Structure
+## Main API Contract
 
-### App shell
+The frontend should call the backend through `src/api/index.js`.
 
-- `src/main.js`: application bootstrap
-- `src/App.vue`: global navigation shell and route outlet
-- `src/router/index.js`: route registry
+| Frontend method | HTTP method | Backend path | Main consumers |
+| --- | --- | --- | --- |
+| `api.getHealthAll()` | `GET` | `/api/health/all` | `src/views/Dashboard.vue` |
+| `api.searchDisposalLocation()` | `GET` | `/api/map/disposal-locations` | `src/views/DisposalLocations.vue`, `src/views/EwasteAustraliaMap.vue` |
 
-### Views
+`api.searchDisposalLocations()` still exists as a compatibility alias, but new frontend code should use `api.searchDisposalLocation()`.
 
-- `Home.vue`: landing page with hero section and links to core feature areas
-- `Dashboard.vue`: placeholder page
-- `RepairCheck.vue`: placeholder page
-- `ExtendUsage.vue`: placeholder page
-- `AIChat.vue`: active integration page that fetches backend data on mount
-- `SafeGuidance.vue`: placeholder page
-- `DisposalLocations.vue`: placeholder page
-
-### API layer
-
-- `src/api/index.js`: shared API wrapper with a fixed backend base URL
-
-This is currently a very thin abstraction. There is no request interceptor, no global error handling layer, no schema validation, and no environment-based API configuration yet.
-
-## Backend Architecture Status
-
-The backend implementation is not present in this repository.
-
-What we can confirm from the frontend code:
-
-- The frontend expects a backend hosted at:
-  `https://ta14-ecotech-backend-ecf9e5hca9fpf7da.australiaeast-01.azurewebsites.net/api`
-- The currently used endpoint is `GET /GetPerson`
-- The API is called with the browser `fetch()` API
-- The response is expected to be JSON
-
-What we cannot confirm from this repo alone:
-
-- Backend framework or language
-- Data model definitions
-- Authentication and authorization rules
-- Database/storage design
-- Input validation rules
-- Rate limiting, logging, or deployment pipeline details
-
-## Interface Design
-
-### Implemented frontend-to-backend interface
-
-Current shared API wrapper:
-
-- Module: `src/api/index.js`
-- Base URL: `/api` namespace on the Azure backend
-- Style: plain async functions returning parsed JSON
-
-Implemented operation:
-
-| Frontend method | HTTP method | Backend path | Called from | Expected result |
-| --- | --- | --- | --- | --- |
-| `api.getPerson()` | `GET` | `/GetPerson` | `src/views/AIChat.vue` | JSON payload rendered directly in the page |
-
-### Request/response behavior
-
-- The frontend sends a simple `GET` request.
-- No request body is included.
-- No custom headers are added.
-- Non-2xx responses throw an error in `src/api/index.js`.
-- The success payload is passed straight to the Vue component without transformation.
-
-### Current interface design characteristics
-
-- Tight coupling to a hard-coded production-like backend URL
-- No environment-specific configuration such as `.env`
-- No typed response contract
-- No retry, timeout, or loading-state abstraction
-- No centralized error UI
-
-This means the current interface layer is sufficient for a prototype, but still minimal for a production-grade frontend-backend contract.
-
-## Architectural Assessment
-
-### Strengths
-
-- Simple and easy to understand structure
-- Clear separation between routing, views, and API wrapper
-- Good starting point for rapid feature iteration
-- External backend integration is already wired into the frontend
-
-### Current limitations
-
-- Backend source code is not colocated with the frontend
-- Most feature pages are placeholders and not yet connected to real logic
-- API base URL is hard-coded instead of environment-driven
-- No shared state management for cross-page data
-- No API contract documentation beyond the single wrapper function
-- No visible test coverage in the repository
-
-## Local Development
+## Local Setup
 
 ### Install frontend dependencies
 
-```sh
+```powershell
 npm install
 ```
 
-### Run the frontend
+### Install backend dependencies
 
-```sh
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+If you only work inside the backend folder, this also works:
+
+```powershell
+pip install -r backend\requirements.txt
+```
+
+### Start the backend
+
+```powershell
+python backend\main.py
+```
+
+The backend runs on:
+
+```text
+http://localhost:8000
+```
+
+### Start the frontend
+
+```powershell
 npm run dev
 ```
 
-### Build for production
+Vite usually starts at `http://localhost:5173`. If that port is busy, it will choose the next available port.
 
-```sh
+## Preview Pages
+
+These preview pages were added for the current stage so teammates can review the work quickly:
+
+| Preview | URL |
+| --- | --- |
+| Health dashboard preview | `http://localhost:5173/#/health-preview` |
+| Disposal locations preview | `http://localhost:5173/#/disposal-locations` |
+
+If Vite starts on another port, replace `5173` with the port shown in the terminal.
+
+Example from one local run:
+
+```text
+http://127.0.0.1:5176/#/health-preview
+http://127.0.0.1:5176/#/disposal-locations
+```
+
+### Preview environment variables
+
+The local preview mode is controlled by `.env.local`:
+
+```env
+VITE_MAPBOX_ACCESS_TOKEN=your_mapbox_token
+VITE_MAP_DATA_SOURCE=local
+VITE_ALLOW_MAP_PREVIEW_WITHOUT_LOGIN=true
+VITE_TEMP_MAP_PREVIEW=1
+```
+
+`VITE_TEMP_MAP_PREVIEW=1` makes `api.searchDisposalLocation()` use `src/api/tempMapPreview.js` instead of the live backend endpoint. This lets the disposal page show local CSV map data during development.
+
+## How To Remove The Preview Code Later
+
+When the team no longer needs the temporary preview pages, use this checklist.
+
+1. Remove or disable the health preview route
+
+   File: `src/router/index.js`
+
+   Delete this route:
+
+   ```js
+   {
+     path: '/health-preview',
+     name: 'HealthPreview',
+     component: Dashboard,
+     meta: { requiresAuth: false }
+   }
+   ```
+
+2. Remove the login-page preview link
+
+   File: `src/views/Login.vue`
+
+   Delete the link that points to `/health-preview`, plus the `.preview-link` styles if they are no longer used.
+
+3. Turn off the disposal frontend preview data
+
+   File: `.env.local`
+
+   Remove this line or set it to `0`:
+
+   ```env
+   VITE_TEMP_MAP_PREVIEW=1
+   ```
+
+4. Remove the disposal preview auth bypass
+
+   File: `src/router/index.js`
+
+   Delete the `TEMP_MAP_PREVIEW` constant and this guard block:
+
+   ```js
+   if (TEMP_MAP_PREVIEW && to.path === '/disposal-locations') {
+     return true
+   }
+   ```
+
+5. Remove the temporary frontend data module
+
+   File: `src/api/index.js`
+
+   Delete the `TEMP_MAP_PREVIEW` branch inside `searchDisposalLocation()`.
+
+   Then delete:
+
+   ```text
+   src/api/tempMapPreview.js
+   ```
+
+Do not delete `backend/data_for_map/` unless the backend no longer needs local CSV fallback data.
+
+## Useful Commands
+
+### Build frontend
+
+```powershell
 npm run build
 ```
 
-### Lint
+### Lint frontend
 
-```sh
+```powershell
 npm run lint
 ```
 
-### Use the local Python virtual environment
-
-PowerShell:
+### Check backend syntax
 
 ```powershell
-cd d:\26年课程\5120\project\group_repo\TA14-EcoTech
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\.venv\Scripts\Activate.ps1
+python -m py_compile backend\main.py backend\health.py backend\location.py backend\login.py backend\optimizer.py
 ```
 
-Or call the interpreter directly:
+## Notes For Teammates
 
-```powershell
-.\.venv\Scripts\python.exe --version
-.\.venv\Scripts\python.exe -m pip show requests
-```
-
-## Suggested Next Steps
-
-- Move the backend base URL into environment variables
-- Expand the API layer to cover each feature page with named domain methods
-- Define response schemas or TypeScript types for backend contracts
-- Add loading, error, and empty-state handling in `AIChat.vue`
-- Document or import the backend service source so frontend-backend integration is easier to maintain
-
-
-## quiz start up
-cd D:\26年课程\5120\project\group_repo\TA14-EcoTech
-npm.cmd run dev
+- The intended frontend integration surface is `getHealthAll()` and `searchDisposalLocation()`.
+- The health preview route is only a public route alias for `Dashboard.vue`; the real dashboard route remains `/dashboard`.
+- The disposal preview mode is temporary and is controlled by `VITE_TEMP_MAP_PREVIEW`.
+- `requirements.txt` is for Python only. Frontend packages such as Leaflet, Mapbox, Vue, and Vite belong in `package.json`.
