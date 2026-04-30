@@ -11,7 +11,7 @@
       <router-link to="/dashboard">Dashboard</router-link>
       <!--<router-link to="/repair-check">Repair Check</router-link> -->
       <!--<router-link to="/extend-usage">Extend Usage</router-link> -->
-      <router-link to="/device-optimizer">AI Device Optimizer</router-link>
+      <!-- <router-link to="/device-optimizer">AI Device Optimizer</router-link> -->
       <!--<router-link to="/safe-guidance">Safe Guidance</router-link>-->
       <router-link to="/disposal-locations">Disposal Locations</router-link>
     </div>

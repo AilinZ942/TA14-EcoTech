@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <section class="device-optimizer-page">
     <div class="hero-card">
       <div class="hero-copy">
@@ -617,4 +617,4 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
 }
-</style>
+</style> -->

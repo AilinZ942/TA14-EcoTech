@@ -19,30 +19,30 @@ const routes = [
     name: 'Dashboard',
     component: Dashboard,
   },
-  {
-    path: '/repair-check',
-    name: 'RepairCheck',
-    component: RepairCheck,
-  },
-  {
-    path: '/extend-usage',
-    name: 'ExtendUsage',
-    component: ExtendUsage,
-  },
-  {
-    path: '/device-optimizer',
-    name: 'DeviceOptimizer',
-    component: AIChat,
-  },
-  {
-    path: '/ai-chat',
-    redirect: '/device-optimizer',
-  },
-  {
-    path: '/safe-guidance',
-    name: 'SafeGuidance',
-    component: SafeGuidance,
-  },
+  // {
+  //   path: '/repair-check',
+  //   name: 'RepairCheck',
+  //   component: RepairCheck,
+  // },
+  // {
+  //   path: '/extend-usage',
+  //   name: 'ExtendUsage',
+  //   component: ExtendUsage,
+  // },
+  // {
+  //   path: '/device-optimizer',
+  //   name: 'DeviceOptimizer',
+  //   component: AIChat,
+  // },
+  // {
+  //   path: '/ai-chat',
+  //   redirect: '/device-optimizer',
+  // },
+  // {
+  //   path: '/safe-guidance',
+  //   name: 'SafeGuidance',
+  //   component: SafeGuidance,
+  // },
   {
     path: '/disposal-locations',
     name: 'DisposalLocations',
