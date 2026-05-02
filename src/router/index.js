@@ -35,12 +35,6 @@ const routes = [
   },
 
   {
-    path: '/health-preview',
-    name: 'HealthPreview',
-    component: Dashboard,
-    meta: { requiresAuth: false }
-  },
-  {
     path: '/repair-check',
     name: 'RepairCheck',
     component: RepairCheck,

@@ -5,7 +5,6 @@
       <input v-model="username" type="text" placeholder="username" required />
       <input v-model="password" type="password" placeholder="password" required />
       <button type="submit">Login</button>
-      <router-link to="/health-preview" class="preview-link">Preview Health Insights</router-link>
       <p v-if="error" class="error">{{ error }}</p>
     </form>
   </div>
