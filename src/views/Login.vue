@@ -5,7 +5,6 @@
       <input v-model="username" type="text" placeholder="username" required />
       <input v-model="password" type="password" placeholder="password" required />
       <button type="submit">Login</button>
-      <router-link to="/health-preview" class="preview-link">Preview Health Insights</router-link>
       <p v-if="error" class="error">{{ error }}</p>
     </form>
   </div>
@@ -141,29 +140,6 @@ export default {
   transform: translateY(-1px);
   box-shadow: 0 20px 34px rgba(15, 118, 110, 0.28);
   filter: brightness(1.03);
-}
-
-.preview-link {
-  display: block;
-  margin-top: 14px;
-  padding: 13px 16px;
-  border-radius: 16px;
-  border: 1px solid #cfe4da;
-  background: #f8fffb;
-  color: #0f766e;
-  font-weight: 800;
-  text-align: center;
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.preview-link:hover {
-  background: #ecfdf5;
-  border-color: #86efac;
-  transform: translateY(-1px);
 }
 
 .login-card button:active {
