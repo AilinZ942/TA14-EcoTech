@@ -33,6 +33,7 @@ const routes = [
     component: Dashboard,
     meta: { requiresAuth: true }
   },
+
   {
     path: '/health-preview',
     name: 'HealthPreview',
@@ -52,15 +53,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/device-optimizer',
-    name: 'DeviceOptimizer',
+    path: '/ai-chat',
+    name: 'AIChat',
     component: AIChat,
     meta: { requiresAuth: true }
   },
-  {
-    path: '/ai-chat',
-    redirect: '/device-optimizer',
-  },
+
   {
     path: '/safe-guidance',
     name: 'SafeGuidance',
@@ -71,6 +69,7 @@ const routes = [
     path: '/disposal-locations',
     name: 'DisposalLocations',
     component: DisposalLocations,
+    meta: { requiresAuth: true }
   },
   {
     path: '/game',
@@ -87,9 +86,6 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  if (TEMP_MAP_PREVIEW && to.path === '/disposal-locations') {
-    return true
-  }
 
   let isLoggedIn = false
 

@@ -12,7 +12,7 @@
       <!--<router-link to="/repair-check">Repair Check</router-link> -->
       <router-link to="/game">Sorting Game</router-link>
       <!--<router-link to="/extend-usage">Extend Usage</router-link> -->
-      <router-link to="/device-optimizer">AI Device Optimizer</router-link>
+      <router-link to="/ai-chat">AI Device Optimizer</router-link>
       <!--<router-link to="/safe-guidance">Safe Guidance</router-link>-->
       <router-link to="/disposal-locations">Disposal Locations</router-link>
       <button type="button" class="logout-button" @click="handleLogout">Logout</button>

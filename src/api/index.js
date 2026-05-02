@@ -1,4 +1,4 @@
-const API_SITE = 'http://localhost:8000/api' //Server URL from environment variable
+const API_SITE = import.meta.env.VITE_API_SITE //Server URL from environment variable
 const TEMP_MAP_PREVIEW = import.meta.env.DEV && import.meta.env.VITE_TEMP_MAP_PREVIEW === '1'
 
 
@@ -71,13 +71,28 @@ export const api = {
     return request(API_SITE, '/health/all')
   },
 
-  getHeavyMetalState() {
-    return request(API_SITE, '/emissions/state')
-  },
 
-  getHeavyMetalFacility() {
-    return request(API_SITE, '/emissions/facility')
-  },
+  // Need to update !!!!!!
+
+  // Database-backed health and emissions endpoints are intentionally
+  // disabled for now until the corresponding cloud data is deployed.
+  // Re-enable these methods when the backend data is ready.
+  //
+  // getHealthAll_2() {
+  //   return request(API_SITE, '/health/all_2')
+  // },
+  //
+  // getHealthFilter() {
+  //   return request(API_SITE, '/health/filters')
+  // },
+  //
+  // getHeavyMetalState() {
+  //   return request(API_SITE, '/emissions/state')
+  // },
+  //
+  // getHeavyMetalFacility() {
+  //   return request(API_SITE, '/emissions/facility')
+  // },
 
   searchDisposalLocation(options = {}) {
     if (TEMP_MAP_PREVIEW) {
@@ -93,10 +108,6 @@ export const api = {
     const suffix = params.toString() ? `?${params}` : ''
 
     return request(API_SITE, `/map/disposal-locations${suffix}`, fetchOptions)
-  },
-
-  searchDisposalLocations(options = {}) {
-    return this.searchDisposalLocation(options)
   },
 
   getDeviceOptimizationTips(payload) {

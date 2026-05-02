@@ -8,7 +8,7 @@ from typing import Literal
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request
 
-from login import login_required
+from routes.login import login_required
 
 
 load_dotenv()
