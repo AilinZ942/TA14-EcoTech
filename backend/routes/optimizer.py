@@ -2,16 +2,13 @@ from __future__ import annotations
 
 import os
 import re
+import logging
 from functools import lru_cache
 from typing import Literal
 
-from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request
 
 from routes.login import login_required
-
-
-load_dotenv()
 
 optimizer_bp = Blueprint("optimizer", __name__)
 
@@ -278,7 +275,11 @@ def load_generator():
             n_batch=LLAMA_N_BATCH,
             verbose=False,
         )
+    except SystemExit as exc:
+        logging.exception("llama_cpp exited while loading the model")
+        return None
     except Exception:
+        logging.exception("failed to load llama_cpp model")
         return None
 
 
@@ -305,7 +306,11 @@ def generate_reply(prompt: str) -> tuple[str, str]:
         message = choices[0].get("message") or {}
         text = str(message.get("content") or "").strip()
         return text, QWEN_MODEL_REPO_ID
+    except SystemExit:
+        logging.exception("llama_cpp exited while generating the reply")
+        return "", "qwen-generation-systemexit"
     except Exception:
+        logging.exception("llama generation failed")
         return "", "qwen-generation-failed"
 
 

@@ -1,28 +1,22 @@
-const API_SITE = import.meta.env.VITE_API_SITE //Server URL from environment variable
+const API_SITE = '/api'
 const TEMP_MAP_PREVIEW = import.meta.env.DEV && import.meta.env.VITE_TEMP_MAP_PREVIEW === '1'
 
-
-
-
-import { ref } from 'vue';
-const csrfToken = ref('');
+import { ref } from 'vue'
+const csrfToken = ref('')
 export async function initCSRF() {
   try {
-    const response = await fetch(`${API_SITE}/csrf-token`, {
-      credentials: 'include'
-    });
-    const data = await response.json();
-    csrfToken.value = data.csrf_token;
-    console.log('CSRF token initialized.');
+    const response = await fetch(`${API_SITE}/csrf-token`)
+    const data = await response.json()
+    csrfToken.value = data.csrf_token
+    console.log('CSRF token initialized.')
   } catch (error) {
-    console.error('failed to initialize CSRF token:', error);
+    console.error('failed to initialize CSRF token:', error)
   }
 }
 
 async function request(baseUrl, path, options = {}) {
   const response = await fetch(`${baseUrl}${path}`, {
     ...options,
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRF-Token': csrfToken.value,

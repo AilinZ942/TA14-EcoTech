@@ -1,6 +1,5 @@
 # Python dependencies for the Flask backend and backend data scripts.
 Flask>=3.0
-Flask-Cors>=4.0
 Flask-WTF>=1.2
 python-dotenv>=1.0
 psycopg2-binary>=2.9
