@@ -2,7 +2,7 @@
   <nav v-if="showNavbar" class="navbar">
     <!-- FULL logo clickable -->
     <router-link to="/" class="logo">
-      <img src="@/assets/Logo.png" alt="EcoTech Logo" class="logo-img" />
+      <img src="@/assets/logo test.png" alt="EcoTech Logo" class="logo-img" />
       <span class="logo-text">EcoTech</span>
     </router-link>
 
@@ -10,9 +10,9 @@
       <router-link to="/">Home</router-link>
       <router-link to="/dashboard">Dashboard</router-link>
       <!--<router-link to="/repair-check">Repair Check</router-link> -->
-      <router-link to="/game">Game</router-link>
+      <router-link to="/game">Sorting Game</router-link>
       <!--<router-link to="/extend-usage">Extend Usage</router-link> -->
-      <router-link to="/device-optimizer">AI Device Optimizer</router-link>
+      <router-link to="/ai-chat">AI Device Optimizer</router-link>
       <!--<router-link to="/safe-guidance">Safe Guidance</router-link>-->
       <router-link to="/disposal-locations">Disposal Locations</router-link>
       <button type="button" class="logout-button" @click="handleLogout">Logout</button>
