@@ -3,15 +3,10 @@ import os
 from collections import defaultdict
 from datetime import datetime, timedelta
 from functools import wraps
-from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_wtf.csrf import generate_csrf
 import logging
-from datetime import datetime
-
-
-load_dotenv()
 
 auth_bp = Blueprint("login", __name__)
 
@@ -95,7 +90,7 @@ def login():
 @auth_bp.route('/logout', methods=['POST'])
 def logout():
     session.pop('logged_in', None)
-    session
+    session.pop('ip', None)
     return jsonify({'success': True, 'message': 'logout successful'})
 
 # authentication check

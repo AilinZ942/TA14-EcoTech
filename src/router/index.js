@@ -11,8 +11,6 @@ import Game from '@/views/Game.vue'
 import Login from '@/views/Login.vue'
 import { authAPI } from '@/api'
 
-const TEMP_MAP_PREVIEW = import.meta.env.DEV && import.meta.env.VITE_TEMP_MAP_PREVIEW === '1'
-
 const routes = [
   {
     path: '/login',
