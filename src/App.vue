@@ -2,15 +2,15 @@
   <nav v-if="showNavbar" class="navbar">
     <!-- FULL logo clickable -->
     <router-link to="/" class="logo">
-      <img src="@/assets/Logo.png" alt="EcoTech Logo" class="logo-img" />
-      <span class="logo-text">EcoTech</span>
+      <img src="@/assets/logo test.png" alt="EcoTech Logo" class="logo-img" />
+      <span class="logo-text">EcoReviva</span>
     </router-link>
 
     <div class="links">
       <router-link to="/">Home</router-link>
       <router-link to="/dashboard">Dashboard</router-link>
       <!--<router-link to="/repair-check">Repair Check</router-link> -->
-      <router-link to="/game">Game</router-link>
+      <router-link to="/game">Sorting Game</router-link>
       <!--<router-link to="/extend-usage">Extend Usage</router-link> -->
       <router-link to="/device-optimizer">AI Device Optimizer</router-link>
       <!--<router-link to="/safe-guidance">Safe Guidance</router-link>-->
