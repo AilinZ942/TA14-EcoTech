@@ -6,7 +6,7 @@
       <div class="hero-gradient"></div>
 
       <div class="hero-content" :style="heroContentStyle">
-        <p class="hero-tag">EcoTech</p>
+        <p class="hero-tag">EcoReviva</p>
         <h1>Dispose E-waste the Right Way</h1>
         <p class="hero-subtitle">
           Learn why e-waste is harmful, understand simple health risks, and find safe disposal
@@ -105,7 +105,7 @@
           <p class="section-tag">User journey</p>
           <h2>From awareness to action</h2>
           <p class="section-text">
-            The goal of EcoTech is simple. First, help users understand why e-waste is dangerous.
+            The goal of EcoReviva is simple. First, help users understand why e-waste is dangerous.
             Then show the health context clearly. Finally, guide them to the next practical step:
             safe disposal.
           </p>
