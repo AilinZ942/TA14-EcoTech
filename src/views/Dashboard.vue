@@ -73,6 +73,7 @@ onMounted(async () => {
       </article>
     </section>
 
+    <!--
     <section class="stats-grid">
       <article v-for="card in summaryCards" :key="card.label" class="card">
         <span class="card-label">{{ card.label }}</span>
@@ -80,6 +81,7 @@ onMounted(async () => {
         <p>{{ card.text }}</p>
       </article>
     </section>
+    
 
     <section class="analysis-panel">
       <div class="section-header">
@@ -93,25 +95,47 @@ onMounted(async () => {
         <img :src="environmentHeatmapUrl" alt="E-waste and pollutant correlation heatmap" />
       </div>
     </section>
+  -->
 
     <section class="content-grid">
       <article class="panel">
         <div class="section-header compact">
           <div>
             <span class="section-tag">Overall Signals</span>
-            <h2>National environment correlations</h2>
+            <h2>Environmental impacts linked to e-waste activity</h2>
+            <p class="section-desc">
+              These signals show how e-waste related activity aligns with broader pollution
+              patterns.
+            </p>
           </div>
         </div>
+
         <div class="finding-list">
           <div v-for="item in environmentSummary" :key="item.metric" class="finding-row">
-            <div>
-              <strong>{{ item.metric }}</strong>
-              <span>{{ item.pollutant }} · {{ item.context }}</span>
+            <div class="finding-text">
+              <strong class="title">{{ item.metric }}</strong>
+
+              <span class="sub">
+                {{ item.pollutant }} ·
+                {{
+                  item.metric.toLowerCase().includes('recycling')
+                    ? 'Air pollution signal'
+                    : item.metric.toLowerCase().includes('proxy')
+                      ? 'Land contamination signal'
+                      : item.metric.toLowerCase().includes('disposal')
+                        ? 'Disposal-related pollution signal'
+                        : 'Environmental signal'
+                }}
+              </span>
             </div>
-            <b>{{ item.corr.toFixed(2) }}</b>
+
+            <b class="value">{{ item.corr.toFixed(2) }}</b>
           </div>
         </div>
+        <p class="note">Correlation score (−1 to 1). Higher values indicate stronger alignment.</p>
       </article>
+    </section>
+    <!--
 
       <article class="panel">
         <div class="section-header compact">
@@ -160,6 +184,7 @@ onMounted(async () => {
         <img :src="selectedHeatmapUrl" alt="Environment and health correlation heatmap" />
       </div>
     </section>
+ 
 
     <section class="content-grid">
       <article class="panel">
@@ -176,7 +201,11 @@ onMounted(async () => {
               <span>{{ finding.signal }}</span>
             </div>
             <b>
-              {{ selectedMethod === 'spearman' ? finding.spearman.toFixed(2) : finding.pearson.toFixed(2) }}
+              {{
+                selectedMethod === 'spearman'
+                  ? finding.spearman.toFixed(2)
+                  : finding.pearson.toFixed(2)
+              }}
             </b>
           </div>
         </div>
@@ -193,14 +222,19 @@ onMounted(async () => {
           <div v-for="model in modelCards" :key="model.title" class="model-card">
             <h3>{{ model.title }}</h3>
             <div class="model-stats">
-              <span>R squared <strong>{{ model.r2 }}</strong></span>
-              <span>Adjusted <strong>{{ model.adjusted }}</strong></span>
+              <span
+                >R squared <strong>{{ model.r2 }}</strong></span
+              >
+              <span
+                >Adjusted <strong>{{ model.adjusted }}</strong></span
+              >
             </div>
             <p>{{ model.note }}</p>
           </div>
         </div>
       </article>
     </section>
+       -->
 
     <section class="panel state-pressure-panel">
       <div class="section-header compact">
@@ -218,9 +252,7 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section class="new-feature-shell">
-      <NewFeatureDashboard />
-    </section>
+    <NewFeatureDashboard />
   </main>
 </template>
 
@@ -404,6 +436,30 @@ onMounted(async () => {
   margin-bottom: 12px;
 }
 
+.section-desc {
+  margin-top: 6px;
+  color: #6f8a7c;
+  font-size: 14px;
+}
+
+.finding-row b {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.finding-row span.sub {
+  display: block;
+  margin-top: 4px;
+  color: #7f9a8c;
+  font-size: 13px;
+}
+
+.note {
+  margin-top: 12px;
+  color: #9bb3a7;
+  font-size: 12px;
+}
+
 .method-tabs {
   display: inline-flex;
   gap: 6px;
@@ -446,7 +502,7 @@ onMounted(async () => {
 
 .content-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 18px;
   margin-top: 24px;
   margin-bottom: 24px;

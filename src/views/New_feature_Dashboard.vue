@@ -130,10 +130,26 @@ const healthStats = computed(() => {
   const cancers = new Set(healthRows.value.map((row) => row.cancer_type).filter(Boolean))
 
   return [
-    { label: 'Health rows', value: formatNumber(healthRows.value.length), text: 'DB-backed health records loaded from the cloud database.' },
-    { label: 'Years', value: formatNumber(years.size), text: 'Distinct reporting years available in the health table.' },
-    { label: 'Cancer types', value: formatNumber(cancers.size), text: 'Cancer categories available for filtering.' },
-    { label: 'Filtered rows', value: formatNumber(filteredHealthRows.value.length), text: 'Rows matching the current filter selection.' },
+    {
+      label: 'Health rows',
+      value: formatNumber(healthRows.value.length),
+      text: 'DB-backed health records loaded from the cloud database.',
+    },
+    {
+      label: 'Years',
+      value: formatNumber(years.size),
+      text: 'Distinct reporting years available in the health table.',
+    },
+    {
+      label: 'Cancer types',
+      value: formatNumber(cancers.size),
+      text: 'Cancer categories available for filtering.',
+    },
+    {
+      label: 'Filtered rows',
+      value: formatNumber(filteredHealthRows.value.length),
+      text: 'Rows matching the current filter selection.',
+    },
   ]
 })
 
@@ -168,8 +184,12 @@ const latestYear = computed(() => {
   return years.length ? Math.max(...years) : null
 })
 
-const earliestEmissionsKg = computed(() => (earliestYear.value ? emissionsByYear.value[earliestYear.value] || 0 : 0))
-const latestEmissionsKg = computed(() => (latestYear.value ? emissionsByYear.value[latestYear.value] || 0 : 0))
+const earliestEmissionsKg = computed(() =>
+  earliestYear.value ? emissionsByYear.value[earliestYear.value] || 0 : 0,
+)
+const latestEmissionsKg = computed(() =>
+  latestYear.value ? emissionsByYear.value[latestYear.value] || 0 : 0,
+)
 
 const emissionsChange = computed(() => {
   const first = earliestEmissionsKg.value
@@ -204,7 +224,9 @@ const cancerChange = computed(() => {
 
 const perCancerGrowth = computed(() => {
   const result = []
-  const rows = growthSourceRows.value.filter((row) => String(row.sex) === String(selectedSex.value || row.sex))
+  const rows = growthSourceRows.value.filter(
+    (row) => String(row.sex) === String(selectedSex.value || row.sex),
+  )
 
   for (const cancer of HEAVY_METAL_LINKED) {
     const points = rows.filter((row) => row.cancer_type === cancer.name)
@@ -270,8 +292,12 @@ const topFacilities = computed(() =>
 )
 
 const trendChartOption = computed(() => {
-  const eYears = Object.keys(emissionsByYear.value).map(Number).sort((a, b) => a - b)
-  const cYears = Object.keys(linkedCancerByYear.value).map(Number).sort((a, b) => a - b)
+  const eYears = Object.keys(emissionsByYear.value)
+    .map(Number)
+    .sort((a, b) => a - b)
+  const cYears = Object.keys(linkedCancerByYear.value)
+    .map(Number)
+    .sort((a, b) => a - b)
   if (!eYears.length || !cYears.length) return {}
 
   const eBase = emissionsByYear.value[eYears[0]] || 1
@@ -327,7 +353,10 @@ const trendChartOption = computed(() => {
         symbolSize: 6,
         lineStyle: { width: 3, color: '#7c3aed' },
         itemStyle: { color: '#7c3aed' },
-        data: cYears.map((year) => [year, Math.round((linkedCancerByYear.value[year] / cBase) * 100)]),
+        data: cYears.map((year) => [
+          year,
+          Math.round((linkedCancerByYear.value[year] / cBase) * 100),
+        ]),
       },
     ],
   }
@@ -353,7 +382,10 @@ const stateChartOption = computed(() => {
       type: 'value',
       axisLabel: {
         color: '#4b5563',
-        formatter: (value) => (value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M kg` : `${(value / 1000).toFixed(0)}k`),
+        formatter: (value) =>
+          value >= 1_000_000
+            ? `${(value / 1_000_000).toFixed(1)}M kg`
+            : `${(value / 1000).toFixed(0)}k`,
       },
       splitLine: { lineStyle: { color: '#f3f4f6' } },
     },
@@ -435,10 +467,14 @@ async function loadData() {
   }
 }
 
-watch([filteredHealthRows, stateRows, facilityRows], async () => {
-  await nextTick()
-  renderCharts()
-}, { deep: true })
+watch(
+  [filteredHealthRows, stateRows, facilityRows],
+  async () => {
+    await nextTick()
+    renderCharts()
+  },
+  { deep: true },
+)
 
 onMounted(() => {
   loadData()
@@ -454,8 +490,11 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="db-dashboard">
+    <!--
     <div class="hero-card">
+  
       <div class="hero-copy">
+        
         <p class="eyebrow">Database-backed dashboard</p>
         <h1>Pollution and health insights, now driven by the cloud database.</h1>
         <p class="lede">
@@ -471,7 +510,9 @@ onBeforeUnmount(() => {
           <small>{{ card.text }}</small>
         </div>
       </div>
+      
     </div>
+    -->
 
     <section class="panel">
       <div class="section-header">
@@ -509,7 +550,7 @@ onBeforeUnmount(() => {
         </label>
       </div>
     </section>
-
+    <!--
     <section class="pathway-grid">
       <article v-for="chain in pathwayChains" :key="chain.title" class="pathway-card">
         <span class="section-tag">{{ chain.tag }}</span>
@@ -523,7 +564,7 @@ onBeforeUnmount(() => {
         <p>{{ chain.evidence }}</p>
       </article>
     </section>
-
+-->
     <section class="analysis-panel">
       <div class="section-header">
         <div>
@@ -534,11 +575,11 @@ onBeforeUnmount(() => {
 
       <div ref="trendChartRef" class="chart-frame"></div>
       <p class="chart-note">
-        Both lines are indexed to 100 at their first year so the growth pattern can be compared
-        side by side.
+        Both lines are indexed to 100 at their first year so the growth pattern can be compared side
+        by side.
       </p>
     </section>
-
+    <!--
     <section class="stats-grid">
       <article v-for="card in healthStats" :key="card.label" class="card">
         <span class="card-label">{{ card.label }}</span>
@@ -546,13 +587,14 @@ onBeforeUnmount(() => {
         <p>{{ card.text }}</p>
       </article>
     </section>
+  -->
 
     <section class="content-grid">
       <article class="panel">
         <div class="section-header compact">
           <div>
             <p class="section-tag">Cancer growth</p>
-            <h2>Heavy-metal linked cancers in the filtered dataset</h2>
+            <h2>Growth of cancers linked to heavy metals</h2>
           </div>
           <button type="button" class="secondary-button" @click="showAllCancers = !showAllCancers">
             {{ showAllCancers ? 'Show less' : 'Show all' }}
@@ -577,6 +619,7 @@ onBeforeUnmount(() => {
         </div>
       </article>
 
+      <!--
       <article class="panel">
         <div class="section-header compact">
           <div>
@@ -597,7 +640,10 @@ onBeforeUnmount(() => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in filteredHealthRows.slice(0, 10)" :key="`${row.year}-${row.sex}-${row.cancer_type}`">
+              <tr
+                v-for="row in filteredHealthRows.slice(0, 10)"
+                :key="`${row.year}-${row.sex}-${row.cancer_type}`"
+              >
                 <td>{{ row.year }}</td>
                 <td>{{ row.sex }}</td>
                 <td>{{ row.cancer_type }}</td>
@@ -611,44 +657,37 @@ onBeforeUnmount(() => {
           </table>
         </div>
       </article>
+      -->
     </section>
 
     <section class="analysis-panel">
       <div class="section-header">
         <div>
           <p class="section-tag">State emissions</p>
-          <h2>Heavy-metal air emissions by state</h2>
+          <h2>Where pollution concentrates</h2>
+          <p class="section-desc">
+            Just three states account for
+            <strong>{{ Math.round(top3Share) }}%</strong>
+            of total reported heavy-metal air emissions.
+          </p>
+        </div>
+      </div>
+
+      <div class="state-cards">
+        <div v-for="(item, index) in topPollutingStates" :key="item.state" class="state-card">
+          <span class="state-rank">{{ index + 1 }}</span>
+
+          <div>
+            <strong class="state-name">{{ item.state }}</strong>
+            <p class="state-amount">{{ formatTonnes(item.kg) }} air emissions, all-time</p>
+          </div>
         </div>
       </div>
 
       <div ref="stateChartRef" class="chart-frame"></div>
     </section>
 
-    <section class="content-grid">
-      <article class="panel">
-        <div class="section-header compact">
-          <div>
-            <p class="section-tag">Top states</p>
-            <h2>Largest polluting states</h2>
-          </div>
-        </div>
-
-        <ol class="state-list">
-          <li v-for="(item, index) in topPollutingStates" :key="item.state" class="state-row">
-            <span class="rank">{{ index + 1 }}</span>
-            <div>
-              <strong>{{ item.state }}</strong>
-              <span>{{ formatTonnes(item.kg) }} air emissions, all time</span>
-            </div>
-          </li>
-        </ol>
-
-        <p class="section-note">
-          The top three states account for <strong>{{ Math.round(top3Share) }}%</strong> of total
-          reported heavy-metal air emissions in the table.
-        </p>
-      </article>
-
+    <!-- 
       <article class="panel">
         <div class="section-header compact">
           <div>
@@ -658,35 +697,84 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="facility-list">
-          <article v-for="facility in topFacilities" :key="`${facility.facility_id}-${facility.metal}`" class="facility-card">
+          <article
+            v-for="facility in topFacilities"
+            :key="`${facility.facility_id}-${facility.metal}`"
+            class="facility-card"
+          >
             <strong>{{ facility.facility_name }}</strong>
             <span>{{ facility.state }} · {{ facility.metal }}</span>
             <p>{{ formatTonnes(facility.total_air_emission_kg) }} air emissions</p>
           </article>
+          
         </div>
       </article>
-    </section>
+      -->
+  </section>
 
-    <section v-if="loading" class="status-box">Loading…</section>
-    <section v-else-if="error" class="status-box error">
-      <strong>Couldn't load data.</strong>
-      <p>{{ error }}</p>
-    </section>
+  <section class="impact-panel">
+    <p class="section-tag">What this means for you</p>
+
+    <h2 class="impact-title">One phone may be small. Millions of phones aren’t.</h2>
+
+    <div class="impact-cards">
+      <div class="impact-card">
+        <strong>8 g</strong>
+        <span>Average heavy-metal content in a single smartphone</span>
+      </div>
+
+      <div class="impact-card">
+        <strong>~25 yrs</strong>
+        <span>How long lead can persist in soil after landfilling</span>
+      </div>
+
+      <div class="impact-card">
+        <strong>100%</strong>
+        <span>Metals that can be safely contained by recycling</span>
+      </div>
+    </div>
+
+    <p class="impact-note">
+      When you recycle a device properly, these materials stay out of the air, water, and food chain
+      — for generations.
+    </p>
+  </section>
+
+  <section v-if="loading" class="status-box">Loading…</section>
+  <section v-else-if="error" class="status-box error">
+    <strong>Couldn't load data.</strong>
+    <p>{{ error }}</p>
   </section>
 </template>
 
 <style scoped>
 .db-dashboard {
-  width: 100%;
-  padding: 28px 32px 72px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  background:
-    radial-gradient(circle at 92% 4%, rgba(16, 185, 129, 0.12), transparent 18%),
-    radial-gradient(circle at 8% 92%, rgba(34, 197, 94, 0.08), transparent 22%),
-    linear-gradient(180deg, #f8fbf8 0%, #edf5ee 100%);
+  gap: 16px;
+  background: transparent;
   color: #173a29;
+  box-sizing: border-box;
+}
+
+.db-dashboard > section {
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.impact-panel {
+  max-width: 1400px;
+  width: 100%;
+  margin: 16px auto 0;
+  padding: 24px;
+  border-radius: 18px;
+  background: #f8faf9;
+  border: 1px solid #e3efe7;
+  box-sizing: border-box;
 }
 
 .hero-card,
@@ -886,7 +974,7 @@ onBeforeUnmount(() => {
 }
 
 .content-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .panel {
@@ -984,26 +1072,112 @@ onBeforeUnmount(() => {
   gap: 12px;
 }
 
-.state-row {
-  display: grid;
-  grid-template-columns: 42px 1fr;
+.state-list {
+  display: flex;
+  flex-direction: column;
   gap: 14px;
+  padding: 0;
+  margin: 0;
+}
+
+.state-row {
+  display: flex;
   align-items: center;
-  padding: 14px;
+  justify-content: space-between;
+  padding: 18px 20px;
   border-radius: 16px;
-  background: rgba(241, 248, 242, 0.92);
-  border: 1px solid rgba(210, 232, 214, 0.98);
+  list-style: none;
 }
 
 .rank {
   width: 42px;
   height: 42px;
-  display: grid;
-  place-items: center;
   border-radius: 12px;
-  background: #d1fae5;
-  color: #166534;
+  background: #d7efe2;
+  color: #1f6f4a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.state-info {
+  flex: 1;
+  margin-left: 16px;
+}
+
+.state-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f3d2b;
+}
+
+.state-desc {
+  display: block;
+  font-size: 13px;
+  color: #7f9a8c;
+}
+
+.state-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2f8f5b;
+}
+
+.state-value span {
+  font-size: 12px;
+  margin-left: 4px;
+  color: #7f9a8c;
+}
+
+.state-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.state-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+}
+
+.state-rank {
+  font-size: 34px;
   font-weight: 800;
+  color: #dc2626;
+  line-height: 1;
+}
+
+.state-name {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1f2937;
+}
+
+.state-amount {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.section-desc {
+  margin: 8px 0 0;
+  color: #587465;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .state-cards {
+    grid-template-columns: 1fr;
+  }
 }
 
 .facility-list {
@@ -1062,5 +1236,64 @@ onBeforeUnmount(() => {
   .filter-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.impact-panel {
+  margin-top: 40px;
+  padding: 28px;
+  border-radius: 18px;
+  background: #f8faf9;
+  border: 1px solid #e3efe7;
+}
+
+.impact-tag {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #6b8f7d;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.impact-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f3d2b;
+  margin-bottom: 24px;
+}
+
+.impact-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.impact-card {
+  padding: 18px;
+  border-radius: 14px;
+
+  background: white;
+  border: 1px solid #e5e7eb;
+
+  text-align: center;
+}
+
+.impact-card strong {
+  display: block;
+  font-size: 18px;
+  color: #1f3d2b;
+}
+
+.impact-card span {
+  display: block;
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+.impact-note {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
 }
 </style>
