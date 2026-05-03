@@ -539,11 +539,11 @@ function goHome() {
 <style scoped>
 .game-page {
   min-height: 100vh;
-  padding: 120px 6% 60px;
-  background: linear-gradient(180deg, #f4fbf7 0%, #ffffff 100%);
+  padding: 100px 6% 60px;
+  /* background: linear-gradient(180deg, #f4fbf7 0%, #ffffff 100%); */
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .cover-card,
