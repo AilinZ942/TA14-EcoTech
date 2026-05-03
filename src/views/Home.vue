@@ -151,7 +151,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import heroImg from '@/assets/e-waste.png'
+import heroImg from '@/assets/icons/e-waste.png'
 
 const introRef = ref(null)
 const featuresRef = ref(null)

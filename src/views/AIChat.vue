@@ -1,135 +1,134 @@
 <template>
   <section class="device-optimizer-page">
-    <div class="hero-card">
-      <div class="hero-copy">
-        <p class="eyebrow">EcoTech AI</p>
-        <h1>AI Device Optimizer</h1>
-        <p class="lede">
-          Choose your device type, write the issue in your own words, and get simple optimisation
-          tips plus a plain-language explanation of what may be affecting performance.
-        </p>
+    <div class="page-intro">
+      <div class="intro-text">
+        <h2>Optimize your device smarter</h2>
+        <p>Get personalized tips to improve performance and extend lifespan</p>
       </div>
 
-      <div class="hero-meta">
-        <div class="meta-chip">
-          <span class="chip-label">Supported devices</span>
-          <strong>Laptop and phone</strong>
-        </div>
-        <div class="meta-chip">
-          <span class="chip-label">Input</span>
-          <strong>Free-text issue description</strong>
-        </div>
-        <div class="meta-chip">
-          <span class="chip-label">Output</span>
-          <strong>Easy tips and explanation</strong>
+      <div class="info-wrapper">
+        <button class="info-button">ⓘ How it works</button>
+
+        <div class="info-popover">
+          <h3>How it works</h3>
+          <ol>
+            <li>Select your device</li>
+            <li>Describe your issue</li>
+            <li>Our AI analyzes your input</li>
+            <li>Get personalized optimization tips</li>
+          </ol>
         </div>
       </div>
     </div>
 
-    <div class="workspace">
-      <aside class="sidebar">
-        <div class="panel">
-          <div class="panel-heading">
-            <h2>1. Device type</h2>
-            <p>Choose the device you want help with.</p>
-          </div>
+    <div class="optimizer-card">
+      <template v-if="!selectedDeviceType && !result">
+        <h1>Select Your Device</h1>
+        <p class="subtitle">AI-powered optimization for sustainable device performance</p>
 
-          <div class="choice-list">
-            <button
-              v-for="device in deviceTypes"
-              :key="device.value"
-              class="choice-button"
-              :class="{ active: selectedDeviceType === device.value }"
-              type="button"
-              @click="selectedDeviceType = device.value"
-            >
-              <span>{{ device.label }}</span>
-              <small>{{ device.hint }}</small>
-            </button>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-heading">
-            <h2>2. Write the issue</h2>
-            <p>Describe what you are seeing in your own words.</p>
-          </div>
-
-          <label class="issue-field">
-            <span>Your issue</span>
-            <textarea
-              v-model="issueText"
-              rows="7"
-              placeholder="Describe the issue in your own words."
-            />
-          </label>
-        </div>
-
-        <div class="panel compact">
-          <button class="primary-button" type="button" :disabled="isSending" @click="getTips">
-            Get Optimisation Tips
+        <div class="device-grid">
+          <button class="device-card" type="button" @click="selectedDeviceType = 'phone'">
+            <div class="icon-circle">
+              <img src="@/assets/icons/mobile-notch.png" class="device-icon" />
+            </div>
+            <h2>Phone</h2>
+            <p>Best for everyday use and mobility</p>
           </button>
-          <button class="secondary-button" type="button" @click="resetForm">
-            Reset form
+
+          <button class="device-card" type="button" @click="selectedDeviceType = 'laptop'">
+            <div class="icon-circle">
+              <img src="@/assets/icons/laptop.png" class="device-icon" />
+            </div>
+            <h2>Laptop</h2>
+            <p>Best for study, work, and long sessions</p>
           </button>
-          <p class="panel-note">
-            The form checks that you select a device and write an issue before generating results.
-          </p>
         </div>
-      </aside>
+      </template>
 
-      <main class="results-panel">
-        <div class="results-header">
-          <div>
-            <p class="eyebrow">Results</p>
-            <h2>{{ resultTitle }}</h2>
-          </div>
+      <template v-else-if="selectedDeviceType && !result && !isSending">
+        <button class="back-button" type="button" @click="selectedDeviceType = ''">
+          ← Back to device selection
+        </button>
 
-          <div class="status-chip" :class="{ ready: canOptimize, loading: isSending }">
-            <span v-if="isSending">Generating</span>
-            <span v-else-if="canOptimize">Ready to run</span>
-            <span v-else>Waiting for input</span>
-          </div>
-        </div>
+        <h1>What's the Issue?</h1>
+        <p class="subtitle">
+          Describe the problem you're experiencing with your
+          {{ getDeviceLabel(selectedDeviceType).toLowerCase() }}
+        </p>
 
-        <article v-if="result" class="result-card">
-          <div class="result-summary">
-            <div class="summary-block">
-              <span>Device</span>
-              <strong>{{ result.device_label }}</strong>
-            </div>
-            <div class="summary-block">
-              <span>Issue category</span>
-              <strong>{{ result.issue_label }}</strong>
-            </div>
-            <div class="summary-block">
-              <span>Why it matters</span>
-              <strong>{{ result.device_summary }}</strong>
-            </div>
-          </div>
+        <label class="query-label" for="issueText">Your Query</label>
+        <textarea
+          id="issueText"
+          v-model="issueText"
+          :placeholder="getPlaceholder(selectedDeviceType)"
+        ></textarea>
 
-          <div class="result-section">
-            <h3>What may be affecting your device</h3>
-            <p>{{ result.issue_explanation }}</p>
-          </div>
-
-          <div class="result-section">
-            <h3>Optimisation tips</h3>
-            <ul class="tips-list">
-              <li v-for="tip in result.suggestions" :key="tip">{{ tip }}</li>
-            </ul>
-          </div>
-        </article>
-
-        <article v-else class="placeholder-card">
-          <p class="placeholder-title">Your optimisation tips will appear here.</p>
-          <p>
-            Select a device type, write your issue, then click <strong>Get Optimisation Tips</strong>.
-          </p>
-        </article>
-
+        <button
+          class="submit-button"
+          :class="{ active: issueText.trim() }"
+          type="button"
+          @click="getTips"
+        >
+          Get Optimization Tips
+        </button>
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-      </main>
+      </template>
+
+      <template v-else-if="isSending">
+        <div class="loading-card">
+          <div class="loading-spinner"></div>
+          <h2>Analyzing Your Issue...</h2>
+          <p>Our AI is processing your query to provide the best optimization tips</p>
+        </div>
+      </template>
+
+      <template v-else>
+        <div class="success-icon">✓</div>
+
+        <h1>{{ result.issue_label }}</h1>
+        <p class="subtitle">
+          Here are personalized recommendations for your {{ result.device_label.toLowerCase() }}
+        </p>
+
+        <div class="query-summary"><strong>Your Query:</strong> {{ issueText }}</div>
+
+        <div class="result-summary">
+          <div class="summary-block">
+            <span>Device</span>
+            <strong>{{ result.device_label }}</strong>
+          </div>
+
+          <div class="summary-block">
+            <span>Issue Category</span>
+            <strong>{{ result.issue_label }}</strong>
+          </div>
+
+          <div class="summary-block">
+            <span>Why It Matters</span>
+            <strong>{{ result.device_summary }}</strong>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <h2>What may be affecting your device</h2>
+          <p>{{ result.issue_explanation }}</p>
+        </div>
+
+        <div class="result-section">
+          <h2>Optimisation tips</h2>
+
+          <div class="tips-list">
+            <div v-for="(tip, index) in result.suggestions" :key="tip" class="tip-card">
+              <span class="tip-number">{{ index + 1 }}</span>
+              <p>{{ tip }}</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="restart-button" type="button" @click="resetForm">
+          ↻ Start New Optimization
+        </button>
+      </template>
     </div>
   </section>
 </template>
@@ -174,6 +173,16 @@ const resultTitle = computed(() => {
 })
 
 const canOptimize = computed(() => Boolean(selectedDeviceType.value && issueText.value.trim()))
+
+function getPlaceholder(device) {
+  if (device === 'laptop') {
+    return 'e.g., My laptop is running very slow'
+  }
+  if (device === 'phone') {
+    return 'e.g., My phone battery drains too quickly'
+  }
+  return 'Describe your issue...'
+}
 
 function getDeviceLabel(value) {
   const item = deviceTypes.find((entry) => entry.value === value)
@@ -221,7 +230,7 @@ function resetForm() {
 
 async function getTips() {
   if (!selectedDeviceType.value || !issueText.value.trim()) {
-    errorMessage.value = 'Please select a device type and describe the issue before getting optimisation tips.'
+    errorMessage.value = 'Please describe the issue before getting optimisation tips.'
     result.value = null
     persistState()
     return
@@ -257,362 +266,376 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Page Layout */
 .device-optimizer-page {
   min-height: 100vh;
-  padding: 32px 24px 48px;
-  background:
-    radial-gradient(circle at top left, rgba(35, 123, 87, 0.2), transparent 28%),
-    radial-gradient(circle at 88% 12%, rgba(219, 169, 79, 0.14), transparent 24%),
-    linear-gradient(180deg, #f7fbf8 0%, #edf4ee 100%);
-  color: #173023;
+  padding: 30px 24px 60px;
+  background: #eaf5ef;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  color: #173f2e;
 }
 
-.hero-card,
-.panel,
-.results-panel {
-  border: 1px solid rgba(23, 48, 35, 0.1);
-  box-shadow: 0 18px 50px rgba(23, 48, 35, 0.08);
-}
+/* Intro */
+.page-intro {
+  width: min(100%, 1080px);
+  margin: 0 auto 18px;
 
-.hero-card {
   display: flex;
   justify-content: space-between;
-  gap: 24px;
-  padding: 28px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(10px);
+  align-items: center;
 }
 
-.hero-copy {
-  max-width: 760px;
-}
-
-.eyebrow,
-.chip-label {
-  margin: 0 0 8px;
-  font-size: 0.78rem;
+.intro-text h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #2b7a59;
+  color: #1f4d3a;
 }
 
-.hero-copy h1 {
+.intro-text p {
   margin: 0;
-  font-size: clamp(2.1rem, 4vw, 3.8rem);
-  line-height: 1.02;
+  font-size: 16px;
+  color: #5f7f73;
 }
 
-.lede {
-  margin: 14px 0 0;
-  max-width: 66ch;
-  font-size: 1.02rem;
-  line-height: 1.7;
-  color: #51655c;
+/* Info Button + Popover */
+.info-wrapper {
+  position: relative;
 }
 
-.hero-meta {
-  display: grid;
-  gap: 12px;
-  min-width: 250px;
-}
+.info-button {
+  border: none;
+  background: #d9eee4;
+  color: #2d7352;
 
-.meta-chip {
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: linear-gradient(180deg, #f7fff9 0%, #e8f4ec 100%);
-  border: 1px solid rgba(47, 125, 87, 0.16);
-}
+  border-radius: 999px;
+  padding: 10px 18px;
 
-.meta-chip strong {
-  display: block;
-  font-size: 1rem;
-  color: #173626;
-}
-
-.workspace {
-  display: grid;
-  grid-template-columns: minmax(280px, 360px) 1fr;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.sidebar {
-  display: grid;
-  gap: 16px;
-}
-
-.panel,
-.results-panel {
-  padding: 18px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.86);
-}
-
-.panel-heading h2,
-.results-header h2 {
-  margin: 0;
-}
-
-.panel-heading p {
-  margin: 6px 0 0;
-  color: #5f7167;
-  line-height: 1.5;
-}
-
-.choice-list {
-  display: grid;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.choice-button,
-.primary-button,
-.secondary-button {
-  border: 0;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
 }
 
-.choice-button {
-  text-align: left;
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: #f4f8f5;
-  color: #214132;
-}
+.info-popover {
+  position: absolute;
+  top: 52px;
+  right: 0;
 
-.choice-button span {
-  display: block;
-  font-weight: 700;
-}
-
-.choice-button small {
-  display: block;
-  margin-top: 4px;
-  color: #60746a;
-  line-height: 1.35;
-}
-
-.choice-button.active {
-  background: linear-gradient(135deg, #c9efcf 0%, #9fe0ae 100%);
-  box-shadow: 0 10px 20px rgba(63, 148, 82, 0.16);
-}
-
-.choice-button:hover,
-.primary-button:hover,
-.secondary-button:hover {
-  transform: translateY(-1px);
-}
-
-.issue-field {
-  display: grid;
-  gap: 8px;
-  margin-top: 16px;
-  color: #294337;
-}
-
-.issue-field span {
-  font-weight: 700;
-}
-
-.issue-field textarea,
-.choice-button {
-  width: 100%;
-}
-
-.issue-field textarea {
-  padding: 14px 16px;
+  width: 300px;
+  padding: 18px;
   border-radius: 16px;
-  border: 1px solid rgba(22, 48, 35, 0.14);
-  background: #fff;
-  color: #173023;
+
+  background: white;
+  box-shadow: 0 14px 34px rgba(23, 63, 46, 0.16);
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: 0.2s ease;
+}
+
+.info-wrapper:hover .info-popover {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.info-popover h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #173f2e;
+}
+
+.info-popover ol {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.7;
+  color: #557d70;
+}
+
+/* Main Card */
+.optimizer-card {
+  width: min(100%, 1080px);
+
+  background: white;
+  border-radius: 22px;
+  padding: 46px 52px;
+
+  box-shadow: 0 18px 42px rgba(23, 63, 46, 0.14);
+}
+
+/* Titles */
+.optimizer-card h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 14px 0 38px;
+  text-align: center;
+  font-size: 22px;
+  color: #557d70;
+}
+
+/* Device Cards */
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.device-card {
+  border: none;
+  border-radius: 18px;
+  background: #d9eee4;
+
+  padding: 44px 32px;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.device-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(23, 63, 46, 0.14);
+}
+
+.icon-circle {
+  width: 116px;
+  height: 116px;
+  margin: 0 auto 24px;
+
+  border-radius: 50%;
+  background: #2d7352;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.device-card h2 {
+  margin: 0 0 14px;
+  font-size: 28px;
+  text-align: center;
+}
+
+.device-card p {
+  margin: 0;
+  text-align: center;
+  font-size: 18px;
+  color: #42685c;
+}
+
+.device-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+/* Back Button */
+.back-button {
+  border: none;
+  background: none;
+
+  font-size: 20px;
+  font-weight: 600;
+  color: #557d70;
+
+  cursor: pointer;
+  margin-bottom: 28px;
+}
+
+/* Input */
+.query-label {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 170px;
+
+  border-radius: 16px;
+  border: 1px solid #d8e6df;
+
+  padding: 24px;
+  font-size: 22px;
+
   resize: vertical;
   outline: none;
-  line-height: 1.6;
 }
 
-.issue-field textarea:focus {
-  border-color: rgba(31, 122, 81, 0.45);
-  box-shadow: 0 0 0 4px rgba(31, 122, 81, 0.08);
-}
-
-.panel.compact {
-  display: grid;
-  gap: 10px;
-}
-
-.primary-button,
-.secondary-button {
+/* Buttons */
+.submit-button,
+.restart-button {
+  width: 100%;
+  margin-top: 34px;
+  border: none;
   border-radius: 14px;
-  padding: 12px 16px;
+  padding: 24px;
+  font-size: 22px;
   font-weight: 700;
+  background: #c7ddd4;
+  color: #315f50;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.primary-button {
-  background: #1f7a51;
-  color: #fff;
+.restart-button:hover {
+  background: #2d7352;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(45, 115, 82, 0.2);
 }
 
-.primary-button:disabled {
-  cursor: not-allowed;
-  background: #93b8a1;
+.submit-button.active {
+  background: #2d7352;
+  color: white;
+  box-shadow: 0 12px 24px rgba(45, 115, 82, 0.2);
 }
 
-.secondary-button {
-  background: #edf4ef;
-  color: #234032;
+.submit-button.active:hover {
+  background: #246247;
+  transform: translateY(-2px);
 }
 
-.panel-note {
-  margin: 0;
-  color: #62776d;
-  line-height: 1.55;
+/* Loading */
+.loading-card {
+  margin-top: 34px;
+  padding: 48px 32px;
+
+  border-radius: 18px;
+  background: #ffffff;
+
+  box-shadow: 0 14px 34px rgba(23, 63, 46, 0.14);
+  text-align: center;
 }
 
-.results-panel {
-  display: grid;
-  gap: 16px;
-  min-height: 72vh;
+.loading-spinner {
+  width: 64px;
+  height: 64px;
+
+  margin: 0 auto 22px;
+
+  border: 6px solid #e6f0eb;
+  border-top-color: #2d7352;
+
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
 }
 
-.results-header {
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Result */
+.success-icon {
+  width: 82px;
+  height: 82px;
+
+  margin: 0 auto 26px;
+
+  border-radius: 50%;
+  background: #eef4f1;
+
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 52px;
+  color: #2d7352;
 }
 
-.status-chip {
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: #eef3ef;
-  color: #5f7167;
-  font-size: 0.92rem;
-  font-weight: 700;
-}
+.query-summary {
+  margin-bottom: 30px;
+  padding: 22px 26px;
 
-.status-chip.ready {
-  background: #d4eed9;
-  color: #1f6a48;
-}
+  border-radius: 18px;
+  background: #f1f8f5;
 
-.status-chip.loading {
-  background: #fff0d1;
-  color: #91670f;
-}
-
-.result-card,
-.placeholder-card {
-  padding: 20px;
-  border-radius: 22px;
-  background: #f7fbf8;
-  border: 1px solid rgba(23, 48, 35, 0.08);
-}
-
-.placeholder-card {
-  display: grid;
-  align-content: start;
-  min-height: 300px;
-}
-
-.placeholder-title {
-  margin-top: 0;
-  font-size: 1.12rem;
-  font-weight: 700;
+  font-size: 20px;
 }
 
 .result-summary {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 18px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 34px;
 }
 
 .summary-block {
-  padding: 14px;
-  border-radius: 18px;
-  background: linear-gradient(180deg, #ffffff 0%, #eef6f0 100%);
-  border: 1px solid rgba(47, 125, 87, 0.12);
+  padding: 24px;
+  border-radius: 22px;
+
+  background: linear-gradient(180deg, #ffffff 0%, #f5fbf8 100%);
+  border: 1px solid #d6e8df;
 }
 
 .summary-block span {
   display: block;
-  margin-bottom: 6px;
-  font-size: 0.78rem;
+  margin-bottom: 14px;
+
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #5d7267;
+
+  color: #647c70;
 }
 
 .summary-block strong {
-  display: block;
-  color: #173626;
-  line-height: 1.45;
+  font-size: 22px;
 }
 
-.result-section + .result-section {
-  margin-top: 16px;
-}
-
-.result-section h3 {
-  margin: 0 0 8px;
-}
-
-.result-section p {
-  margin: 0;
-  line-height: 1.7;
-  color: #244134;
-}
-
+/* Tips */
 .tips-list {
-  margin: 0;
-  padding-left: 20px;
   display: grid;
-  gap: 10px;
-  color: #244134;
+  gap: 22px;
 }
 
+.tip-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  padding: 22px 24px;
+
+  border-radius: 16px;
+  background: #e9f5ef;
+}
+
+.tip-number {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+  background: #2d7352;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Error */
 .error-message {
-  margin: 0;
+  margin-top: 18px;
   color: #ad3b3b;
   font-weight: 600;
 }
 
-@media (max-width: 1080px) {
-  .hero-card {
-    flex-direction: column;
-  }
-
-  .workspace {
-    grid-template-columns: 1fr;
-  }
-
-  .results-panel {
-    min-height: auto;
-  }
-}
-
+/* Responsive */
 @media (max-width: 760px) {
-  .device-optimizer-page {
-    padding: 18px 14px 28px;
-  }
-
-  .hero-card,
-  .panel,
-  .results-panel {
-    border-radius: 20px;
-  }
-
-  .results-header {
-    flex-direction: column;
-  }
-
+  .device-grid,
   .result-summary {
     grid-template-columns: 1fr;
   }
