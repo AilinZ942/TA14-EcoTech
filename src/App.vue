@@ -53,64 +53,88 @@ async function handleLogout() {
   align-items: center;
   justify-content: space-between;
   padding: 14px 48px;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  background: #2d6a4f;
+  border-bottom: 1px solid #24553f;
 }
 
-/* FIXED LOGO */
+.navbar a {
+  font-weight: 600;
+  color: #f0fdf4;
+}
+
+/* LOGO */
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  text-decoration: none; /* remove underline */
-  color: inherit; /* keep normal text color */
+  text-decoration: none;
+  color: inherit;
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
 
 .logo:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .logo-img {
   height: 32px;
   width: auto;
   object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 .logo-text {
   font-size: 22px;
   font-weight: 700;
-  color: #2f4054;
+  color: #ffffff;
   line-height: 1;
 }
 
+/* LINKS */
 .links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
 }
 
 .links a {
   text-decoration: none;
-  color: #374151;
+  color: #f0fdf4;
   font-size: 16px;
   padding: 8px 14px;
   border-radius: 12px;
   transition:
     background-color 0.2s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
-.logout-button {
-  border: 0;
-  background: #0f766e;
+/* hover */
+.links a:hover {
+  background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* active 当前页面 */
+.links a.router-link-active {
+  background: #d8f3dc;
+  color: #1b4332;
+  font-weight: 700;
+}
+
+/* logout 按钮 */
+.logout-button {
+  border: none;
+  background: #ffffff;
+  color: #2d6a4f;
   font-size: 16px;
-  padding: 8px 14px;
-  border-radius: 12px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 14px;
   cursor: pointer;
   transition:
     background-color 0.2s ease,
@@ -118,21 +142,14 @@ async function handleLogout() {
     transform 0.2s ease;
 }
 
+/* logout hover */
 .logout-button:hover {
-  background: #115e59;
+  background: #d8f3dc;
+  color: #1b4332;
   transform: translateY(-1px);
 }
 
-.links a:hover {
-  background: #ecfdf5;
-  color: #16a34a;
-}
-
-.links a.router-link-active {
-  background: #d1fae5;
-  color: #16a34a;
-}
-
+/* 响应式 */
 @media (max-width: 1024px) {
   .navbar {
     flex-direction: column;

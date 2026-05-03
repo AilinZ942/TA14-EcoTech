@@ -41,9 +41,7 @@ const categoryOptions = computed(() => {
 })
 
 const hasToken = computed(() => Boolean(mapboxAccessToken))
-const backendSearchApplied = computed(
-  () => searchMeta.value?.query === searchTerm.value.trim(),
-)
+const backendSearchApplied = computed(() => searchMeta.value?.query === searchTerm.value.trim())
 const selectedFocusArea = computed(() => searchMeta.value?.focus_area || null)
 const selectedFallbackMessage = computed(() => searchMeta.value?.message || '')
 
@@ -597,11 +595,7 @@ onBeforeUnmount(() => {
           <label>
             <span>Search range</span>
             <select v-model="selectedSearchRange">
-              <option
-                v-for="range in searchRangeOptions"
-                :key="range.value"
-                :value="range.value"
-              >
+              <option v-for="range in searchRangeOptions" :key="range.value" :value="range.value">
                 {{ range.label }}
               </option>
             </select>
@@ -642,7 +636,10 @@ onBeforeUnmount(() => {
             <p>{{ loadError }}</p>
           </div>
 
-          <div v-else-if="selectedFallbackMessage || selectedFocusArea?.label" class="map-overlay map-overlay--focus">
+          <div
+            v-else-if="selectedFallbackMessage || selectedFocusArea?.label"
+            class="map-overlay map-overlay--focus"
+          >
             <h2>{{ selectedFocusArea?.label || 'Search area' }}</h2>
             <p v-if="selectedFallbackMessage">{{ selectedFallbackMessage }}</p>
             <p v-else>Showing locations for the matched search area.</p>
@@ -685,15 +682,22 @@ onBeforeUnmount(() => {
               </div>
               <div class="detail-row">
                 <span>Source</span>
-                <strong>{{ selectedMarker.row.source || selectedMarker.source || 'Not provided' }}</strong>
+                <strong>{{
+                  selectedMarker.row.source || selectedMarker.source || 'Not provided'
+                }}</strong>
               </div>
               <div v-if="selectedMarker.row.national_phone_number" class="detail-row">
                 <span>Phone</span>
                 <strong>{{ selectedMarker.row.national_phone_number }}</strong>
               </div>
-              <div v-if="selectedMarker.row.accepted_items || selectedMarker.row.ewaste_match_text" class="detail-row">
+              <div
+                v-if="selectedMarker.row.accepted_items || selectedMarker.row.ewaste_match_text"
+                class="detail-row"
+              >
                 <span>Accepted items</span>
-                <strong>{{ selectedMarker.row.accepted_items || selectedMarker.row.ewaste_match_text }}</strong>
+                <strong>{{
+                  selectedMarker.row.accepted_items || selectedMarker.row.ewaste_match_text
+                }}</strong>
               </div>
               <div v-if="selectedMarker.row.note" class="detail-row">
                 <span>Note</span>
@@ -702,7 +706,11 @@ onBeforeUnmount(() => {
               <div v-if="selectedMarker.row.website_uri" class="detail-row">
                 <span>Website</span>
                 <strong>
-                  <a :href="selectedMarker.row.website_uri" target="_blank" rel="noopener noreferrer">
+                  <a
+                    :href="selectedMarker.row.website_uri"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Open website
                   </a>
                 </strong>
@@ -710,7 +718,11 @@ onBeforeUnmount(() => {
               <div v-if="selectedMarker.row.google_maps_uri" class="detail-row">
                 <span>Google Maps</span>
                 <strong>
-                  <a :href="selectedMarker.row.google_maps_uri" target="_blank" rel="noopener noreferrer">
+                  <a
+                    :href="selectedMarker.row.google_maps_uri"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     View listing
                   </a>
                 </strong>
@@ -726,17 +738,13 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="panel-actions">
-              <button type="button" class="primary-action" @click="openDirections">
-                Navigate
-              </button>
+              <button type="button" class="primary-action" @click="openDirections">Navigate</button>
             </div>
           </template>
 
           <template v-else>
             <h2>Select a location</h2>
-            <p class="support-copy">
-              Click any point on the map to see details and navigate.
-            </p>
+            <p class="support-copy">Click any point on the map to see details and navigate.</p>
           </template>
         </section>
 
@@ -744,7 +752,10 @@ onBeforeUnmount(() => {
           <p class="section-label">Visible categories</p>
           <h2>What is currently shown</h2>
           <p class="support-copy selected-copy">
-            Source: {{ sourceOptions.find((source) => source.value === selectedSource)?.label || 'All data' }}
+            Source:
+            {{
+              sourceOptions.find((source) => source.value === selectedSource)?.label || 'All data'
+            }}
           </p>
           <p v-if="selectedFocusArea?.label" class="support-copy selected-copy">
             Focused area: {{ selectedFocusArea.label }}
@@ -771,7 +782,7 @@ onBeforeUnmount(() => {
 .disposal-page {
   min-height: 100vh;
   padding: 32px;
-  background: linear-gradient(180deg, #f8fbf8 0%, #eef4ef 100%);
+  /* background: linear-gradient(180deg, #f8fbf8 0%, #eef4ef 100%); */
   color: #1f3b2d;
 }
 
@@ -783,7 +794,7 @@ onBeforeUnmount(() => {
   gap: 1.25rem;
   padding: 36px 40px;
   margin-bottom: 28px;
-  background: linear-gradient(135deg, #f4fbf4 0%, #edf7ee 100%);
+  background: #ffffff;
   border: 1px solid #dcebdc;
   border-radius: 28px;
   box-shadow: 0 10px 30px rgba(27, 67, 50, 0.06);
@@ -877,10 +888,9 @@ h2 {
   width: 320px;
   padding: 24px 28px;
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(8px);
-  border: 1px solid #deebdf;
-  box-shadow: 0 8px 20px rgba(27, 67, 50, 0.05);
+  background: #eef7f1;
+  border: 1px solid #d6eadc;
+  box-shadow: 0 6px 16px rgba(27, 67, 50, 0.06);
 }
 
 .hero-stats span {
@@ -930,7 +940,9 @@ h2 {
 
 .toolbar-card {
   display: grid;
-  grid-template-columns: minmax(92px, 0.35fr) minmax(280px, 1.25fr) minmax(170px, 0.55fr) minmax(180px, 0.6fr) auto;
+  grid-template-columns:
+    minmax(92px, 0.35fr) minmax(280px, 1.25fr) minmax(170px, 0.55fr) minmax(180px, 0.6fr)
+    auto;
   gap: 18px;
   align-items: end;
 }
