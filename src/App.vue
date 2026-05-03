@@ -20,6 +20,11 @@
   </nav>
 
   <router-view />
+
+  <footer class="footer">
+    <p>© 2026 EcoReviva</p>
+    <p>Promoting sustainable e-waste management</p>
+  </footer>
 </template>
 
 <script setup>
@@ -119,14 +124,14 @@ async function handleLogout() {
   transform: translateY(-1px);
 }
 
-/* active 当前页面 */
+/* active  */
 .links a.router-link-active {
   background: #d8f3dc;
   color: #1b4332;
   font-weight: 700;
 }
 
-/* logout 按钮 */
+/* logout */
 .logout-button {
   border: none;
   background: #ffffff;
@@ -149,7 +154,6 @@ async function handleLogout() {
   transform: translateY(-1px);
 }
 
-/* 响应式 */
 @media (max-width: 1024px) {
   .navbar {
     flex-direction: column;
@@ -172,5 +176,13 @@ async function handleLogout() {
     font-size: 15px;
     padding: 7px 12px;
   }
+}
+
+.footer {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 20px;
 }
 </style>
