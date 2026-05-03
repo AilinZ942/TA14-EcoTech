@@ -17,13 +17,13 @@ Once you start it, you need to know these things:
 - DB_NAME
 - DB_PORT
 
-and set them in **./backend/env.local** file
+and set them in **./backend/.env.local** file
 
 then run the bash script
 
 ``` cd "current directoy: TA14-ECOTECH"```
 
-``` bash ./backend/db/scripts/load_local_data.sh```
+``` bash ./load_local_data.sh```
 
 
 
@@ -68,7 +68,7 @@ make sure your code will not affect the other's code, if you need it, make sure 
 ### Upload data for the dashboard (graphs)
 
 - put data (csv) in ./backend/db/data
-- update schema.sql
+- update backend/db/scripts/schema.sql
 - update load_local_data.sh
 
 or you can use your own local database, but remember to update schema.sql and put data in data folder
@@ -83,7 +83,7 @@ or you can use your own local database, but remember to update schema.sql and pu
 -- change src/view/dashboard.vue
 
 
-
+### If you have other questions please ask our team
 
 
 
@@ -129,7 +129,6 @@ Frontend dependencies are managed by `package.json` and `package-lock.json`.
 Python dependencies are listed in  `backend/requirements.txt`.
 
 ## Project Structure
-
 
 
 

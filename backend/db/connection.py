@@ -1,6 +1,7 @@
-"""PostgreSQL connection pool.
+"""PostgreSQL connection helpers.
 
-A single global pool is created at startup and shared by all requests.
+We keep the interface small and stable for the rest of the backend.
+Each request opens a dedicated connection and closes it after use.
 """
 
 from contextlib import contextmanager
@@ -8,20 +9,9 @@ import os
 
 import psycopg2
 import psycopg2.extras
-from psycopg2 import pool as pg_pool
 
-_pool: pg_pool.SimpleConnectionPool | None = None
-
-
-def init_pool() -> None:
-    global _pool
-
-    if _pool is not None:
-        return
-
-    _pool = pg_pool.SimpleConnectionPool(
-        minconn=int(os.environ.get("DB_POOL_MIN", "1")),
-        maxconn=int(os.environ.get("DB_POOL_MAX", "10")),
+def _connect():
+    return psycopg2.connect(
         host=os.environ.get("DB_HOST", "localhost"),
         port=int(os.environ.get("DB_PORT", "5432")),
         dbname=os.environ.get("DB_NAME", "mydb"),
@@ -31,22 +21,11 @@ def init_pool() -> None:
     )
 
 
-def close_pool() -> None:
-    global _pool
-
-    if _pool is not None:
-        _pool.closeall()
-        _pool = None
-
-
 @contextmanager
 def get_cursor(dict_rows: bool = True):
     """Yield (conn, cursor) and ensure proper cleanup."""
 
-    if _pool is None:
-        init_pool()
-
-    conn = _pool.getconn()
+    conn = _connect()
 
     try:
         cursor_factory = psycopg2.extras.RealDictCursor if dict_rows else None
@@ -62,4 +41,4 @@ def get_cursor(dict_rows: bool = True):
             cur.close()
 
     finally:
-        _pool.putconn(conn)
+        conn.close()

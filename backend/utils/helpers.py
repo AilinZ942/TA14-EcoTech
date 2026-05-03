@@ -13,6 +13,12 @@ def clean_value(value):
     if value is None:
         return None
 
+    if isinstance(value, dict):
+        return {k: clean_value(v) for k, v in value.items()}
+
+    if isinstance(value, list):
+        return [clean_value(item) for item in value]
+
     # Handle float NaN
     if isinstance(value, float) and math.isnan(value):
         return None
@@ -26,10 +32,16 @@ def clean_value(value):
 
 def clean_data(data):
     """Clean list of dicts"""
-    cleaned = []
-    for row in data:
-        cleaned.append({k: clean_value(v) for k, v in row.items()})
-    return cleaned
+    if isinstance(data, dict):
+        return clean_value(data)
+
+    if isinstance(data, list):
+        cleaned = []
+        for row in data:
+            cleaned.append(clean_value(row))
+        return cleaned
+
+    return clean_value(data)
 
 
 def ok(data, meta: dict | None = None, status: int = 200):
