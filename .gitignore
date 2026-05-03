@@ -67,3 +67,7 @@ backend/data_for_map/**
 
 # Local exported preview artifact.
 health_page_preview.pdf
+
+# Compress project files for sharing. Keep the source files in the repository.
+
+project.tar.gz

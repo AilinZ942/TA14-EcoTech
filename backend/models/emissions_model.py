@@ -5,7 +5,7 @@ from typing import Optional
 
 @dataclass
 class EmissionStateRow:
-    report_year: int
+    report_year: str
     state: str
     metal: str
     total_air_emission_kg: Optional[float]
@@ -23,7 +23,7 @@ class EmissionStateRow:
 
 @dataclass
 class EmissionFacilityRow:
-    report_year: int
+    report_year: str
     facility_id: Optional[str]
     facility_name: Optional[str]
     state: Optional[str]

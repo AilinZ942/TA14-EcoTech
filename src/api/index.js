@@ -38,7 +38,7 @@ async function request(baseUrl, path, options = {}) {
 
   return data
 }
-
+// Chengwei's work - authentication endpoints
 export const authAPI = {
   login(username, password) {
     return request(API_SITE, '/login', {
@@ -61,33 +61,32 @@ export const authAPI = {
 }
 
 export const api = {
+
+  // Xiaoyao's work - health matrix endpoints
   getHealthAll() {
     return request(API_SITE, '/health/all')
   },
 
+  // Jashwanth's work - health endpoints
+  getHealthAll_2() {
+    return request(API_SITE, '/health/all_2')
+  },
+  
+  getHealthFilter() {
+    return request(API_SITE, '/health/filters')
+  },
+  
+  getHeavyMetalState() {
+    return request(API_SITE, '/emissions/state')
+  },
+  
+  getHeavyMetalFacility() {
+    return request(API_SITE, '/emissions/facility')
+  },
 
-  // Need to update !!!!!!
+  
 
-  // Database-backed health and emissions endpoints are intentionally
-  // disabled for now until the corresponding cloud data is deployed.
-  // Re-enable these methods when the backend data is ready.
-  //
-  // getHealthAll_2() {
-  //   return request(API_SITE, '/health/all_2')
-  // },
-  //
-  // getHealthFilter() {
-  //   return request(API_SITE, '/health/filters')
-  // },
-  //
-  // getHeavyMetalState() {
-  //   return request(API_SITE, '/emissions/state')
-  // },
-  //
-  // getHeavyMetalFacility() {
-  //   return request(API_SITE, '/emissions/facility')
-  // },
-
+  //Xiaoyao's work - map endpoints
   searchDisposalLocation(options = {}) {
     if (TEMP_MAP_PREVIEW) {
       return import('./tempMapPreview').then(({ getTempMapPreview }) =>
@@ -104,6 +103,7 @@ export const api = {
     return request(API_SITE, `/map/disposal-locations${suffix}`, fetchOptions)
   },
 
+  // Chengwei's work - device optimization endpoints
   getDeviceOptimizationTips(payload) {
     return request(API_SITE, '/ai/device-optimizer', {
       method: 'POST',

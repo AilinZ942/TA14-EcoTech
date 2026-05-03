@@ -159,23 +159,23 @@ def get_health_all():
 # the corresponding datasets have not been deployed to the cloud database yet.
 # Re-enable these routes once the backend data is available again.
 #
-# @health_bp.route("/health/all_2", methods=["GET"])
-# def get_all():
-#     try:
-#         data = health_service.list_all(
-#             year=request.args.get("year"),
-#             sex=request.args.get("sex"),
-#             cancer_type=request.args.get("cancer_type"),
-#         )
-#         return ok(data, meta={"count": len(data), "source": "postgresql"})
-#     except Exception as e:
-#         return fail(f"Database error: {e}", 503)
-#
-#
-# @health_bp.route("/health/filters", methods=["GET"])
-# def get_filters():
-#     try:
-#         data = health_service.list_filter_options()
-#         return ok(data)
-#     except Exception as e:
-#         return fail(f"Database error: {e}", 503)
+@health_bp.route("/health/all_2", methods=["GET"])
+def get_all():
+    try:
+        data = health_service.list_all(
+            year=request.args.get("year"),
+            sex=request.args.get("sex"),
+            cancer_type=request.args.get("cancer_type"),
+        )
+        return ok(data, meta={"count": len(data), "source": "postgresql"})
+    except Exception as e:
+        return fail(f"Database error: {e}", 503)
+
+
+@health_bp.route("/health/filters", methods=["GET"])
+def get_filters():
+    try:
+        data = health_service.list_filter_options()
+        return ok(data)
+    except Exception as e:
+        return fail(f"Database error: {e}", 503)

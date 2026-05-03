@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { api } from '@/api'
+import NewFeatureDashboard from './New_feature_Dashboard.vue'
 import pearsonHeatmapUrl from '@/assets/health-analysis/emissions_health_pearson_heatmap.png'
 import spearmanHeatmapUrl from '@/assets/health-analysis/emissions_health_spearman_heatmap.png'
 import environmentHeatmapUrl from '@/assets/environment-analysis/overall_state_aggregate_pearson_heatmap.png'
@@ -215,6 +216,10 @@ onMounted(async () => {
           <span>Air {{ item.air }} · Water {{ item.water }}</span>
         </article>
       </div>
+    </section>
+
+    <section class="new-feature-shell">
+      <NewFeatureDashboard />
     </section>
   </main>
 </template>

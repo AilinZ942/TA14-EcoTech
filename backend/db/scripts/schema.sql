@@ -9,6 +9,9 @@ DROP TABLE IF EXISTS location_lookup CASCADE;
 DROP TABLE IF EXISTS ewaste_recycling_locations_curated CASCADE;
 DROP TABLE IF EXISTS clean_ewaste_facilities_geocoded CASCADE;
 
+
+
+-- final_health_merge_dataset.csv
 CREATE TABLE health_merged (
     id              SERIAL PRIMARY KEY,
     year            INTEGER NOT NULL,
@@ -22,9 +25,11 @@ CREATE INDEX idx_health_year       ON health_merged (year);
 CREATE INDEX idx_health_sex        ON health_merged (sex);
 CREATE INDEX idx_health_cancer     ON health_merged (cancer_type);
 
+
+-- heavy_metal_state.csv
 CREATE TABLE heavy_metal_state (
     id                       SERIAL PRIMARY KEY,
-    report_year              INTEGER NOT NULL,
+    report_year              TEXT NOT NULL,
     state                    TEXT NOT NULL,
     metal                    TEXT NOT NULL,
     total_air_emission_kg    DOUBLE PRECISION,
@@ -36,9 +41,11 @@ CREATE INDEX idx_state_year   ON heavy_metal_state (report_year);
 CREATE INDEX idx_state_state  ON heavy_metal_state (state);
 CREATE INDEX idx_state_metal  ON heavy_metal_state (metal);
 
+
+-- heavy_metal_facility.csv
 CREATE TABLE heavy_metal_facility (
     id                       SERIAL PRIMARY KEY,
-    report_year              INTEGER NOT NULL,
+    report_year              TEXT NOT NULL,
     facility_id              TEXT,
     facility_name            TEXT,
     state                    TEXT,
@@ -54,7 +61,7 @@ CREATE INDEX idx_fac_year     ON heavy_metal_facility (report_year);
 CREATE INDEX idx_fac_state    ON heavy_metal_facility (state);
 CREATE INDEX idx_fac_postcode ON heavy_metal_facility (postcode);
 
-
+-- clean_ewaste_facilities_geocoded.csv
 CREATE TABLE clean_ewaste_facilities_geocoded (
     id                    SERIAL PRIMARY KEY,
     facility_name         TEXT NOT NULL,
@@ -69,6 +76,8 @@ CREATE INDEX idx_geocoded_state ON clean_ewaste_facilities_geocoded (state);
 CREATE INDEX idx_geocoded_postcode ON clean_ewaste_facilities_geocoded (postcode);
 CREATE INDEX idx_geocoded_suburb ON clean_ewaste_facilities_geocoded (suburb);
 
+
+--- ewaste_recycling_locations_curated.csv
 CREATE TABLE ewaste_recycling_locations_curated (
     id                       SERIAL PRIMARY KEY,
     state_scope              TEXT,
@@ -111,6 +120,8 @@ CREATE INDEX idx_curated_suburb ON ewaste_recycling_locations_curated (suburb);
 CREATE INDEX idx_curated_place_id ON ewaste_recycling_locations_curated (place_id);
 CREATE INDEX idx_curated_final_keep ON ewaste_recycling_locations_curated (final_keep);
 
+
+-- location_lookup.csv
 CREATE TABLE location_lookup (
     id           SERIAL PRIMARY KEY,
     state_code   TEXT,
