@@ -56,6 +56,22 @@ const HEAVY_METAL_LINKED = [
   { name: 'Pancreatic cancer', icon: '🫀', metal: 'Cd' },
 ]
 
+const METAL_NAMES = {
+  Pb: 'lead',
+  Cd: 'cadmium',
+  Hg: 'mercury',
+}
+
+function formatMetal(metalStr) {
+  return metalStr
+    .split('·')
+    .map((m) => {
+      const key = m.trim()
+      return `${METAL_NAMES[key]} (${key})`
+    })
+    .join(' and ')
+}
+
 function parseFY(reportYear) {
   if (reportYear === null || reportYear === undefined) return null
   const value = String(reportYear)
@@ -163,14 +179,17 @@ const emissionsByYear = computed(() => {
   return map
 })
 
-const linkedCancerByYear = computed(() => {
+const fixedLinkedCancerByYear = computed(() => {
   const map = {}
-  const selectedCancer = selectedCancerType.value
-  for (const row of growthSourceRows.value) {
-    if (selectedSex.value && String(row.sex) !== String(selectedSex.value)) continue
-    if (selectedCancer && String(row.cancer_type) !== String(selectedCancer)) continue
-    map[row.year] = (map[row.year] || 0) + safeNumber(row.cancer_cases)
+
+  for (const row of healthRows.value) {
+    const year = Number(row.year)
+    if (!Number.isFinite(year)) continue
+    if (year < 1999 || year > 2010) continue
+
+    map[year] = (map[year] || 0) + safeNumber(row.cancer_cases)
   }
+
   return map
 })
 
@@ -199,20 +218,20 @@ const emissionsChange = computed(() => {
 })
 
 const earliestHealthYear = computed(() => {
-  const years = Object.keys(linkedCancerByYear.value).map(Number).filter(Number.isFinite)
+  const years = Object.keys(fixedLinkedCancerByYear.value).map(Number).filter(Number.isFinite)
   return years.length ? Math.min(...years) : null
 })
 
 const latestHealthYear = computed(() => {
-  const years = Object.keys(linkedCancerByYear.value).map(Number).filter(Number.isFinite)
+  const years = Object.keys(fixedLinkedCancerByYear.value).map(Number).filter(Number.isFinite)
   return years.length ? Math.max(...years) : null
 })
 
 const earliestLinkedCases = computed(() =>
-  earliestHealthYear.value ? linkedCancerByYear.value[earliestHealthYear.value] || 0 : 0,
+  earliestHealthYear.value ? fixedLinkedCancerByYear.value[earliestHealthYear.value] || 0 : 0,
 )
 const latestLinkedCases = computed(() =>
-  latestHealthYear.value ? linkedCancerByYear.value[latestHealthYear.value] || 0 : 0,
+  latestHealthYear.value ? fixedLinkedCancerByYear.value[latestHealthYear.value] || 0 : 0,
 )
 
 const cancerChange = computed(() => {
@@ -246,7 +265,7 @@ const perCancerGrowth = computed(() => {
 })
 
 const displayedCancers = computed(() =>
-  showAllCancers.value ? perCancerGrowth.value : perCancerGrowth.value.slice(0, 6),
+  showAllCancers.value ? perCancerGrowth.value : perCancerGrowth.value.slice(0, 5),
 )
 
 const topPollutingStates = computed(() => {
@@ -292,19 +311,26 @@ const topFacilities = computed(() =>
 )
 
 const trendChartOption = computed(() => {
+  const START_YEAR = 1999
+  const END_YEAR = 2010
+
   const eYears = Object.keys(emissionsByYear.value)
     .map(Number)
+    .filter((y) => y >= START_YEAR && y <= END_YEAR)
     .sort((a, b) => a - b)
-  const cYears = Object.keys(linkedCancerByYear.value)
+
+  const cYears = Object.keys(fixedLinkedCancerByYear.value)
     .map(Number)
+    .filter((y) => y >= START_YEAR && y <= END_YEAR)
     .sort((a, b) => a - b)
+
+  const xMin = START_YEAR
+  const xMax = END_YEAR
+
   if (!eYears.length || !cYears.length) return {}
 
   const eBase = emissionsByYear.value[eYears[0]] || 1
-  const cBase = linkedCancerByYear.value[cYears[0]] || 1
-
-  const xMin = Math.min(eYears[0], cYears[0])
-  const xMax = Math.max(eYears[eYears.length - 1], cYears[cYears.length - 1])
+  const cBase = fixedLinkedCancerByYear.value[cYears[0]] || 1
 
   return {
     tooltip: {
@@ -355,7 +381,7 @@ const trendChartOption = computed(() => {
         itemStyle: { color: '#7c3aed' },
         data: cYears.map((year) => [
           year,
-          Math.round((linkedCancerByYear.value[year] / cBase) * 100),
+          Math.round((fixedLinkedCancerByYear.value[year] / cBase) * 100),
         ]),
       },
     ],
@@ -514,6 +540,21 @@ onBeforeUnmount(() => {
     </div>
     -->
 
+    <section class="analysis-panel">
+      <div class="section-header">
+        <div>
+          <p class="section-tag">Trend comparison</p>
+          <h2>Indexed heavy-metal emissions and linked cancers</h2>
+        </div>
+      </div>
+
+      <div ref="trendChartRef" class="chart-frame"></div>
+      <p class="chart-note">
+        Both lines are indexed to 100 at their first year so the growth pattern can be compared side
+        by side.
+      </p>
+    </section>
+
     <section class="panel">
       <div class="section-header">
         <div>
@@ -565,20 +606,6 @@ onBeforeUnmount(() => {
       </article>
     </section>
 -->
-    <section class="analysis-panel">
-      <div class="section-header">
-        <div>
-          <p class="section-tag">Trend comparison</p>
-          <h2>Indexed heavy-metal emissions and linked cancers</h2>
-        </div>
-      </div>
-
-      <div ref="trendChartRef" class="chart-frame"></div>
-      <p class="chart-note">
-        Both lines are indexed to 100 at their first year so the growth pattern can be compared side
-        by side.
-      </p>
-    </section>
     <!--
     <section class="stats-grid">
       <article v-for="card in healthStats" :key="card.label" class="card">
@@ -609,12 +636,18 @@ onBeforeUnmount(() => {
           >
             <div class="cancer-top">
               <span class="cancer-icon">{{ cancer.icon }}</span>
-              <span v-if="index === 0" class="top-badge">Highest increase</span>
-              <span v-else class="cancer-metal">Linked to {{ cancer.metal }}</span>
+
+              <span class="cancer-info-wrapper">
+                <button class="cancer-info-button" type="button">i</button>
+                <span class="cancer-info-tooltip">
+                  Associated with {{ formatMetal(cancer.metal) }}
+                </span>
+              </span>
             </div>
             <h3>{{ cancer.name }}</h3>
             <p class="cancer-change">{{ pct(cancer.change) }}</p>
             <p class="cancer-detail">{{ formatNumber(cancer.latest) }} cases in latest year</p>
+            <span v-if="index === 0" class="top-badge">Highest increase</span>
           </article>
         </div>
       </article>
@@ -988,7 +1021,7 @@ onBeforeUnmount(() => {
 }
 
 .cancer-grid {
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .cancer-card {
@@ -996,6 +1029,7 @@ onBeforeUnmount(() => {
   padding: 16px;
   background: rgba(241, 248, 242, 0.92);
   border: 1px solid rgba(210, 232, 214, 0.98);
+  position: relative;
 }
 
 .cancer-top {
@@ -1010,6 +1044,18 @@ onBeforeUnmount(() => {
   font-size: 1.2rem;
 }
 
+.info-icon {
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.2s;
+}
+
+.info-icon:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 .top-badge {
   padding: 4px 10px;
   border-radius: 999px;
@@ -1017,6 +1063,72 @@ onBeforeUnmount(() => {
   color: #991b1b;
   font-size: 12px;
   font-weight: 700;
+}
+
+.cancer-info-wrapper {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+}
+
+.cancer-info-button {
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+  border: 1px solid #b7d1c4;
+
+  background: rgba(255, 255, 255, 0.8);
+  color: #6b8f7d;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.cancer-info-button:hover {
+  background: #173a29;
+  border-color: #173a29;
+  color: white;
+}
+
+.cancer-info-tooltip {
+  position: absolute;
+  top: 36px;
+  right: 0;
+
+  max-width: 240px;
+  min-width: 160px;
+  white-space: normal;
+
+  padding: 8px 10px;
+  border-radius: 10px;
+
+  background: #f8faf9;
+  border: 1px solid #e3eee8;
+  box-shadow: 0 8px 20px rgba(23, 63, 46, 0.18);
+
+  color: #173a29;
+  font-size: 12px;
+  line-height: 1.4;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-2px);
+  transition: 0.1s ease;
+  z-index: 99;
+}
+
+.cancer-info-wrapper:hover .cancer-info-tooltip {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .cancer-metal {
