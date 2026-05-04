@@ -21,9 +21,9 @@ and set them in **./backend/.env.local** file
 
 then run the bash script
 
-``` cd "current directoy: TA14-ECOTECH"```
-
-``` bash ./load_local_data.sh```
+```dropdb -U username database_name
+createdb -U username database_name
+psql -U username -d database_name -f .backend/db/scripts/backup.sql```
 
 
 
@@ -57,6 +57,38 @@ use the other terminal
 Vite usually starts at `http://localhost:5173`. If that port is busy, it will choose the next available port.
 
 
+## System Architecture
+
+```mermaid
+flowchart LR
+  U[User Browser] --> F[Vue Frontend]
+  F -->|/api requests| B[Flask Backend]
+
+  B --> H[Health routes]
+  B --> E[Emissions routes]
+  B --> L[Location routes]
+  B --> A[AI optimizer route]
+
+  H --> DB[(PostgreSQL)]
+  E --> DB
+  L --> DB
+  A --> M[llama-cpp-python model]
+
+  subgraph Data Preparation
+    S[load_local_data.sh] --> D[backend/db/data/*.csv]
+    S --> X[backend/db/scripts/schema.sql]
+    X --> DB
+    D --> DB
+  end
+```
+
+This is the high-level flow:
+- the browser loads the Vue app
+- the Vue app calls Flask through `/api`
+- Flask reads data from PostgreSQL
+- the AI route uses the local Qwen model through `llama-cpp-python`
+- the local loading script rebuilds the schema and imports CSV data into PostgreSQL
+
 
 
 
@@ -65,35 +97,8 @@ Vite usually starts at `http://localhost:5173`. If that port is busy, it will ch
 ### Do not change other code blocks!
 make sure your code will not affect the other's code, if you need it, make sure **write some docs** to explain your code
 
-### Upload data for the dashboard (graphs)
-
-- put data (csv) in ./backend/db/data
-- update backend/db/scripts/schema.sql
-- update load_local_data.sh
-
-or you can use your own local database, but remember to update schema.sql and put data in data folder
-
-### update routes
-
-- uncomment the related code in .backend/routes/health.py
-- uncomment the related code in src/api/index.js
-
-### update front-end part
-
--- change src/view/dashboard.vue
-
 
 ### If you have other questions please ask our team
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -127,8 +132,6 @@ Frontend dependencies are managed by `package.json` and `package-lock.json`.
 
 
 Python dependencies are listed in  `backend/requirements.txt`.
-
-## Project Structure
 
 
 

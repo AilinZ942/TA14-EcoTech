@@ -71,3 +71,13 @@ health_page_preview.pdf
 # Compress project files for sharing. Keep the source files in the repository.
 
 project.tar.gz
+
+backend/__pycache__/
+backend/.pytest_cache/
+backend/db/__pycache__/
+backend/db/queries/__pycache__/
+backend/db/migrations/__pycache__/
+backend/models/__pycache__/
+backend/services/__pycache__/
+backend/utils/__pycache__/
+backend/routes/__pycache__/
