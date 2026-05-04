@@ -84,7 +84,11 @@ This is the high-level flow:
 - the local loading script rebuilds the schema and imports CSV data into PostgreSQL
 
 
+## Deployment
 
+Cloud VM Server: AWS EC2 - m7i-flex.large
+
+DNS:  https://freedns.afraid.org/ named "Free DNS" 
 
 ## Important Notes !!!
 
