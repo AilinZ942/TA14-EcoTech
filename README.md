@@ -19,28 +19,29 @@ Once you start it, you need to know these things:
 
 and set them in **./backend/.env.local** file
 
-then run the bash script
+then run backup.sql
 
-```dropdb -U username database_name
+```
+dropdb -U username database_name
 createdb -U username database_name
-psql -U username -d database_name -f .backend/db/scripts/backup.sql```
+psql -U username -d database_name -f .backend/db/scripts/backup.sql
+```
 
 
 
 ### Install frontend dependencies
-
-```npm install```
-```npm run build```
-
+```
+npm install
+npm run build
+```
 ### Install backend dependencies
 
-```python -m venv .venv```
-```backend/.venv/bin/activate```
-```pip install -r ./backend/requirements.txt```
+```
+python -m venv .venv
+backend/.venv/bin/activate
+pip install -r ./backend/requirements.txt
+```
 
-If you only work inside the backend folder, this also works:
-
-```pip install -r ./backend/requirements.txt```
 
 ### Start the backend
 
@@ -59,27 +60,20 @@ Vite usually starts at `http://localhost:5173`. If that port is busy, it will ch
 
 ## System Architecture
 
-```mermaid
-flowchart LR
-  U[User Browser] --> F[Vue Frontend]
-  F -->|/api requests| B[Flask Backend]
+```text
+User Browser
+    |
+    v
+Vue Frontend
+    |
+    v
+Flask Backend  --->  PostgreSQL
+    |
+    v
+AI model: llama-cpp-python
 
-  B --> H[Health routes]
-  B --> E[Emissions routes]
-  B --> L[Location routes]
-  B --> A[AI optimizer route]
-
-  H --> DB[(PostgreSQL)]
-  E --> DB
-  L --> DB
-  A --> M[llama-cpp-python model]
-
-  subgraph Data Preparation
-    S[load_local_data.sh] --> D[backend/db/data/*.csv]
-    S --> X[backend/db/scripts/schema.sql]
-    X --> DB
-    D --> DB
-  end
+Data loading:
+backend/db/migrations/backup.sql -> local PostgreSQL
 ```
 
 This is the high-level flow:
@@ -132,8 +126,6 @@ Frontend dependencies are managed by `package.json` and `package-lock.json`.
 
 
 Python dependencies are listed in  `backend/requirements.txt`.
-
-
 
 
 
