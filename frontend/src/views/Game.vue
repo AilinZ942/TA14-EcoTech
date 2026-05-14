@@ -3,7 +3,7 @@
     <!-- Cover -->
     <section v-if="!started && !finished" class="cover-card">
       <div class="cover-icon">♻️</div>
-      <p class="eyebrow">EcoTech Game</p>
+      <p class="eyebrow">EcoReviva Game</p>
       <h1>E-waste Sorting Challenge</h1>
 
       <p class="cover-desc">
