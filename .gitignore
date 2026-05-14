@@ -40,15 +40,16 @@ __screenshots__/
 
 #.env files
 .env.local
+frontend/.env
+backend/.env
 
 # Python virtual environment
 .venv/
 
+iteration3/
 
 backend/.venv/
-backend/.env.local
 
-location/
 
 # Azurite artifacts
 __blobstorage__/

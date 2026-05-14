@@ -1,9 +1,26 @@
 # TA14-EcoTech
 
-
 ## Local Setup
 
 ### build local database
+
+we use docker to create a virtual database, so you don't need to create a database in your local server. It helps us collaborate and run the 
+
+```docker compose up db```
+
+connect to the db using psql or pg admin4, and update database (insert data, change tables)
+
+```pg_dump --no-owner --no-acl -U [username] -d [database_name] > ./migrations/backup.sql```
+
+
+
+
+```
+docker compose down -v
+docker compose up -d
+```
+
+### Update database
 
 try to start the postgresql first, if you use macOS, use homebrew to start it：
 
@@ -70,7 +87,7 @@ Vue Frontend
 Flask Backend  --->  PostgreSQL
     |
     v
-AI model: llama-cpp-python
+AI model: Groq API
 
 Data loading:
 backend/db/migrations/backup.sql -> local PostgreSQL
@@ -80,7 +97,7 @@ This is the high-level flow:
 - the browser loads the Vue app
 - the Vue app calls Flask through `/api`
 - Flask reads data from PostgreSQL
-- the AI route uses the local Qwen model through `llama-cpp-python`
+- the AI route uses the Groq chat completions API for device optimisation responses
 - the local loading script rebuilds the schema and imports CSV data into PostgreSQL
 
 
@@ -123,14 +140,11 @@ Frontend dependencies are managed by `package.json` and `package-lock.json`.
 - python-dotenv for local environment variables
 - psycopg2-binary
 - requests
-- llama-cpp-python for AI model loading
-- huggingface-hub for downloading model
+- requests for calling the Groq API
 - pyshp
 - gunicorn for serving python on web
 
 
 Python dependencies are listed in  `backend/requirements.txt`.
-
-
 
 
