@@ -10,8 +10,8 @@ import logging
 
 auth_bp = Blueprint("login", __name__)
 
-USERNAME = os.environ.get("APP_USERNAME")
-PASSWORD = os.environ.get("APP_PASSWORD")
+USERNAME = os.environ.get("APP_USERNAME", "admin")
+PASSWORD = os.environ.get("APP_PASSWORD", "password")
 PASSWORD_HASH = generate_password_hash(PASSWORD)
 MAX_ATTEMPTS = 5
 LOCKOUT_DURATION = timedelta(minutes=15)

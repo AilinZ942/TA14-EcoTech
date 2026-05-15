@@ -111,8 +111,24 @@ export const api = {
     })
   },
 
-  analyzeRepairDecision(payload) {
-    return request(API_SITE, '/ai/repair-decision', {
+  // Jashwanth's work - pickup stalls (Iteration 3)
+  // NOTE: backend endpoint not yet implemented. PickupPoints.vue currently
+  // imports stalls from src/lib/pickupStallsMock.js. When the backend lands,
+  // replace that import with a call to getPickupStalls().
+  getPickupStalls(options = {}) {
+    const params = new URLSearchParams()
+    if (options.searchText) params.set('searchText', options.searchText)
+    if (options.category) params.set('category', options.category)
+    if (options.rangeKm) params.set('rangeKm', options.rangeKm)
+    if (options.lat) params.set('lat', options.lat)
+    if (options.lng) params.set('lng', options.lng)
+    const suffix = params.toString() ? `?${params}` : ''
+    return request(API_SITE, `/pickup-stalls${suffix}`)
+  },
+
+  // Reserve a device at a stall (POST hold).
+  reservePickupDevice(payload) {
+    return request(API_SITE, '/pickup-stalls/reserve', {
       method: 'POST',
       body: JSON.stringify(payload),
     })
