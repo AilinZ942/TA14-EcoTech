@@ -3,10 +3,10 @@ from __future__ import annotations
 import os
 import re
 import logging
+from functools import lru_cache
 from typing import Literal
 
 from flask import Blueprint, jsonify, request
-import requests
 
 from routes.login import login_required
 
@@ -26,30 +26,91 @@ DEVICE_TYPES: dict[DeviceType, dict[str, str]] = {
     },
 }
 
-ISSUE_LABELS: dict[IssueCategory, str] = {
-    "slow_performance": "Slow performance",
-    "battery_drain": "Battery drain",
-    "storage_full": "Storage full",
-    "general": "General device care",
-}
-
-ISSUE_EXPLANATIONS: dict[IssueCategory, str] = {
-    "slow_performance": (
-        "Your device may be running slowly because too many apps are open, the storage is nearly full, "
-        "or the device is working harder than usual."
-    ),
-    "battery_drain": (
-        "Your battery may drain quickly because the screen is too bright, apps are using too much power, "
-        "or the battery is getting older."
-    ),
-    "storage_full": (
-        "Your device has less room for updates, apps, and temporary files when storage is nearly full, "
-        "which can also make it feel slower."
-    ),
-    "general": (
-        "Your issue looks like a general device care question. A good first step is to check storage, "
-        "battery health, software updates, and background apps."
-    ),
+ISSUE_CATEGORIES: dict[IssueCategory, dict[str, object]] = {
+    "slow_performance": {
+        "label": "Slow performance",
+        "explanation": (
+            "Your device may be running slowly because too many apps are open, the storage is nearly full, "
+            "or the device is working harder than usual."
+        ),
+        "suggestions": {
+            "laptop": [
+                "Restart the laptop to clear temporary clutter.",
+                "Close apps you are not using and keep only the important ones open.",
+                "Remove large files or move them to cloud storage or an external drive.",
+                "Check for software updates so the system can run more smoothly.",
+            ],
+            "phone": [
+                "Close apps running in the background and restart the phone.",
+                "Delete unused apps, photos, or videos that you no longer need.",
+                "Turn off battery-heavy features you are not using, like constant location tracking.",
+                "Update the phone software so it can stay stable and secure.",
+            ],
+        },
+    },
+    "battery_drain": {
+        "label": "Battery drain",
+        "explanation": (
+            "Your battery may drain quickly because the screen is too bright, apps are using too much power, "
+            "or the battery is getting older."
+        ),
+        "suggestions": {
+            "laptop": [
+                "Lower screen brightness and turn on power saving mode.",
+                "Check which apps use the most power and close the ones you do not need.",
+                "Keep the laptop cool because heat can make battery life worse.",
+                "If the battery is old, consider a battery replacement instead of replacing the whole laptop.",
+            ],
+            "phone": [
+                "Lower screen brightness and shorten the screen timeout.",
+                "Close battery-hungry apps and switch off features you do not need.",
+                "Avoid leaving the phone in hot places like a car or direct sun.",
+                "If the battery is aging, a replacement battery may be better than a new phone.",
+            ],
+        },
+    },
+    "storage_full": {
+        "label": "Storage full",
+        "explanation": (
+            "Your device has less room for updates, apps, and temporary files when storage is nearly full, "
+            "which can also make it feel slower."
+        ),
+        "suggestions": {
+            "laptop": [
+                "Delete files you no longer need, especially large downloads and duplicate copies.",
+                "Move photos, videos, and documents to cloud storage or an external drive.",
+                "Empty the recycle bin or trash so deleted files are fully removed.",
+                "Uninstall apps you do not use anymore.",
+            ],
+            "phone": [
+                "Delete old photos, videos, and downloads you do not need anymore.",
+                "Clear apps or chats that store a lot of media and take up space.",
+                "Use cloud backup for photos so you can free up local storage.",
+                "Remove apps you rarely use to create more space and keep updates working.",
+            ],
+        },
+    },
+    "general": {
+        "label": "General device care",
+        "explanation": (
+            "Your issue looks like a general device care question. A good first step is to check storage, "
+            "battery health, software updates, and background apps."
+        ),
+        "suggestions": {
+            "laptop": [
+                "Restart the laptop if it has been on for a long time.",
+                "Install software updates when they are available.",
+                "Close unused apps and browser tabs to reduce pressure on the system.",
+                "Back up important files so you can clean up old storage safely.",
+            ],
+            "phone": [
+                "Restart the phone if it has been running for a long time.",
+                "Install phone software updates when they are available.",
+                "Close unused apps and review which apps use the most battery.",
+                "Back up important photos and files so you can free up space safely.",
+            ],
+        },
+    },
 }
 
 SLOW_KEYWORDS = [
@@ -88,19 +149,20 @@ Explain device issues in simple, non-technical English.
 Focus only on laptops and phones.
 Do not mention dangerous repairs, opening batteries, or data loss risks.
 Return exactly this structure:
-WHAT MAY BE AFFECTING YOUR DEVICE: one short paragraph describing only the likely causes or factors
+EXPLANATION: one short paragraph
 TIPS:
 - tip 1
 - tip 2
 - tip 3
 - tip 4
-Do not put any advice, fixes, or action steps inside the explanation section.
 Keep the answer friendly, practical, and concise.
 """
 
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
-GROQ_BASE_URL = os.environ.get("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
+QWEN_MODEL_REPO_ID = os.environ.get("QWEN_MODEL_REPO_ID", "Qwen/Qwen2.5-3B-Instruct-GGUF")
+QWEN_MODEL_FILENAME = os.environ.get("QWEN_MODEL_FILENAME", "*q4_k_m.gguf")
+LLAMA_N_CTX = int(os.environ.get("LLAMA_N_CTX", "2048"))
+LLAMA_N_THREADS = int(os.environ.get("LLAMA_N_THREADS", "2"))
+LLAMA_N_BATCH = int(os.environ.get("LLAMA_N_BATCH", "128"))
 LLAMA_TEMPERATURE = float(os.environ.get("LLAMA_TEMPERATURE", "0.2"))
 LLAMA_TOP_P = float(os.environ.get("LLAMA_TOP_P", "0.9"))
 LLAMA_MAX_TOKENS = int(os.environ.get("LLAMA_MAX_TOKENS", "260"))
@@ -129,14 +191,19 @@ def clean_device_type(device_type: str | None) -> DeviceType:
     return normalized
 
 
+def get_suggestions(device_type: DeviceType, issue_category: IssueCategory) -> list[str]:
+    suggestions_by_device = ISSUE_CATEGORIES[issue_category]["suggestions"]
+    return list(suggestions_by_device[device_type])
+
+
 def build_prompt(device_type: DeviceType, issue_text: str) -> str:
     device_label = DEVICE_TYPES[device_type]["label"]
     issue_category = classify_issue(issue_text)
     issue_hints = {
-        "slow_performance": "Likely causes: background apps, storage pressure, software bugs, overheating, or heavy app usage.",
-        "battery_drain": "Likely causes: screen brightness, background activity, battery age, charging habits, or location services.",
-        "storage_full": "Likely causes: large files, photos and videos, downloads, app data, or too many unused apps.",
-        "general": "Likely causes: app usage, battery age, storage pressure, software updates, or device wear.",
+        "slow_performance": "Common focus areas: background apps, storage pressure, software updates, restart, overheating.",
+        "battery_drain": "Common focus areas: screen brightness, background activity, battery health, charging habits, location services.",
+        "storage_full": "Common focus areas: large files, photos and videos, downloads, app data, cloud backup, uninstalling unused apps.",
+        "general": "Common focus areas: updates, background apps, battery health, storage, and basic device maintenance.",
     }
 
     return f"""Device type: {device_label}
@@ -147,15 +214,15 @@ User issue:
 
 Write a practical answer in simple English.
 Do not be vague.
+Give specific actions the user can do right now.
 Focus on the selected device type.
 Return exactly this structure:
-WHAT MAY BE AFFECTING YOUR DEVICE: one short paragraph describing only the likely causes or factors
+EXPLANATION: one short paragraph
 TIPS:
 - tip 1
 - tip 2
 - tip 3
 - tip 4
-Do not include any fixes or actions in the first paragraph.
 """
 
 
@@ -164,11 +231,7 @@ def parse_model_text(text: str) -> tuple[str, list[str]]:
     explanation = ""
     tips: list[str] = []
 
-    explanation_match = re.search(
-        r"(?:WHAT MAY BE AFFECTING YOUR DEVICE|EXPLANATION):\s*(.*?)(?:\nTIPS:|\Z)",
-        cleaned,
-        flags=re.S | re.I,
-    )
+    explanation_match = re.search(r"EXPLANATION:\s*(.*?)(?:\nTIPS:|\Z)", cleaned, flags=re.S | re.I)
     if explanation_match:
         explanation = explanation_match.group(1).strip()
     else:
@@ -185,20 +248,11 @@ def parse_model_text(text: str) -> tuple[str, list[str]]:
 
     for line in tips_block.splitlines():
         item = re.sub(r"^[-*•]\s*", "", line.strip())
-        if item and item.upper() not in {"EXPLANATION:", "WHAT MAY BE AFFECTING YOUR DEVICE:", "TIPS:"}:
+        if item and item.upper() not in {"EXPLANATION:", "TIPS:"}:
             tips.append(item)
 
     if not explanation:
         explanation = "This issue usually improves when you remove pressure from the device and make a few simple changes."
-
-    explanation = re.sub(
-        r"\b(you can|you should|try to|restart|close|delete|turn off|update|clean up|free up|install)\b.*",
-        "",
-        explanation,
-        flags=re.I,
-    ).strip()
-    if not explanation:
-        explanation = "This issue is often caused by a few common device factors."
 
     deduped: list[str] = []
     for item in tips:
@@ -208,42 +262,56 @@ def parse_model_text(text: str) -> tuple[str, list[str]]:
     return explanation, deduped[:4]
 
 
-def generate_reply(prompt: str) -> tuple[str, str]:
+@lru_cache(maxsize=1)
+def load_generator():
     try:
-        if not GROQ_API_KEY:
-            return "", "groq-missing-api-key"
+        from llama_cpp import Llama
 
-        response = requests.post(
-            f"{GROQ_BASE_URL}/chat/completions",
-            headers={
-                "Authorization": f"Bearer {GROQ_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": GROQ_MODEL,
-                "messages": [
-                    {"role": "system", "content": SYSTEM_GUIDE},
-                    {"role": "user", "content": prompt},
-                ],
-                "temperature": LLAMA_TEMPERATURE,
-                "top_p": LLAMA_TOP_P,
-                "max_tokens": LLAMA_MAX_TOKENS,
-            },
-            timeout=60,
+        return Llama.from_pretrained(
+            repo_id=QWEN_MODEL_REPO_ID,
+            filename=QWEN_MODEL_FILENAME,
+            n_ctx=LLAMA_N_CTX,
+            n_threads=LLAMA_N_THREADS,
+            n_batch=LLAMA_N_BATCH,
+            verbose=False,
         )
-        response.raise_for_status()
+    except SystemExit as exc:
+        logging.exception("llama_cpp exited while loading the model")
+        return None
+    except Exception:
+        logging.exception("failed to load llama_cpp model")
+        return None
 
-        completion = response.json()
+
+def generate_reply(prompt: str) -> tuple[str, str]:
+    generator = load_generator()
+
+    if generator is None:
+        return "", "qwen-unavailable"
+
+    try:
+        completion = generator.create_chat_completion(
+            messages=[
+                {"role": "system", "content": SYSTEM_GUIDE},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=LLAMA_TEMPERATURE,
+            top_p=LLAMA_TOP_P,
+            max_tokens=LLAMA_MAX_TOKENS,
+        )
         choices = completion.get("choices") or []
         if not choices:
-            return "", GROQ_MODEL
+            return "", QWEN_MODEL_REPO_ID
 
         message = choices[0].get("message") or {}
         text = str(message.get("content") or "").strip()
-        return text, GROQ_MODEL
+        return text, QWEN_MODEL_REPO_ID
+    except SystemExit:
+        logging.exception("llama_cpp exited while generating the reply")
+        return "", "qwen-generation-systemexit"
     except Exception:
-        logging.exception("groq generation failed")
-        return "", "groq-generation-failed"
+        logging.exception("llama generation failed")
+        return "", "qwen-generation-failed"
 
 
 @optimizer_bp.route("/ai/device-optimizer", methods=["POST"])
@@ -267,7 +335,7 @@ def optimize_device():
         return (
             jsonify(
                 {
-                    "detail": "The Groq model is not available or did not return a response. Please check the API key and Groq setup.",
+                    "detail": "The Qwen model is not available or did not return a response. Please check the model file and llama-cpp-python setup.",
                     "model": model_name,
                 }
             ),
@@ -282,7 +350,7 @@ def optimize_device():
             "device_label": DEVICE_TYPES[device_type]["label"],
             "device_summary": DEVICE_TYPES[device_type]["summary"],
             "issue_category": issue_category,
-            "issue_label": ISSUE_LABELS[issue_category],
+            "issue_label": ISSUE_CATEGORIES[issue_category]["label"],
             "issue_explanation": issue_explanation,
             "suggestions": suggestions,
             "model": model_name,

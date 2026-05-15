@@ -9,12 +9,14 @@
     <div class="links">
       <router-link to="/">Home</router-link>
       <router-link to="/dashboard">Dashboard</router-link>
-      <router-link to="/repair-check">Repair Check</router-link>
+      <!--<router-link to="/repair-check">Repair Check</router-link> -->
       <router-link to="/game">Sorting Game</router-link>
       <!--<router-link to="/extend-usage">Extend Usage</router-link> -->
       <router-link to="/ai-chat">AI Device Optimizer</router-link>
       <!--<router-link to="/safe-guidance">Safe Guidance</router-link>-->
       <router-link to="/disposal-locations">Disposal Locations</router-link>
+      <router-link to="/pickup-points">Pickup Points</router-link>
+      <button type="button" class="logout-button" @click="handleLogout">Logout</button>
     </div>
   </nav>
 
@@ -28,8 +30,10 @@
 
 <script setup>
 import { computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { initCSRF } from './api/index.js'
+import { useRoute, useRouter } from 'vue-router'
+import { authAPI, initCSRF } from './api/index.js'
+
+const router = useRouter()
 
 onMounted(() => {
   initCSRF() // apply CSRF token to all API requests after app is mounted
@@ -37,11 +41,20 @@ onMounted(() => {
 
 const route = useRoute()
 const showNavbar = computed(() => route.path !== '/login')
+
+async function handleLogout() {
+  try {
+    await authAPI.logout()
+  } catch (error) {
+    console.error('Logout request failed:', error)
+  } finally {
+    router.replace('/login')
+  }
+}
 </script>
 
 <style scoped>
 .navbar {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -119,6 +132,29 @@ const showNavbar = computed(() => route.path !== '/login')
   font-weight: 700;
 }
 
+/* logout */
+.logout-button {
+  border: none;
+  background: #ffffff;
+  color: #2d6a4f;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* logout hover */
+.logout-button:hover {
+  background: #d8f3dc;
+  color: #1b4332;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 1024px) {
   .navbar {
     flex-direction: column;
@@ -133,6 +169,11 @@ const showNavbar = computed(() => route.path !== '/login')
   }
 
   .links a {
+    font-size: 15px;
+    padding: 7px 12px;
+  }
+
+  .logout-button {
     font-size: 15px;
     padding: 7px 12px;
   }
