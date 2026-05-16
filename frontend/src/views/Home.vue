@@ -72,6 +72,18 @@
             </p>
           </router-link>
 
+          <router-link to="/repair-check" class="feature-card">
+            <div class="feature-top">
+              <span class="feature-icon">🔧</span>
+              <span class="feature-label">Repair Check</span>
+            </div>
+            <h3>Compare repair against replacement</h3>
+            <p>
+              Check repair status, repair price, and used value together before deciding whether
+              to repair or replace your phone.
+            </p>
+          </router-link>
+
           <router-link to="/disposal-locations" class="feature-card">
             <div class="feature-top">
               <span class="feature-icon">📍</span>
