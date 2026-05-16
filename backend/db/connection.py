@@ -12,11 +12,11 @@ import psycopg2.extras
 
 def _connect():
     return psycopg2.connect(
-        host=os.environ.get("DB_HOST", "localhost"),
-        port=int(os.environ.get("DB_PORT", "5432")),
-        dbname=os.environ.get("DB_NAME", "mydb"),
-        user=os.environ.get("DB_USER", "myuser"),
-        password=os.environ.get("DB_PASSWORD", "mypassword"),
+        host=os.environ.get("DB_HOST"),
+        port=5432,
+        dbname=os.environ.get("DB_NAME"),
+        user=os.environ.get("DB_USER"),
+        password=os.environ.get("DB_PASSWORD"),
         sslmode=os.environ.get("DB_SSLMODE", "prefer"),
     )
 
