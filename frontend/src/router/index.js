@@ -7,6 +7,7 @@ import ExtendUsage from '@/views/ExtendUsage.vue'
 import AIChat from '@/views/AIChat.vue'
 import SafeGuidance from '@/views/SafeGuidance.vue'
 import DisposalLocations from '@/views/DisposalLocations.vue'
+import PickupPoints from '@/views/PickupPoints.vue'
 import Game from '@/views/Game.vue'
 import Login from '@/views/Login.vue'
 import { authAPI } from '@/api'
@@ -61,6 +62,12 @@ const routes = [
     path: '/disposal-locations',
     name: 'DisposalLocations',
     component: DisposalLocations,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/pickup-points',
+    name: 'PickupPoints',
+    component: PickupPoints,
     meta: { requiresAuth: true }
   },
   {
