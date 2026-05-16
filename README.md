@@ -148,3 +148,4 @@ Frontend dependencies are managed by `package.json` and `package-lock.json`.
 Python dependencies are listed in  `backend/requirements.txt`.
 
 
+When the `/api/pickup-stalls` backend endpoint is implemented, swap the mock import in `PickupPoints.vue` for the API call.ss
