@@ -67,4 +67,4 @@ VITE_MAPBOX_ACCESS_TOKEN=pk.your_public_token_here
 - **`frontend/src/App.vue`** — added Pickup Points navbar link
 - **`frontend/src/api/index.js`** — added `getPickupStalls()` and `reservePickupDevice()` stubs
 
-When the `/api/pickup-stalls` backend endpoint is implemented, swap the mock import in `PickupPoints.vue` for the API call.
+When the `/api/pickup-stalls` backend endpoint is implemented, swap the mock import in `PickupPoints.vue` for the API call.ss
