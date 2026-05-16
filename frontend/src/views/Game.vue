@@ -1,169 +1,130 @@
 <template>
-  <div class="game-page">
-    <!-- Cover -->
-    <section v-if="!started && !finished" class="cover-card">
-      <div class="cover-icon">♻️</div>
-      <p class="eyebrow">EcoReviva Game</p>
-      <h1>E-waste Sorting Challenge</h1>
+  <div class="game">
+    <div class="eco-shell">
+      <transition name="fade" mode="out-in">
+        <!-- COVER -->
+        <section v-if="!started && !finished" key="cover" class="cover">
+          <span class="eco-eyebrow">Sorting Game · Iteration 03</span>
+          <h1 class="eco-display">
+            Where does this<br /><em>e-waste</em> go?
+          </h1>
+          <p class="eco-lead">
+            Drag or tap each item into the right bin. Score points, learn the rules,
+            avoid the bin that ruins recycling for everyone.
+          </p>
 
-      <p class="cover-desc">
-        Select an item and place it into the correct bin to test your recycling knowledge.
-      </p>
-
-      <p class="cover-hint">
-        Click or drag items into the correct bins. Only your first attempt for each item counts.
-      </p>
-
-      <button class="primary-btn" @click="startGame">Start Game</button>
-    </section>
-
-    <!-- Game -->
-    <section v-else-if="started && !finished" class="game-card">
-      <div class="top-actions">
-        <button class="back-btn" @click="goHome">← Back to Start</button>
-      </div>
-
-      <div class="top-bar">
-        <span>{{ unsortedItems.length }} items remaining</span>
-        <span>Score: {{ score }}</span>
-      </div>
-
-      <div class="items-grid">
-        <button
-          v-for="item in unsortedItems"
-          :key="item.id"
-          class="item-card"
-          :class="{ selected: selectedItem?.id === item.id }"
-          draggable="true"
-          @click="selectItem(item)"
-          @dragstart="dragStart(item)"
-        >
-          <div class="item-icon">{{ item.icon }}</div>
-          <span>{{ item.name }}</span>
-        </button>
-      </div>
-
-      <p class="hint">
-        {{
-          selectedItem
-            ? 'Selected: ' + selectedItem.name + ' → click a bin to place it'
-            : 'Click or drag an item into a bin. Click a sorted item to move it back.'
-        }}
-      </p>
-
-      <div class="bins-grid">
-        <div
-          v-for="bin in bins"
-          :key="bin.name"
-          class="bin-box"
-          :class="[
-            bin.className,
-            {
-              correctFlash: feedbackBin === bin.name && feedbackType === 'correct',
-              wrongFlash: feedbackBin === bin.name && feedbackType === 'wrong',
-            },
-          ]"
-          @click="placeItem(bin.name)"
-          @dragover.prevent
-          @drop="dropItem(bin.name)"
-        >
-          <h3>{{ bin.icon }} {{ bin.name }}</h3>
-
-          <div class="placed-items">
-            <div
-              v-for="item in sortedItems[bin.name]"
-              :key="item.id"
-              class="placed-card"
-              @click.stop="returnItem(item, bin.name)"
-            >
-              <div class="placed-icon">{{ item.icon }}</div>
-              <span>{{ item.name }}</span>
+          <div class="bin-preview">
+            <div v-for="b in bins" :key="b.name" class="bin-mini">
+              <span>{{ b.icon }}</span>
+              <strong>{{ b.name }}</strong>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="game-actions">
-        <button
-          v-if="unsortedItems.length > 0"
-          class="secondary-btn"
-          @click="showEndConfirm = true"
-        >
-          View Result Early
-        </button>
+          <div class="cover-actions">
+            <button class="eco-btn eco-btn--mint" @click="startGame">
+              Start the round <span class="arrow">→</span>
+            </button>
+            <span class="eco-mono">10 items · 2 minutes · first try counts</span>
+          </div>
+        </section>
 
-        <button v-if="unsortedItems.length === 0" class="primary-btn" @click="finishGame">
-          View Result
-        </button>
-      </div>
-    </section>
+        <!-- BOARD -->
+        <section v-else-if="started && !finished" key="board" class="board">
+          <header class="hud">
+            <div class="hud-left">
+              <span class="eco-mono">Score</span>
+              <strong class="hud-score">{{ score }}</strong>
+            </div>
+            <div class="hud-progress">
+              <div class="bar-wrap">
+                <div class="bar" :style="{ width: progressPct + '%' }" />
+              </div>
+              <span>{{ sortedCount }} / {{ totalItems }} sorted</span>
+            </div>
+            <button class="eco-btn eco-btn--ghost" @click="restart">Reset</button>
+          </header>
 
-    <!-- Result -->
-    <section v-else class="result-card">
-      <div class="cover-icon">🎉</div>
-      <p class="eyebrow">Sorting Result</p>
+          <section class="items">
+            <button
+              v-for="item in unsortedItems"
+              :key="item.id"
+              class="item"
+              :class="{ active: selectedItem?.id === item.id }"
+              draggable="true"
+              @click="selectItem(item)"
+              @dragstart="dragStart(item, $event)"
+            >
+              <span class="emoji">{{ item.icon }}</span>
+              <span class="name">{{ item.name }}</span>
+            </button>
+          </section>
 
-      <h1>{{ resultTitle }}</h1>
+          <p class="prompt">{{ promptText }}</p>
 
-      <div class="final-score">{{ score }} / {{ items.length * 10 }}</div>
+          <section class="bins">
+            <div
+              v-for="bin in bins"
+              :key="bin.name"
+              class="bin"
+              :class="[{ ok: feedbackBin === bin.name && feedbackType === 'ok',
+                         bad: feedbackBin === bin.name && feedbackType === 'bad' }]"
+              @click="placeItem(bin.name)"
+              @dragover.prevent
+              @drop.prevent="dropItem(bin.name)"
+            >
+              <header>
+                <span class="bin-ic">{{ bin.icon }}</span>
+                <strong>{{ bin.name }}</strong>
+                <span class="count">{{ sortedItems[bin.name].length }}</span>
+              </header>
+              <div class="bin-items">
+                <span
+                  v-for="it in sortedItems[bin.name]"
+                  :key="it.id"
+                  class="chip"
+                  @click.stop="returnItem(it, bin.name)"
+                >
+                  {{ it.icon }} {{ it.name }}
+                </span>
+              </div>
+            </div>
+          </section>
 
-      <p class="cover-desc">
-        You got {{ correctCount }} out of {{ items.length }} items correct on the first attempt.
-      </p>
+          <transition name="fade">
+            <div v-if="lastTip" class="toast" :class="lastWasCorrect ? 'good' : 'bad'">
+              <strong>{{ lastWasCorrect ? '✓ Correct' : '✗ Not quite' }}</strong>
+              <span>{{ lastTip }}</span>
+            </div>
+          </transition>
 
-      <div class="result-summary">
-        <p v-if="correctCount === items.length">
-          Excellent! You sorted every item correctly on the first try.
-        </p>
-        <p v-else-if="correctCount >= 6">
-          Good effort! You understand most e-waste sorting rules, but some items need extra
-          attention.
-        </p>
-        <p v-else>
-          Keep practising! Some electronic items need special disposal to reduce environmental
-          impact.
-        </p>
-      </div>
+          <div class="actions">
+            <button v-if="unsortedItems.length === 0" class="eco-btn eco-btn--mint" @click="finish">
+              View result <span class="arrow">→</span>
+            </button>
+            <button v-else class="eco-btn eco-btn--ghost" @click="finish">View result early</button>
+          </div>
+        </section>
 
-      <div class="explanation-box">
-        <h3>Sorting Guide</h3>
-        <p>
-          <strong>E-Waste:</strong> phones, chargers, keyboards, monitors and other electronic
-          devices.
-        </p>
-        <p><strong>Battery Bin:</strong> loose batteries or removable device batteries.</p>
-        <p>
-          <strong>Repair / Reuse:</strong> working or repairable devices that can be reused before
-          recycling.
-        </p>
-        <p>
-          <strong>General Waste:</strong> non-electronic items that cannot be recycled through
-          e-waste services.
-        </p>
-      </div>
-
-      <div class="result-actions">
-        <button class="primary-btn" @click="restartGame">Play Again</button>
-        <button class="secondary-btn" @click="goHome">Back to Start</button>
-      </div>
-    </section>
-
-    <!-- Early End Confirm Modal -->
-    <div v-if="showEndConfirm" class="confirm-overlay">
-      <div class="confirm-box">
-        <h3>End the game early?</h3>
-        <p>Your current score will be shown on the result page.</p>
-
-        <div class="confirm-actions">
-          <button class="secondary-btn" @click="showEndConfirm = false">Cancel</button>
-          <button class="primary-btn" @click="finishGameEarly">End Game</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Toast -->
-    <div v-if="showToast" class="toast" :class="toastType">
-      {{ toastText }}
+        <!-- RESULT -->
+        <section v-else key="result" class="result">
+          <div class="ring" :style="{ '--p': pct }">
+            <div class="ring-inner">
+              <span class="ring-num">{{ score }}</span>
+              <span class="ring-cap">/ {{ totalItems }}</span>
+            </div>
+          </div>
+          <h2 class="eco-h2">{{ resultHeadline }}</h2>
+          <p class="eco-lead">{{ resultText }}</p>
+          <div class="actions">
+            <button class="eco-btn eco-btn--mint" @click="restart">
+              Play again <span class="arrow">→</span>
+            </button>
+            <router-link to="/disposal-locations" class="eco-btn eco-btn--ghost">
+              Find a real bin
+            </router-link>
+          </div>
+        </section>
+      </transition>
     </div>
   </div>
 </template>
@@ -171,846 +132,269 @@
 <script setup>
 import { computed, ref } from 'vue'
 
+const bins = [
+  { name: 'Reuse / Donate', icon: '♻' },
+  { name: 'E-waste recycling', icon: '⌧' },
+  { name: 'Hazardous drop-off', icon: '⚠' },
+  { name: 'Household bin', icon: '✕' },
+]
+
+const itemsPool = [
+  { id: 1, name: 'Old smartphone (works)', icon: '📱', correct: 'Reuse / Donate', tip: 'Working phones can be donated, sold, or traded in.' },
+  { id: 2, name: 'Swollen lithium battery', icon: '🔋', correct: 'Hazardous drop-off', tip: 'Take swollen batteries to a battery-safe drop-off — never the bin.' },
+  { id: 3, name: 'Working laptop', icon: '💻', correct: 'Reuse / Donate', tip: 'Wipe the data, then donate to schools, charities, or pickup points.' },
+  { id: 4, name: 'Broken charger cable', icon: '🔌', correct: 'E-waste recycling', tip: 'Cables contain copper. Drop them at any e-waste collection point.' },
+  { id: 5, name: 'Wired headphones', icon: '🎧', correct: 'E-waste recycling', tip: 'Small electronics → e-waste recycling, never kerbside.' },
+  { id: 6, name: 'Empty pizza box', icon: '🍕', correct: 'Household bin', tip: 'Greasy paper goes to general waste in most council areas.' },
+  { id: 7, name: 'Cracked screen tablet', icon: '📲', correct: 'E-waste recycling', tip: 'Even broken tablets are valuable — recyclers recover the metals.' },
+  { id: 8, name: 'Toner cartridge', icon: '🖨', correct: 'E-waste recycling', tip: 'Most office stores accept toners back for recycling.' },
+  { id: 9, name: 'Light bulb (LED)', icon: '💡', correct: 'Hazardous drop-off', tip: 'LEDs and CFLs contain trace metals — drop at hazardous waste.' },
+  { id: 10, name: 'Banana peel', icon: '🍌', correct: 'Household bin', tip: 'Compost if you can; otherwise general waste. Not a recyclable.' },
+]
+
 const started = ref(false)
 const finished = ref(false)
+const items = ref([])
+const sortedItems = ref({})
 const selectedItem = ref(null)
-const draggedItem = ref(null)
-const showEndConfirm = ref(false)
-
 const score = ref(0)
 const feedbackBin = ref('')
 const feedbackType = ref('')
+const lastTip = ref('')
+const lastWasCorrect = ref(false)
+const attempted = ref(new Set())
 
-const showToast = ref(false)
-const toastText = ref('')
-const toastType = ref('')
-
-const bins = [
-  { name: 'E-Waste', icon: '⚡', className: 'ewaste-bin' },
-  { name: 'Battery Bin', icon: '🔋', className: 'battery-bin' },
-  { name: 'Repair / Reuse', icon: '🛠️', className: 'reuse-bin' },
-  { name: 'General Waste', icon: '🗑️', className: 'general-bin' },
-]
-
-const initialItems = [
-  {
-    id: 1,
-    name: 'Old Phone',
-    icon: '📱',
-    answer: 'E-Waste',
-    okMsg:
-      'Correct! Old phones contain gold, copper and toxic heavy metals — e-waste recycling recovers them safely.',
-    errMsg: {
-      battery:
-        "The phone has a battery inside, but don't dismantle it yourself. The whole device goes to E-Waste.",
-      repair:
-        "This phone is old and no longer functional — it's not worth refurbishing. It belongs in E-Waste.",
-      general:
-        'Never throw phones in general waste. They contain toxic metals that leach into soil and groundwater.',
-    },
-  },
-  {
-    id: 2,
-    name: 'Loose Battery',
-    icon: '🔋',
-    answer: 'Battery Bin',
-    okMsg:
-      'Correct! Any loose battery — regardless of size — must go to a dedicated Battery Bin to prevent toxic leakage.',
-    errMsg: {
-      ewaste:
-        'Loose batteries need their own separate bin — dropping them in with e-waste creates a fire and leakage risk.',
-      repair:
-        "A loose battery can't be reused on its own safely. It must go to the Battery Bin for proper disposal.",
-      general:
-        'Never put loose batteries in general waste — they can rupture, leak acid and contaminate the entire landfill.',
-    },
-  },
-  {
-    id: 3,
-    name: 'Working Tablet',
-    icon: '📲',
-    answer: 'Repair / Reuse',
-    okMsg:
-      'Excellent! A working tablet can be donated or refurbished — keeping it in use is far better than recycling it.',
-    errMsg: {
-      ewaste:
-        "Don't recycle a working device! This tablet still functions — donate or refurbish it instead.",
-      battery:
-        "The tablet's battery is inside the device. Since it still works, the whole unit goes to Repair / Reuse.",
-      general:
-        'A working tablet is valuable electronics — putting it in general waste is wasteful and potentially illegal.',
-    },
-  },
-  {
-    id: 4,
-    name: 'Broken Charger',
-    icon: '🔌',
-    answer: 'E-Waste',
-    okMsg:
-      'Right! Chargers contain copper wiring and electronic components — they need specialist e-waste recycling.',
-    errMsg: {
-      battery:
-        "A charger isn't a battery — it contains copper wiring and circuit components that go to E-Waste.",
-      repair:
-        "A broken charger is a fire hazard — it's not safe to repair at home. Send it to E-Waste.",
-      general:
-        "Chargers contain copper and mixed plastics that can be recovered — they're e-waste, not general waste.",
-    },
-  },
-  {
-    id: 5,
-    name: 'Old Laptop',
-    icon: '💻',
-    answer: 'E-Waste',
-    okMsg:
-      'Spot on! Old laptops contain lead, mercury and lithium — certified e-waste facilities handle them safely.',
-    errMsg: {
-      battery:
-        "The laptop has a battery inside, but don't dismantle it yourself. The whole unit goes to E-Waste.",
-      repair:
-        "An old, non-functional laptop isn't worth repairing. It belongs in E-Waste for safe material recovery.",
-      general:
-        'Laptops contain lead and mercury — putting them in general waste is illegal and environmentally harmful.',
-    },
-  },
-  {
-    id: 6,
-    name: 'Headphones',
-    icon: '🎧',
-    answer: 'E-Waste',
-    okMsg:
-      'Correct! Headphones contain electronic drivers, copper wiring and sometimes batteries — always e-recycle them.',
-    errMsg: {
-      battery:
-        'Headphones contain more than just a battery — the drivers and wiring make them e-waste, not battery bin material.',
-      repair: "Old, broken headphones aren't worth refurbishing for reuse. They belong in E-Waste.",
-      general:
-        "Headphones contain electronic components and copper — they're e-waste, not something you can bin normally.",
-    },
-  },
-  {
-    id: 7,
-    name: 'Keyboard',
-    icon: '⌨️',
-    answer: 'E-Waste',
-    okMsg:
-      'Right! Keyboards contain printed circuit boards and electronic switches — they need e-waste recycling.',
-    errMsg: {
-      battery:
-        "A keyboard doesn't run on removable batteries — it contains circuit boards that go to E-Waste.",
-      repair:
-        'An old keyboard has very little refurbishment value. It belongs in E-Waste for PCB and component recovery.',
-      general:
-        "Keyboards contain circuit boards and plastic that can be recovered — they're e-waste, not general rubbish.",
-    },
-  },
-  {
-    id: 8,
-    name: 'Laptop Battery',
-    icon: '🔋',
-    answer: 'Battery Bin',
-    okMsg:
-      'Great! Lithium laptop batteries need their own dedicated recycling stream — never mix them with e-waste.',
-    errMsg: {
-      ewaste:
-        'Close, but batteries need their own separate bin — mixing lithium with general e-waste is a serious fire risk.',
-      repair:
-        "A depleted laptop battery can't be safely recharged or reused. It must go to the Battery Bin.",
-      general:
-        'Never put lithium batteries in general waste — they can catch fire and leak toxic chemicals in landfill.',
-    },
-  },
-  {
-    id: 9,
-    name: 'Old Monitor',
-    icon: '🖥️',
-    answer: 'E-Waste',
-    okMsg:
-      'Correct! Monitors contain lead, mercury and rare metals — they must go to a certified e-waste facility.',
-    errMsg: {
-      battery:
-        "Monitors don't run on batteries — they contain hazardous materials like lead that require E-Waste disposal.",
-      repair:
-        'An old monitor has little reuse value and contains toxic materials — E-Waste is the only safe option.',
-      general:
-        'Monitors contain lead and mercury — putting them in general waste is dangerous and illegal in most regions.',
-    },
-  },
-  {
-    id: 10,
-    name: 'Phone Case',
-    icon: '📦',
-    answer: 'General Waste',
-    okMsg:
-      'Exactly! A phone case is just moulded plastic or silicone — no electronics or battery, so general waste it is.',
-    errMsg: {
-      ewaste:
-        "A phone case has no circuit boards or wiring inside. It's just plastic — it belongs in General Waste.",
-      battery:
-        "There's no battery in a phone case — it's moulded rubber or plastic. It goes straight to General Waste.",
-      repair:
-        "A phone case has no electronic components and nothing worth repairing. It's simply General Waste.",
-    },
-  },
-]
-
-const items = ref(
-  initialItems.map((item) => ({
-    ...item,
-    sorted: false,
-    selectedBin: '',
-    firstAttempted: false,
-    firstCorrect: false,
-  })),
-)
-
-const sortedItems = ref({
-  'E-Waste': [],
-  'Battery Bin': [],
-  'Repair / Reuse': [],
-  'General Waste': [],
-})
-
-const unsortedItems = computed(() => {
-  return items.value.filter((item) => !item.sorted)
-})
-
-const correctCount = computed(() => {
-  return items.value.filter((item) => item.firstCorrect).length
-})
-
-const resultTitle = computed(() => {
-  if (correctCount.value === items.value.length) return 'Perfect Sorting!'
-  if (correctCount.value >= 6) return 'Good Job!'
-  return 'Keep Practising!'
-})
+const totalItems = computed(() => items.value.length + sortedCount.value)
+const sortedCount = computed(() => Object.values(sortedItems.value).reduce((a, b) => a + b.length, 0))
+const unsortedItems = computed(() => items.value)
+const progressPct = computed(() => totalItems.value ? (sortedCount.value / totalItems.value) * 100 : 0)
+const pct = computed(() => totalItems.value ? Math.round((score.value / totalItems.value) * 100) : 0)
+const promptText = computed(() => selectedItem.value ? `Selected: ${selectedItem.value.name} → tap a bin to place it` : 'Tap an item, then tap a bin. Or drag it across.')
 
 function startGame() {
-  started.value = true
+  items.value = [...itemsPool].sort(() => Math.random() - 0.5)
+  sortedItems.value = bins.reduce((acc, b) => { acc[b.name] = []; return acc }, {})
+  score.value = 0
+  attempted.value = new Set()
+  selectedItem.value = null
   finished.value = false
+  started.value = true
 }
 
-function selectItem(item) {
-  selectedItem.value = item
-}
-
-function dragStart(item) {
-  draggedItem.value = item
-}
-
-function dropItem(binName) {
-  if (!draggedItem.value) return
-
-  selectedItem.value = draggedItem.value
-  placeItem(binName)
-  draggedItem.value = null
-}
-
-function showFeedback(text, type) {
-  toastText.value = text
-  toastType.value = type
-  showToast.value = true
-
-  setTimeout(
-    () => {
-      showToast.value = false
-    },
-    type === 'wrong' ? 3000 : 2000,
-  )
-}
+function restart() { startGame() }
+function selectItem(it) { selectedItem.value = selectedItem.value?.id === it.id ? null : it }
+function dragStart(it, ev) { selectedItem.value = it; ev.dataTransfer.setData('text/plain', String(it.id)) }
+function dropItem(binName) { if (selectedItem.value) placeItem(binName) }
 
 function placeItem(binName) {
-  if (!selectedItem.value) return
-
-  const item = selectedItem.value
-  const target = items.value.find((i) => i.id === item.id)
-
-  if (!target) return
-
-  const binMap = {
-    'E-Waste': 'ewaste',
-    'Battery Bin': 'battery',
-    'Repair / Reuse': 'repair',
-    'General Waste': 'general',
+  const it = selectedItem.value
+  if (!it) return
+  const correct = it.correct === binName
+  const counts = !attempted.value.has(it.id)
+  if (counts) {
+    attempted.value.add(it.id)
+    if (correct) score.value += 1
   }
-
-  const binKey = binMap[binName]
-
+  sortedItems.value[binName].push(it)
+  items.value = items.value.filter(x => x.id !== it.id)
   feedbackBin.value = binName
-
-  if (!target.firstAttempted) {
-    target.firstAttempted = true
-
-    if (target.answer === binName) {
-      target.firstCorrect = true
-      score.value += 10
-      showFeedback(target.okMsg || 'Correct! +10', 'correct')
-    } else {
-      showFeedback(target.errMsg?.[binKey] || 'Wrong! Try again', 'wrong')
-    }
-  } else if (target.answer === binName) {
-    showFeedback(target.okMsg || 'Correct!', 'correct')
-  } else {
-    showFeedback(target.errMsg?.[binKey] || 'Wrong! Try again', 'wrong')
-  }
-
-  if (target.answer === binName) {
-    feedbackType.value = 'correct'
-
-    sortedItems.value[binName].push(target)
-    target.sorted = true
-    target.selectedBin = binName
-  } else {
-    feedbackType.value = 'wrong'
-  }
-
+  feedbackType.value = correct ? 'ok' : 'bad'
+  lastWasCorrect.value = correct
+  lastTip.value = correct ? `Right — ${it.tip}` : `${it.correct} would be safer. ${it.tip}`
   selectedItem.value = null
-
-  setTimeout(() => {
-    feedbackBin.value = ''
-    feedbackType.value = ''
-  }, 700)
+  setTimeout(() => { feedbackBin.value = ''; feedbackType.value = '' }, 700)
+  setTimeout(() => { lastTip.value = '' }, 3500)
 }
 
-function returnItem(item, binName) {
-  if (selectedItem.value) {
-    placeItem(binName)
-    return
-  }
-
-  sortedItems.value[binName] = sortedItems.value[binName].filter((i) => i.id !== item.id)
-
-  const target = items.value.find((i) => i.id === item.id)
-
-  if (target) {
-    target.sorted = false
-    target.selectedBin = ''
-  }
+function returnItem(it, binName) {
+  sortedItems.value[binName] = sortedItems.value[binName].filter(x => x.id !== it.id)
+  items.value = [...items.value, it]
 }
 
-function finishGame() {
-  finished.value = true
-}
+function finish() { finished.value = true }
 
-function finishGameEarly() {
-  showEndConfirm.value = false
-  finished.value = true
-}
-
-function resetGame() {
-  score.value = 0
-  selectedItem.value = null
-  draggedItem.value = null
-  feedbackBin.value = ''
-  feedbackType.value = ''
-  showToast.value = false
-  toastText.value = ''
-  toastType.value = ''
-  finished.value = false
-  showEndConfirm.value = false
-
-  items.value = initialItems.map((item) => ({
-    ...item,
-    sorted: false,
-    selectedBin: '',
-    firstAttempted: false,
-    firstCorrect: false,
-  }))
-
-  sortedItems.value = {
-    'E-Waste': [],
-    'Battery Bin': [],
-    'Repair / Reuse': [],
-    'General Waste': [],
-  }
-}
-
-function restartGame() {
-  resetGame()
-  started.value = true
-}
-
-function goHome() {
-  resetGame()
-  started.value = false
-}
+const resultHeadline = computed(() => {
+  if (pct.value >= 80) return 'You\'re an e-waste pro.'
+  if (pct.value >= 50) return 'Solid run. A few tricky ones.'
+  return 'Round one done. Try again.'
+})
+const resultText = computed(() => {
+  if (pct.value >= 80) return 'Share what you learned. Most people get the swollen battery wrong.'
+  if (pct.value >= 50) return 'Visit the dashboard to see why these categories matter.'
+  return 'Open the disposal map — each location lists exactly what it accepts.'
+})
 </script>
 
 <style scoped>
-.game-page {
-  min-height: 100vh;
-  padding: 100px 6% 60px;
-  /* background: linear-gradient(180deg, #f4fbf7 0%, #ffffff 100%); */
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
+.game { padding-top: 140px; padding-bottom: 80px; min-height: 100vh; }
 
-.cover-card,
-.game-card,
-.result-card {
-  width: 100%;
-  max-width: 1200px;
-  background: #ffffff;
-  border-radius: 28px;
-  padding: 48px;
+.fade-enter-active, .fade-leave-active { transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out); }
+.fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(10px); }
+
+/* COVER */
+.cover {
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
   text-align: center;
-  box-shadow: 0 20px 50px rgba(27, 94, 62, 0.14);
+  max-width: 800px;
+  margin: 60px auto 0;
+}
+.cover h1 em {
+  font-style: italic;
+  background: linear-gradient(120deg, var(--mint), var(--violet));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 
-.cover-card,
-.result-card {
-  max-width: 760px;
-}
-
-.cover-icon {
-  width: 86px;
-  height: 86px;
-  margin: 0 auto 18px;
-  border-radius: 50%;
-  background: #e6f6ec;
-  display: flex;
-  align-items: center;
+.bin-preview {
+  display: flex; flex-wrap: wrap; gap: 10px;
   justify-content: center;
-  font-size: 42px;
+  margin: 16px 0 8px;
 }
-
-.eyebrow {
-  color: #2f8f5b;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-}
-
-.cover-card h1,
-.result-card h1 {
-  font-size: 42px;
-  color: #123524;
-  margin-bottom: 16px;
-}
-
-.cover-desc {
-  max-width: 580px;
-  margin: 0 auto 22px;
-  color: #5b6770;
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-.cover-hint {
-  color: #7a8792;
-  font-weight: 700;
-  margin-bottom: 36px;
-}
-
-.top-actions {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 18px;
-}
-
-.back-btn {
-  padding: 11px 20px;
-  border-radius: 999px;
-  border: 2px solid #2f8f5b;
-  background: #e6f6ec;
-  color: #246b45;
-  font-size: 16px;
-  font-weight: 900;
-  cursor: pointer;
-  box-shadow: 0 8px 18px rgba(47, 143, 91, 0.16);
-  transition: all 0.2s ease;
-}
-
-.back-btn:hover {
-  background: #2f8f5b;
-  color: white;
-  transform: translateX(-3px);
-}
-
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  color: #2f8f5b;
-  font-weight: 800;
-  font-size: 18px;
-  margin-bottom: 26px;
-}
-
-.items-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 18px;
-  margin-bottom: 22px;
-}
-
-.item-card {
-  min-height: 120px;
-  padding: 18px 12px;
-  border: 2px solid #d7e7dc;
-  border-radius: 18px;
-  background: #ffffff;
-  cursor: grab;
-  transition: all 0.2s ease;
-}
-
-.item-card:active {
-  cursor: grabbing;
-}
-
-.item-card:hover,
-.item-card.selected {
-  border-color: #2f8f5b;
-  background: #e6f6ec;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(47, 143, 91, 0.18);
-}
-
-.item-icon {
-  font-size: 42px;
-  margin-bottom: 10px;
-}
-
-.item-card span {
-  font-weight: 800;
-  color: #1f2933;
-}
-
-.hint {
-  margin: 14px 0 26px;
-  color: #7a8792;
-  font-weight: 800;
-}
-
-.bins-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-top: 24px;
-}
-
-.bin-box {
-  min-height: 220px;
-  border-radius: 22px;
-  padding: 22px 18px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.22s ease;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-}
-
-.bin-box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.13);
-}
-
-.bin-box h3 {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 18px;
-  font-weight: 800;
+.bin-mini {
+  display: inline-flex; align-items: center; gap: 8px;
   padding: 10px 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.75);
-  color: #123524;
-  margin: 0 auto 18px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  color: var(--ink-1);
 }
+.bin-mini span { color: var(--mint); font-size: 16px; }
+.bin-mini strong { font-weight: 500; }
 
-.correctFlash {
-  animation: correctFlash 0.7s ease;
-}
+.cover-actions { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: center; }
 
-.wrongFlash {
-  animation: wrongFlash 0.7s ease;
-}
-
-@keyframes correctFlash {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.04);
-    background: #bbf7d0;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes wrongFlash {
-  0% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-8px);
-    background: #fecaca;
-  }
-  50% {
-    transform: translateX(8px);
-    background: #fecaca;
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.ewaste-bin {
-  background: linear-gradient(180deg, #faf5ff 0%, #f3e8ff 100%);
-  border: 2px solid #a855f7;
-}
-
-.battery-bin {
-  background: linear-gradient(180deg, #fff7f7 0%, #fee2e2 100%);
-  border: 2px solid #ef4444;
-}
-
-.reuse-bin {
-  background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
-  border: 2px solid #22c55e;
-}
-
-.general-bin {
-  background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 100%);
-  border: 2px solid #9ca3af;
-}
-
-.placed-items {
+/* BOARD */
+.board { display: flex; flex-direction: column; gap: 28px; }
+.hud {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: auto 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 18px 22px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+}
+.hud-left { display: flex; flex-direction: column; }
+.hud-score {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--mint);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.hud-progress { display: flex; flex-direction: column; gap: 8px; }
+.bar-wrap { height: 4px; background: var(--hairline); border-radius: 999px; overflow: hidden; }
+.bar { height: 100%; background: linear-gradient(90deg, var(--mint), var(--mint-bright)); transition: width 0.5s var(--ease-out); }
+.hud-progress span { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.12em; }
+
+.items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 12px;
 }
-
-.placed-card {
-  padding: 12px 8px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
-}
-
-.placed-card:hover {
-  transform: translateY(-2px);
-  background: white;
-}
-
-.placed-icon {
-  font-size: 26px;
-  margin-bottom: 4px;
-}
-
-.placed-card span {
-  font-size: 13px;
-  font-weight: 700;
-  color: #374151;
-}
-
-.game-actions {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 30px;
-  flex-wrap: wrap;
-}
-
-.final-score {
-  font-size: 36px;
-  font-weight: 900;
-  color: #2f8f5b;
-  margin: 20px 0;
-}
-
-.result-summary {
-  max-width: 560px;
-  margin: 0 auto 24px;
+.item {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
   padding: 18px;
-  border-radius: 18px;
-  background: #f0f8f3;
-  color: #246b45;
-  font-weight: 700;
-  line-height: 1.6;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  cursor: grab;
+  color: var(--ink-0);
+  transition: all 0.25s var(--ease-out);
 }
+.item:hover { background: rgba(125,216,176,0.08); border-color: var(--mint); transform: translateY(-3px); }
+.item.active { background: rgba(125,216,176,0.16); border-color: var(--mint); box-shadow: 0 0 30px rgba(125,216,176,0.3); }
+.emoji { font-size: 30px; }
+.name { font-size: 12px; text-align: center; color: var(--ink-1); }
 
-.explanation-box {
-  max-width: 640px;
-  margin: 0 auto 28px;
-  padding: 24px;
-  border-radius: 20px;
-  background: #f8faf9;
-  text-align: left;
-}
+.prompt { color: var(--ink-2); text-align: center; font-size: 14px; }
 
-.explanation-box h3 {
-  color: #123524;
-  margin-bottom: 14px;
-}
-
-.explanation-box p {
-  color: #5b6770;
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-
-.primary-btn,
-.secondary-btn {
-  padding: 15px 38px;
-  border-radius: 999px;
-  font-size: 17px;
-  font-weight: 800;
+.bins { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.bin {
+  min-height: 200px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1.5px dashed var(--hairline-strong);
+  border-radius: var(--r-md);
   cursor: pointer;
-  transition: all 0.2s ease;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: all 0.25s var(--ease-out);
 }
+.bin:hover { background: rgba(125,216,176,0.06); border-color: var(--mint); }
+.bin.ok { background: rgba(125,216,176,0.18); border-color: var(--mint); animation: ping 0.5s var(--ease-out); }
+.bin.bad { background: rgba(248, 113, 113, 0.18); border-color: var(--bad); animation: shake 0.4s var(--ease-out); }
+@keyframes ping { 0% { transform: scale(1); } 50% { transform: scale(1.04); } 100% { transform: scale(1); } }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 
-.primary-btn {
-  border: none;
-  background: #2f8f5b;
-  color: white;
+.bin header { display: flex; align-items: center; gap: 10px; }
+.bin .bin-ic { font-size: 20px; color: var(--mint); }
+.bin strong { font-family: var(--font-display); font-size: 13px; flex: 1; font-weight: 500; }
+.bin .count {
+  background: rgba(125,216,176,0.16);
+  border: 1px solid rgba(125,216,176,0.3);
+  border-radius: var(--r-pill);
+  padding: 2px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mint);
 }
-
-.primary-btn:hover {
-  background: #247348;
-  transform: translateY(-2px);
-}
-
-.secondary-btn {
-  border: 2px solid #2f8f5b;
-  background: white;
-  color: #2f8f5b;
-}
-
-.secondary-btn:hover {
-  background: #f0f8f3;
-  transform: translateY(-2px);
-}
-
-.result-actions {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
-.confirm-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  padding: 20px;
-}
-
-.confirm-box {
-  width: 100%;
-  max-width: 420px;
-  background: white;
-  border-radius: 24px;
-  padding: 32px;
-  text-align: center;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
-}
-
-.confirm-box h3 {
-  font-size: 24px;
-  color: #123524;
-  margin-bottom: 12px;
-}
-
-.confirm-box p {
-  color: #5b6770;
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
-
-.confirm-actions {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
+.bin-items { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: var(--r-sm);
+  background: rgba(0,0,0,0.25);
+  color: var(--ink-1);
+  cursor: pointer;
 }
 
 .toast {
   position: fixed;
-  top: 110px;
+  bottom: 28px;
   left: 50%;
-  transform: translateX(-50%) scale(0.9);
-  max-width: 720px;
-  width: calc(100% - 40px);
-  padding: 18px 26px;
-  border-radius: 18px;
-  color: white;
-  font-size: 15.5px;
-  line-height: 1.6;
-  font-weight: 700;
+  transform: translateX(-50%);
+  z-index: 50;
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 13px;
+  border-radius: var(--r-md);
+  max-width: min(540px, calc(100% - 32px));
+  background: rgba(6, 18, 15, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid;
+}
+.toast.good { border-color: var(--mint); }
+.toast.bad { border-color: var(--bad); }
+.toast.good strong { color: var(--mint); }
+.toast.bad strong { color: var(--bad); }
+
+.actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+
+/* RESULT */
+.result {
   text-align: center;
-  z-index: 9999;
-  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.25);
-  animation: popToast 0.3s ease forwards;
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+  max-width: 600px;
+  margin: 60px auto 0;
 }
-
-.toast.correct {
-  background: #22c55e;
+.ring {
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--p) * 1%), var(--hairline) 0);
+  display: grid; place-items: center;
+  position: relative;
 }
+.ring::before { content: ''; position: absolute; inset: 14px; border-radius: 50%; background: var(--bg-1); }
+.ring-inner { position: relative; display: flex; flex-direction: column; }
+.ring-num { font-family: var(--font-display); font-size: 56px; font-weight: 500; color: var(--mint); letter-spacing: -0.04em; line-height: 1; }
+.ring-cap { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.18em; }
 
-.toast.wrong {
-  background: #ef4444;
-}
-
-@keyframes popToast {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) scale(0.75);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-  }
-}
-
-@media (max-width: 1000px) {
-  .items-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .bins-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
+@media (max-width: 880px) { .bins { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) {
-  .game-page {
-    padding: 100px 5% 40px;
-  }
-
-  .cover-card,
-  .game-card,
-  .result-card {
-    padding: 30px;
-  }
-
-  .cover-card h1,
-  .result-card h1 {
-    font-size: 32px;
-  }
-
-  .items-grid,
-  .bins-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .result-actions,
-  .confirm-actions {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .toast {
-    top: 90px;
-    font-size: 14.5px;
-    padding: 14px 20px;
-  }
+  .bins { grid-template-columns: 1fr; }
+  .hud { grid-template-columns: 1fr; gap: 14px; }
+  .actions { justify-content: stretch; }
 }
 </style>
