@@ -6,7 +6,6 @@ import logging
 import os
 import pickle
 import re
-import __main__
 from pathlib import Path
 from typing import Any
 
@@ -14,10 +13,6 @@ import requests
 from flask import Blueprint, jsonify, request
 
 from routes.login import login_required
-from repair_status_transformers import CategoricalSelector, ProblemSelector
-
-setattr(__main__, "ProblemSelector", ProblemSelector)
-setattr(__main__, "CategoricalSelector", CategoricalSelector)
 
 repair_check_bp = Blueprint("repair_check", __name__)
 

@@ -2,36 +2,75 @@
 
 ## Local Setup
 
-### build local database and backend
+### build local database
 
-we use docker to create a virtual database, so you don't need to create a database in your local server. It helps us collaborate and run the server and database.
+we use docker to create a virtual database, so you don't need to create a database in your local server. It helps us collaborate and run the 
 
-if you want to run the backend, every time you need to:
+```docker compose up db```
 
-go the /backend
-
-```docker compose up --build -d```
-
-
-you can connect to the db using psql or pg admin4, and update database (insert data, change tables), then you need to update the backup database
+connect to the db using psql or pg admin4, and update database (insert data, change tables)
 
 ```pg_dump --no-owner --no-acl -U [username] -d [database_name] > ./migrations/backup.sql```
 
-if you want to shut down the backend in local, you need to:
-
-```docker compose down -v```
 
 Vue 3 + Vite frontend, Flask + PostgreSQL backend. Iteration 3 adds the **Pickup Points** page (38 EcoReviva stalls across all Australian states).
 
 ## Repo layout
 
+```
+docker compose down -v
+docker compose up -d
+```
+
+### Update database
+
+try to start the postgresql first, if you use macOS, use homebrew to start it：
+
+```brew services start postgresql```
+
+Once you start it, you need to know these things:
+
+- DB_HOST
+- DB_USER
+- DB_PASSWORD
+- DB_NAME
+- DB_PORT
+
+and set them in **./backend/.env.local** file
+
+then run backup.sql
+
+```
+dropdb -U username database_name
+createdb -U username database_name
+psql -U username -d database_name -f .backend/db/scripts/backup.sql
+```
+
+
+
+### Install frontend dependencies
+```
+npm install
+npm run build
+```
+### Install backend dependencies
+
+```
+python -m venv .venv
+backend/.venv/bin/activate
+pip install -r ./backend/requirements.txt
+```
+
+
+### Start the backend
+
+use one terminal 
+
+```flask --app app run --host 0.0.0.0 --port 8000```
+
 ### Start the frontend
 
 use the other terminal
-
-go to /frontend
-
-```npm run build```
 
 ```npm run dev```
 
