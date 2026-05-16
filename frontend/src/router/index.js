@@ -82,30 +82,38 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+  scrollBehavior(to, from, saved) {
+    if (saved) return saved
+    return { top: 0, behavior: 'smooth' }
+  },
 })
 
+// Cache auth state briefly so navigation doesn't refetch on every link click
+let authCache = { value: null, ts: 0 }
+
 router.beforeEach(async (to) => {
-
   let isLoggedIn = false
+  const now = Date.now()
 
-  try {
-    const authState = await authAPI.checkAuth()
-    isLoggedIn = Boolean(authState?.logged_in)
-  } catch (error) {
-    isLoggedIn = false
+  if (authCache.value !== null && now - authCache.ts < 5000) {
+    isLoggedIn = authCache.value
+  } else {
+    try {
+      const authState = await authAPI.checkAuth()
+      isLoggedIn = Boolean(authState?.logged_in)
+    } catch (error) {
+      isLoggedIn = false
+    }
+    authCache = { value: isLoggedIn, ts: now }
   }
 
-  if (to.path === '/login' && isLoggedIn) {
-    return { path: '/' }
-  }
-
+  if (to.path === '/login' && isLoggedIn) return { path: '/' }
   if (to.meta.requiresAuth !== false && !isLoggedIn) {
     return {
       path: '/login',
       query: to.fullPath !== '/' ? { redirect: to.fullPath } : {},
     }
   }
-
   return true
 })
 

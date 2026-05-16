@@ -1,197 +1,252 @@
 <template>
-  <div class="login-page">
-    <form class="login-card" @submit.prevent="handleLogin">
-      <h2>Login</h2>
-      <input v-model="username" type="text" placeholder="username" required />
-      <input v-model="password" type="password" placeholder="password" required />
-      <button type="submit">Login</button>
-      <p v-if="error" class="error">{{ error }}</p>
-    </form>
+  <div class="login">
+    <div class="login-bg" aria-hidden="true">
+      <div class="orb orb-1" />
+      <div class="orb orb-2" />
+    </div>
+
+    <div class="login-grid">
+      <aside class="brand-side">
+        <div class="brand-mark">
+          <img :src="logoImage" alt="EcoReviva logo" class="login-logo" />
+          <span>EcoReviva</span>
+        </div>
+        <h1>
+          Give old<br />electronics<br /><em>a second life.</em>
+        </h1>
+        <p>The Victorian platform for repair, reuse, and safe e-waste disposal.</p>
+
+        <ul class="bullets">
+          <li><span>01</span> Find pickup stalls across Australia</li>
+          <li><span>02</span> Get a clear repair-or-replace verdict</li>
+          <li><span>03</span> Learn the real health impact</li>
+        </ul>
+      </aside>
+
+      <form class="card" @submit.prevent="handleLogin">
+        <span class="eco-eyebrow">Sign in</span>
+        <h2>Welcome back.</h2>
+        <p class="hint">Use your team credentials to continue.</p>
+
+        <label>
+          Username
+          <input v-model="username" type="text" placeholder="admin" autocomplete="username" required />
+        </label>
+        <label>
+          Password
+          <input v-model="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+        </label>
+
+        <button type="submit" :disabled="busy" class="submit">
+          <span v-if="!busy">Continue <span class="arrow">→</span></span>
+          <span v-else class="spinner" />
+        </button>
+
+        <p v-if="error" class="error">{{ error }}</p>
+        <p class="muted">Demo: <code>admin</code> / <code>password</code></p>
+      </form>
+    </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { authAPI } from '@/api'
+import logoImage from '@/assets/icons/ecoreviva-logo.png'
 
-export default {
-  setup() {
-    const router = useRouter()
-    const route = useRoute()
-    const username = ref('')
-    const password = ref('')
-    const error = ref('')
+const router = useRouter()
+const route = useRoute()
+const username = ref('')
+const password = ref('')
+const error = ref('')
+const busy = ref(false)
 
-    const handleLogin = async () => {
-      try {
-        const result = await authAPI.login(username.value, password.value)
-        if (result.success) {
-          const redirectPath = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
-          router.replace(redirectPath)
-        } else {
-          error.value = result.message
-          console.error(result.message)
-        }
-      } catch (err) {
-        error.value = err?.data?.message || err?.message || 'Login failed, please try again'
-        console.error(err)
-      }
+async function handleLogin() {
+  if (busy.value) return
+  busy.value = true
+  error.value = ''
+  try {
+    const result = await authAPI.login(username.value, password.value)
+    if (result.success) {
+      const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
+      router.replace(redirect)
+    } else {
+      error.value = result.message || 'Login failed.'
     }
-
-    return { username, password, error, handleLogin }
-  },
+  } catch (err) {
+    error.value = err?.data?.message || err?.message || 'Login failed, please try again.'
+  } finally {
+    busy.value = false
+  }
 }
 </script>
 
 <style scoped>
-.login-page {
-  min-height: calc(100vh - 92px);
+.login {
+  position: relative;
+  min-height: 100vh;
+  padding: 60px 24px;
   display: grid;
   place-items: center;
-  padding: 32px;
-  background:
-    radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.12), transparent 30%),
-    linear-gradient(180deg, #f8fbf8 0%, #eef7f1 100%);
-}
-
-.login-card {
-  width: min(100%, 420px);
-  position: relative;
   overflow: hidden;
-  padding: 34px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow:
-    0 24px 60px rgba(15, 23, 42, 0.12),
-    0 2px 8px rgba(15, 23, 42, 0.04);
-  backdrop-filter: blur(14px);
+}
+.login-bg { position: absolute; inset: 0; pointer-events: none; }
+.orb { position: absolute; border-radius: 50%; filter: blur(110px); opacity: 0.3; }
+.orb-1 { width: 540px; height: 540px; top: -120px; left: -100px; background: var(--mint); }
+.orb-2 { width: 460px; height: 460px; bottom: -100px; right: -100px; background: var(--violet); opacity: 0.2; }
+
+.login-grid {
+  position: relative;
+  z-index: 2;
+  width: min(1080px, 100%);
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 80px;
+  align-items: center;
 }
 
-.login-card::before {
-  content: '';
-  position: absolute;
-  inset: 0 auto auto 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(90deg, #10b981, #0f766e, #22c55e);
+.brand-side { display: flex; flex-direction: column; gap: 28px; }
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
 }
-
-.login-card h2 {
-  margin: 6px 0 24px;
-  color: #17352d;
-  font-size: 2rem;
-  letter-spacing: -0.03em;
-}
-
-.login-card input {
-  width: 100%;
-  border: 1px solid #d6e2dc;
-  background: #f8fffb;
-  color: #102620;
+.login-logo {
+  width: 42px;
+  height: 50px;
+  object-fit: contain;
+  padding: 4px;
+  border: 1px solid var(--hairline-strong);
   border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  filter: drop-shadow(0 10px 18px rgba(16, 185, 129, 0.22));
+}
+.brand-side h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: var(--ink-0);
+}
+.brand-side h1 em {
+  font-style: italic;
+  background: linear-gradient(120deg, var(--mint), var(--mint-bright) 60%, var(--violet));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.brand-side > p { color: var(--ink-1); font-size: 16px; max-width: 440px; }
+
+.bullets { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 14px; }
+.bullets li {
+  display: flex; align-items: center; gap: 14px;
+  color: var(--ink-1);
+  font-size: 14px;
+}
+.bullets li span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mint);
+  letter-spacing: 0.18em;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  backdrop-filter: blur(20px);
+}
+.card h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink-0);
+}
+.hint { color: var(--ink-2); font-size: 14px; margin-bottom: 8px; }
+
+label {
+  display: flex; flex-direction: column; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+input {
+  width: 100%;
   padding: 14px 16px;
-  font-size: 1rem;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  color: var(--ink-0);
+  font-family: var(--font-body);
+  font-size: 15px;
   outline: none;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease,
-    background-color 0.2s ease;
+  text-transform: none; letter-spacing: 0;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
+input::placeholder { color: var(--ink-3); }
+input:focus { border-color: var(--mint); box-shadow: 0 0 0 4px rgba(125,216,176,0.12); }
 
-.login-card input + input {
-  margin-top: 14px;
-}
-
-.login-card input::placeholder {
-  color: #8b9a95;
-}
-
-.login-card input:focus {
-  border-color: #10b981;
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.14);
-  transform: translateY(-1px);
-}
-
-.login-card button {
-  width: 100%;
-  margin-top: 18px;
+.submit {
+  margin-top: 8px;
+  padding: 16px 20px;
   border: 0;
-  border-radius: 16px;
-  padding: 14px 18px;
-  background: linear-gradient(135deg, #10b981, #0f766e);
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
+  border-radius: var(--r-sm);
+  background: var(--mint);
+  color: var(--ink-on-light);
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  box-shadow: 0 16px 30px rgba(15, 118, 110, 0.22);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    filter 0.2s ease;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s var(--ease-out);
 }
-
-.login-card button:hover {
+.submit:hover:not(:disabled) {
+  background: var(--mint-bright);
   transform: translateY(-1px);
-  box-shadow: 0 20px 34px rgba(15, 118, 110, 0.28);
-  filter: brightness(1.03);
+  box-shadow: 0 14px 28px rgba(125,216,176,0.3);
 }
+.submit:disabled { opacity: 0.7; cursor: progress; }
+.submit .arrow { display: inline-block; margin-left: 6px; transition: transform 0.3s; }
+.submit:hover .arrow { transform: translateX(4px); }
 
-.preview-link {
-  display: block;
-  margin-top: 14px;
-  padding: 13px 16px;
-  border-radius: 16px;
-  border: 1px solid #cfe4da;
-  background: #f8fffb;
-  color: #0f766e;
-  font-weight: 800;
-  text-align: center;
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+.spinner {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-top-color: var(--ink-on-light);
+  animation: sp 0.7s linear infinite;
 }
-
-.preview-link:hover {
-  background: #ecfdf5;
-  border-color: #86efac;
-  transform: translateY(-1px);
-}
-
-.login-card button:active {
-  transform: translateY(0);
-}
+@keyframes sp { to { transform: rotate(360deg); } }
 
 .error {
-  margin: 14px 0 0;
+  margin: 4px 0 0;
   padding: 12px 14px;
-  border-radius: 14px;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.16);
-  color: #b91c1c;
-  line-height: 1.5;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  color: var(--bad);
+  font-size: 13px;
+  border-radius: var(--r-sm);
+}
+.muted { color: var(--ink-3); font-size: 12px; }
+.muted code {
+  background: rgba(125, 216, 176, 0.1);
+  color: var(--mint);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
 }
 
-@media (max-width: 640px) {
-  .login-page {
-    padding: 20px;
-  }
-
-  .login-card {
-    padding: 24px;
-    border-radius: 22px;
-  }
-
-  .login-card h2 {
-    font-size: 1.7rem;
-    margin-bottom: 20px;
-  }
+@media (max-width: 880px) {
+  .login-grid { grid-template-columns: 1fr; gap: 40px; }
 }
 </style>
