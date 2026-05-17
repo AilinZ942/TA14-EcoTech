@@ -103,7 +103,11 @@ This is the high-level flow:
 
 ## Deployment
 
+<<<<<<< HEAD
 Cloud VM Server: AWS EC2 - t3 small
+=======
+Cloud VM Server: AWS EC2 - m7i-flex.large
+>>>>>>> parent of fa1ed8b (Reapply "added pickup location page")
 
 DNS:  https://freedns.afraid.org/ named "Free DNS" 
 
