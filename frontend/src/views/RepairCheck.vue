@@ -1,374 +1,541 @@
 <template>
-  <div class="rc">
-    <div class="eco-shell">
+  <section class="repair-page">
+    <div class="eco-shell repair-shell">
       <header class="head">
-        <span class="eco-eyebrow">Repair · Replace · Reuse · Recycle</span>
-        <h1 class="eco-display">
-          Repair or replace?<br /><em>Decide in 30 seconds.</em>
-        </h1>
+        <span class="eco-eyebrow">Repair Check</span>
+        <h1 class="eco-display">Repair or Replace?</h1>
         <p class="eco-lead">
-          Tell us about the device. We'll do the math on cost, age, and condition — and tell you what makes the most sense.
+          Choose your device details and let the system compare repair cost, used value, and repair
+          status.
         </p>
       </header>
 
-      <div class="grid">
-        <!-- FORM -->
-        <section class="form">
-          <span class="eco-mono">Your device</span>
-          <h2>Inputs</h2>
-
-          <label class="field">
-            <span>Device type</span>
-            <div class="seg">
-              <button v-for="d in devices" :key="d.id" :class="{ on: form.device === d.id }" @click="form.device = d.id">
-                {{ d.icon }} {{ d.label }}
-              </button>
-            </div>
-          </label>
-
-          <div class="row">
-            <label class="field">
-              <span>Age (years)</span>
-              <input type="number" v-model.number="form.age" min="0" max="20" step="1" />
-            </label>
-            <label class="field">
-              <span>Original price ($)</span>
-              <input type="number" v-model.number="form.original" min="0" step="50" />
-            </label>
+      <div class="eco-glass form-card">
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Brand</label>
+            <select v-model="form.brand">
+              <option v-for="brand in brandOptions" :key="brand.value" :value="brand.value">
+                {{ brand.label }}
+              </option>
+            </select>
           </div>
 
-          <div class="row">
-            <label class="field">
-              <span>Repair quote ($)</span>
-              <input type="number" v-model.number="form.repair" min="0" step="10" />
-            </label>
-            <label class="field">
-              <span>Replacement cost ($)</span>
-              <input type="number" v-model.number="form.replace" min="0" step="50" />
-            </label>
+          <div class="field">
+            <label class="field-label">Model</label>
+            <select v-model="form.model">
+              <option value="" disabled>Select model</option>
+              <option v-for="model in modelOptions" :key="model" :value="model">
+                {{ model }}
+              </option>
+            </select>
           </div>
 
-          <label class="field">
-            <span>Condition</span>
-            <div class="seg">
-              <button v-for="c in conditions" :key="c.id" :class="{ on: form.condition === c.id }" @click="form.condition = c.id">
-                {{ c.label }}
-              </button>
-            </div>
-          </label>
+          <div class="field">
+            <label class="field-label">Storage</label>
+            <select v-model="form.storage">
+              <option value="" disabled>Select storage</option>
+              <option v-for="storage in storageOptions" :key="storage" :value="storage">
+                {{ storage }}
+              </option>
+            </select>
+          </div>
 
-          <label class="field">
-            <span>What's wrong? (optional)</span>
-            <textarea v-model="form.note" rows="2" placeholder="cracked screen, swollen battery, won't charge…"></textarea>
-          </label>
-        </section>
+          <div class="field">
+            <label class="field-label">Fault Type</label>
+            <select v-model="form.faultType">
+              <option value="" disabled>Select fault type</option>
+              <option v-for="fault in faultTypeOptions" :key="fault" :value="fault">
+                {{ fault }}
+              </option>
+            </select>
+          </div>
 
-        <!-- RESULT -->
-        <section class="result">
-          <article class="verdict" :class="`tone-${verdict.tone}`">
-            <span class="v-icon">{{ verdict.icon }}</span>
-            <span class="eco-eyebrow">Recommendation</span>
-            <h2>{{ verdict.title }}</h2>
-            <p>{{ verdict.text }}</p>
-            <router-link :to="verdict.cta.to" class="eco-btn eco-btn--mint">
-              {{ verdict.cta.label }} <span class="arrow">→</span>
-            </router-link>
-          </article>
+          <div class="field">
+            <label class="field-label">Age</label>
+            <select v-model="form.age">
+              <option value="" disabled>Select age</option>
+              <option v-for="age in ageOptions" :key="age.value" :value="age.value">
+                {{ age.label }}
+              </option>
+            </select>
+          </div>
 
-          <article class="compare">
-            <h3>Cost comparison</h3>
-            <div class="bar-row">
-              <span class="bar-label">Repair</span>
-              <div class="bar-track"><div class="bar repair" :style="{ width: barRepairPct + '%' }" /></div>
-              <strong>${{ form.repair || 0 }}</strong>
-            </div>
-            <div class="bar-row">
-              <span class="bar-label">Replace</span>
-              <div class="bar-track"><div class="bar replace" :style="{ width: barReplacePct + '%' }" /></div>
-              <strong>${{ form.replace || 0 }}</strong>
-            </div>
-            <div class="ratio">
-              Repair is <strong :class="repairRatio < 50 ? 'good' : 'bad'">{{ repairRatio }}%</strong> of replacement cost.
-            </div>
-          </article>
+          <div class="field field--wide">
+            <label class="field-label">Problem</label>
+            <textarea
+              v-model="form.problem"
+              rows="5"
+              placeholder="Describe the main issue with the device..."
+            />
+          </div>
+        </div>
 
-          <article class="why">
-            <h3>Why this recommendation?</h3>
-            <ul>
-              <li v-for="r in verdict.reasons" :key="r">{{ r }}</li>
-            </ul>
-          </article>
-        </section>
+        <button class="eco-btn eco-btn--mint action-btn" :disabled="isSubmitting" @click="analyze">
+          <span v-if="isSubmitting">Analyzing...</span>
+          <span v-else>Analyze with AI</span>
+          <span class="arrow">→</span>
+        </button>
+
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </div>
 
-      <section class="paths">
-        <article v-for="p in fourPaths" :key="p.label" class="path">
-          <span class="p-icon">{{ p.icon }}</span>
-          <h4>{{ p.label }}</h4>
-          <p>{{ p.text }}</p>
-        </article>
-      </section>
+      <div v-if="isSubmitting" class="eco-glass result-card loading-card">
+        <div class="spinner"></div>
+        <span class="eco-mono">Working</span>
+        <h2>Running repair analysis...</h2>
+        <p>We are checking the price tables, predicting repair status, and preparing the final recommendation.</p>
+      </div>
+
+      <div v-else-if="result" class="eco-glass result-card">
+        <div class="result-topline">
+          <div>
+            <p class="eco-mono">Decision</p>
+            <h2>{{ result.recommendation }}</h2>
+          </div>
+          <div class="decision-pill" :class="decisionClass(result.recommendation)">
+            {{ result.confidence || 'medium' }} confidence
+          </div>
+        </div>
+
+        <p class="result-reason">{{ result.reason }}</p>
+
+        <div class="stats-grid">
+          <div class="stat">
+            <span>Current Price</span>
+            <strong>{{ formatMoney(result.current_price_aud) }}</strong>
+          </div>
+          <div class="stat">
+            <span>Repair Price</span>
+            <strong>{{ formatMoney(result.repair_price_aud) }}</strong>
+          </div>
+          <div class="stat">
+            <span>Repair Status</span>
+            <strong>{{ result.repair_status || 'Unavailable' }}</strong>
+          </div>
+          <div class="stat">
+            <span>Decision Source</span>
+            <strong>{{ result.decision_source }}</strong>
+          </div>
+        </div>
+
+        <div class="summary-block">
+          <h3>What we used</h3>
+          <ul>
+            <li><strong>Brand:</strong> {{ result.brand }}</li>
+            <li><strong>Model:</strong> {{ result.model }}</li>
+            <li><strong>Storage:</strong> {{ result.storage }}</li>
+            <li><strong>Age:</strong> {{ result.age }}</li>
+            <li><strong>Fault Type:</strong> {{ result.fault_type }}</li>
+            <li><strong>Problem:</strong> {{ result.problem }}</li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
-import { computed, reactive } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 
-const devices = [
-  { id: 'phone', label: 'Phone', icon: '📱' },
-  { id: 'laptop', label: 'Laptop', icon: '💻' },
-  { id: 'tablet', label: 'Tablet', icon: '📲' },
+import { api, initCSRF } from '@/api'
+
+const brandOptions = [
+  { value: 'Apple', label: 'Apple' },
 ]
-const conditions = [
-  { id: 'minor', label: 'Minor issue' },
-  { id: 'moderate', label: 'Moderate' },
-  { id: 'major', label: 'Major fault' },
+
+const modelStorageMap = {
+  'iPhone SE (2nd Gen)': ['64GB', '128GB', '256GB'],
+  'iPhone SE (3rd Gen)': ['64GB', '128GB', '256GB'],
+  'iPhone XR': ['64GB', '128GB', '256GB'],
+  'iPhone 11': ['64GB', '128GB', '256GB'],
+  'iPhone 12': ['64GB', '128GB', '256GB'],
+  'iPhone 12 mini': ['64GB', '128GB', '256GB'],
+  'iPhone 12 Pro': ['128GB', '256GB', '512GB'],
+  'iPhone 12 Pro Max': ['128GB', '256GB', '512GB'],
+  'iPhone 13': ['128GB', '256GB', '512GB'],
+  'iPhone 13 mini': ['128GB', '256GB', '512GB'],
+  'iPhone 13 Pro': ['128GB', '256GB', '512GB'],
+  'iPhone 13 Pro Max': ['128GB', '256GB', '512GB'],
+  'iPhone 14': ['128GB', '256GB', '512GB'],
+  'iPhone 14 Plus': ['128GB', '256GB', '512GB'],
+  'iPhone 14 Pro': ['128GB', '256GB', '512GB'],
+  'iPhone 14 Pro Max': ['128GB', '256GB', '512GB'],
+  'iPhone 15': ['128GB', '256GB', '512GB'],
+  'iPhone 15 Plus': ['128GB', '256GB', '512GB'],
+  'iPhone 15 Pro': ['128GB', '256GB', '512GB'],
+  'iPhone 15 Pro Max': ['128GB', '256GB', '512GB'],
+  'iPhone 16': ['128GB', '256GB', '512GB'],
+  'iPhone 16 Plus': ['128GB', '256GB', '512GB'],
+  'iPhone 16 Pro': ['128GB', '256GB', '512GB'],
+  'iPhone 16 Pro Max': ['128GB', '256GB', '512GB'],
+  'iPhone 16e': ['256GB', '512GB'],
+  'iPhone 17': ['256GB', '512GB'],
+  'iPhone 17e': ['256GB', '512GB'],
+  'iPhone 17 Pro': ['256GB', '512GB', '1TB'],
+  'iPhone 17 Pro Max': ['256GB', '512GB', '1TB', '2TB'],
+  'iPhone Air': ['256GB', '512GB', '1TB'],
+}
+
+const modelOptions = computed(() => Object.keys(modelStorageMap))
+
+const faultTypeMap = computed(() => {
+  const base = [
+    'Battery',
+    'Back glass damage',
+    'Rear camera damage',
+    'Screen damage',
+    'Screen and back glass damage',
+    'Other damage',
+  ]
+  return Object.fromEntries(modelOptions.value.map((model) => [model, base]))
+})
+
+const ageOptions = [
+  { value: 'unknown_age', label: 'Unknown' },
+  { value: '1', label: '1 year' },
+  { value: '2', label: '2 years' },
+  { value: '3', label: '3 years' },
+  { value: '4', label: '4 years' },
+  { value: '5', label: '5 years' },
+  { value: '6', label: '6 years' },
+  { value: '7', label: '7 years' },
+  { value: '8+', label: '8+ years' },
 ]
 
 const form = reactive({
-  device: 'laptop', age: 3, original: 1500, repair: 250, replace: 1400, condition: 'moderate', note: '',
+  brand: 'Apple',
+  model: '',
+  storage: '',
+  faultType: '',
+  age: '',
+  problem: '',
 })
 
-const repairRatio = computed(() => {
-  if (!form.replace) return 0
-  return Math.min(999, Math.round((form.repair / form.replace) * 100))
+const result = ref(null)
+const errorMessage = ref('')
+const isSubmitting = ref(false)
+
+const storageOptions = computed(() => modelStorageMap[form.model] || [])
+const faultTypeOptions = computed(() => faultTypeMap.value[form.model] || [])
+
+function resetDownstream() {
+  form.storage = ''
+  form.faultType = ''
+  result.value = null
+  errorMessage.value = ''
+}
+
+function formatMoney(value) {
+  if (value === null || value === undefined || value === '') return 'Unavailable'
+  const numberValue = Number(value)
+  if (Number.isNaN(numberValue)) return 'Unavailable'
+  return new Intl.NumberFormat('en-AU', {
+    style: 'currency',
+    currency: 'AUD',
+    maximumFractionDigits: numberValue % 1 === 0 ? 0 : 2,
+  }).format(numberValue)
+}
+
+function decisionClass(value) {
+  const normalized = String(value || '').toLowerCase()
+  if (normalized.includes('repair')) return 'decision-pill--repair'
+  if (normalized.includes('replace')) return 'decision-pill--replace'
+  return 'decision-pill--uncertain'
+}
+
+async function analyze() {
+  errorMessage.value = ''
+  result.value = null
+
+  if (!form.model || !form.storage || !form.faultType || !form.age || !form.problem.trim()) {
+    errorMessage.value = 'Please fill in model, storage, fault type, age, and problem before analyzing.'
+    return
+  }
+
+  isSubmitting.value = true
+
+  try {
+    const response = await api.analyzeRepairDecision({
+      brand: form.brand,
+      model: form.model,
+      storage: form.storage,
+      fault_type: form.faultType,
+      age: form.age,
+      problem: form.problem.trim(),
+    })
+
+    result.value = response
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'Something went wrong.'
+  } finally {
+    isSubmitting.value = false
+  }
+}
+
+watch(
+  () => form.model,
+  () => {
+    resetDownstream()
+  },
+)
+
+watch(
+  () => [form.storage, form.faultType, form.age, form.problem],
+  () => {
+    errorMessage.value = ''
+  },
+)
+
+onMounted(async () => {
+  await initCSRF()
 })
-
-const fourPaths = [
-  { label: 'Repair', icon: '🛠', text: 'Cheaper than replacement and avoids new manufacturing.' },
-  { label: 'Reuse', icon: '♻', text: 'Working but unused devices belong in someone else\'s hands.' },
-  { label: 'Recycle', icon: '⌧', text: 'When materials matter more than the device, recycle responsibly.' },
-  { label: 'Donate', icon: '🎁', text: 'Schools, charities, and pickup points need working devices.' },
-]
-
-const verdict = computed(() => {
-  const ratio = repairRatio.value
-  const tooOld = form.age >= (form.device === 'phone' ? 5 : 7)
-  const major = form.condition === 'major'
-
-  if (form.condition === 'minor' || (ratio < 40 && !tooOld)) {
-    return { tone: 'mint', icon: '🛠', title: 'Repair it.',
-      text: `Repair is only ${ratio}% of replacement cost — clearly the better deal financially and environmentally.`,
-      reasons: [
-        `Repair quote ($${form.repair}) is well below the 50% threshold.`,
-        `Device age (${form.age} years) is reasonable for a typical lifespan.`,
-        'Repairing extends life and avoids new-manufacturing emissions.',
-      ],
-      cta: { to: '/disposal-locations', label: 'Find a repair / drop-off' },
-    }
-  }
-  if (ratio >= 40 && ratio < 70 && !tooOld && !major) {
-    return { tone: 'mint', icon: '🛠', title: 'Worth repairing.',
-      text: `At ${ratio}% of replacement, repair still makes sense — especially if you can use the device for another year or two.`,
-      reasons: [
-        'Repair cost is below the typical 70% break-even point.',
-        'Avoiding a new device avoids manufacturing impact.',
-        'Set a reminder to re-evaluate if it breaks again.',
-      ],
-      cta: { to: '/ai-chat', label: 'Get optimisation tips' },
-    }
-  }
-  if (form.condition === 'minor' && tooOld) {
-    return { tone: 'cool', icon: '♻', title: 'Reuse or donate it.',
-      text: 'It still works, but it\'s past its peak. Pass it on before recycling.',
-      reasons: [
-        `Age (${form.age} years) is at the upper end of practical life.`,
-        'Working devices have value to schools, charities, or buyers.',
-        'Wipe your data first using the device\'s factory reset.',
-      ],
-      cta: { to: '/pickup-points', label: 'Find pickup point' },
-    }
-  }
-  if (major && ratio >= 70) {
-    return { tone: 'warm', icon: '⌧', title: 'Recycle it safely.',
-      text: `Repair would cost ${ratio}% of replacement and the fault is major. Drop it at a certified e-waste site.`,
-      reasons: [
-        `Repair-to-replace ratio (${ratio}%) exceeds the 70% threshold.`,
-        'Major faults often signal more failures soon after.',
-        'Recyclers recover gold, copper, and rare metals from the device.',
-      ],
-      cta: { to: '/disposal-locations', label: 'Find e-waste drop-off' },
-    }
-  }
-  return { tone: 'warm', icon: '🔁', title: 'Replace — but reuse the old one.',
-    text: `At ${ratio}% repair-to-replace, replacing wins financially. Donate or sell the old device — don\'t bin it.`,
-    reasons: [
-      `Repair-to-replace ratio is ${ratio}%.`,
-      'Replacement may have better warranty and efficiency.',
-      'Pass the old device on through pickup points before recycling.',
-    ],
-    cta: { to: '/pickup-points', label: 'Find pickup point' },
-  }
-})
-
-const max = computed(() => Math.max(form.repair || 0, form.replace || 0) || 1)
-const barRepairPct = computed(() => Math.min(100, ((form.repair || 0) / max.value) * 100))
-const barReplacePct = computed(() => Math.min(100, ((form.replace || 0) / max.value) * 100))
 </script>
 
 <style scoped>
-.rc { padding-top: 140px; padding-bottom: 80px; min-height: 100vh; }
+.repair-page {
+  min-height: 100vh;
+  padding: 140px 0 80px;
+}
+
+.repair-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
 
 .head {
-  display: flex; flex-direction: column; gap: 18px;
-  max-width: 720px;
-  margin: 0 auto 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 760px;
+  margin: 0 auto;
   text-align: center;
   align-items: center;
 }
+
 .head h1 em {
   font-style: italic;
   background: linear-gradient(120deg, var(--mint), var(--mint-bright) 60%, var(--violet));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
-
-.form {
+.form-card,
+.result-card {
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
   padding: 32px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  display: flex; flex-direction: column; gap: 18px;
 }
-.form h2 { font-family: var(--font-display); font-size: 24px; font-weight: 500; margin-bottom: 4px; }
 
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.field { display: flex; flex-direction: column; gap: 6px; }
-.field > span {
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.field--wide {
+  grid-column: 1 / -1;
+}
+
+.field-label {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.16em;
-  color: var(--ink-2);
   text-transform: uppercase;
+  color: var(--ink-2);
 }
-.field input, .field textarea {
-  padding: 12px 14px;
-  background: rgba(0,0,0,0.25);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-sm);
+
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--ink-0);
-  font-family: var(--font-body);
-  font-size: 14px;
+  font: inherit;
+  padding: 16px 18px;
   outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition:
+    border-color 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out),
+    background 0.2s var(--ease-out);
 }
-.field input:focus, .field textarea:focus { border-color: var(--mint); box-shadow: 0 0 0 4px rgba(125,216,176,0.12); }
 
-.seg { display: flex; gap: 6px; flex-wrap: wrap; }
-.seg button {
-  flex: 1;
-  padding: 10px 14px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-sm);
-  color: var(--ink-1);
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
+select {
+  min-height: 62px;
 }
-.seg button:hover { border-color: var(--mint); color: var(--ink-0); }
-.seg button.on { background: var(--mint); color: var(--ink-on-light); border-color: var(--mint); }
 
-/* RESULT */
-.result { display: flex; flex-direction: column; gap: 16px; }
-.verdict {
-  padding: 32px;
-  background: linear-gradient(135deg, rgba(125,216,176,0.10), transparent);
-  border: 1px solid rgba(125,216,176,0.3);
-  border-radius: var(--r-lg);
-  display: flex; flex-direction: column; gap: 12px;
+textarea {
+  resize: vertical;
+  min-height: 140px;
 }
-.verdict.tone-cool { background: linear-gradient(135deg, rgba(56,189,248,0.1), transparent); border-color: rgba(56,189,248,0.3); }
-.verdict.tone-warm { background: linear-gradient(135deg, rgba(244,162,97,0.12), transparent); border-color: rgba(244,162,97,0.3); }
-.v-icon { font-size: 42px; }
-.verdict h2 {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 38px);
+
+select:focus,
+textarea:focus {
+  border-color: var(--mint);
+  box-shadow: 0 0 0 4px rgba(125, 216, 176, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.action-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.error-message {
+  margin-top: 4px;
+  color: var(--bad);
   font-weight: 500;
-  letter-spacing: -0.02em;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.loading-card {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 4px solid rgba(125, 216, 176, 0.18);
+  border-top-color: var(--mint);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.result-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.result-topline h2 {
+  margin: 0;
+  font-size: clamp(26px, 3vw, 40px);
+  line-height: 1.1;
+}
+
+.decision-pill {
+  border-radius: var(--r-pill);
+  padding: 10px 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink-0);
+  border: 1px solid var(--hairline-strong);
+}
+
+.decision-pill--repair {
+  background: rgba(94, 234, 212, 0.12);
+  color: var(--mint-bright);
+  border-color: rgba(94, 234, 212, 0.24);
+}
+
+.decision-pill--replace {
+  background: rgba(244, 162, 97, 0.12);
+  color: var(--peach);
+  border-color: rgba(244, 162, 97, 0.24);
+}
+
+.decision-pill--uncertain {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-1);
+}
+
+.result-reason {
+  color: var(--ink-1);
+  line-height: 1.7;
+  font-size: 1.02rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.stat {
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat span {
+  color: var(--ink-2);
+  font-size: 0.92rem;
+}
+
+.stat strong {
+  font-size: 1.05rem;
   color: var(--ink-0);
 }
-.verdict p { color: var(--ink-1); line-height: 1.6; }
-.verdict .eco-btn { align-self: flex-start; }
 
-.compare {
-  padding: 24px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
+.summary-block {
+  padding: 18px 20px;
   border-radius: var(--r-md);
-  display: flex; flex-direction: column; gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--hairline);
 }
-.compare h3 { font-family: var(--font-display); font-size: 16px; font-weight: 500; }
-.bar-row { display: grid; grid-template-columns: 80px 1fr 70px; align-items: center; gap: 12px; font-size: 13px; }
-.bar-label { color: var(--ink-2); font-family: var(--font-mono); font-size: 11px; }
-.bar-track { background: var(--hairline); border-radius: 999px; height: 8px; overflow: hidden; }
-.bar { height: 100%; border-radius: 999px; transition: width 0.5s var(--ease-out); }
-.bar.repair { background: linear-gradient(90deg, var(--mint), var(--mint-bright)); }
-.bar.replace { background: linear-gradient(90deg, var(--violet), var(--rose)); }
-.bar-row strong { font-family: var(--font-mono); text-align: right; color: var(--ink-0); }
-.ratio { text-align: center; padding-top: 10px; border-top: 1px solid var(--hairline); color: var(--ink-2); font-size: 13px; }
-.ratio strong { font-family: var(--font-display); margin: 0 4px; font-weight: 500; }
-.ratio strong.good { color: var(--mint); }
-.ratio strong.bad { color: var(--peach); }
 
-.why {
-  padding: 22px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-md);
-  display: flex; flex-direction: column; gap: 10px;
+.summary-block h3 {
+  margin: 0 0 12px;
+  font-size: 1.02rem;
 }
-.why h3 { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mint); }
-.why ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.why li {
-  padding-left: 22px;
+
+.summary-block ul {
+  margin: 0;
+  padding-left: 18px;
   color: var(--ink-1);
-  font-size: 13px;
-  line-height: 1.6;
-  position: relative;
-}
-.why li::before {
-  content: '·'; position: absolute; left: 0; top: 0;
-  color: var(--mint); font-size: 24px; line-height: 1;
+  line-height: 1.8;
 }
 
-/* PATHS */
-.paths {
-  margin-top: 60px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-.path {
-  padding: 24px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-md);
-  display: flex; flex-direction: column; gap: 10px;
-  transition: all 0.3s var(--ease-out);
-}
-.path:hover { border-color: var(--mint); transform: translateY(-4px); }
-.p-icon {
-  font-size: 24px;
-  width: 48px; height: 48px;
-  display: grid; place-items: center;
-  background: rgba(125,216,176,0.12);
-  border: 1px solid rgba(125,216,176,0.25);
-  border-radius: var(--r-sm);
-  color: var(--mint);
-}
-.path h4 { font-family: var(--font-display); font-size: 16px; font-weight: 500; }
-.path p { color: var(--ink-2); font-size: 13px; line-height: 1.6; }
+@media (max-width: 860px) {
+  .form-grid,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 
-@media (max-width: 1024px) {
-  .grid { grid-template-columns: 1fr; }
-  .paths { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 600px) {
-  .row { grid-template-columns: 1fr; }
-  .paths { grid-template-columns: 1fr; }
-  .form { padding: 24px; }
+  .result-topline {
+    flex-direction: column;
+  }
+
+  .repair-page {
+    padding-top: 120px;
+  }
 }
 </style>

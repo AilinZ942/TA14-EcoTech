@@ -9,6 +9,7 @@ from routes.health import health_bp
 from routes.login import auth_bp
 from routes.location import location_bp
 from routes.optimizer import optimizer_bp
+from routes.repair_check import repair_check_bp
 from routes.emissions import emissions_bp
 from werkzeug.middleware.proxy_fix import ProxyFix
 from utils.env import load_backend_env
@@ -23,7 +24,7 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
 
 app.config.update(
-    SECRET_KEY=os.environ.get("SECRET_KEY", "ecotech-dev-secret-key"),
+    SECRET_KEY=os.environ.get("SECRET_KEY"),
     SESSION_COOKIE_SECURE=os.environ.get("SESSION_COOKIE_SECURE", "false").lower() == "true",
     SESSION_COOKIE_HTTPONLY=True,     # prevent JavaScript access to cookies
     SESSION_COOKIE_SAMESITE='Strict', # strict same-site policy to prevent CSRF
@@ -40,6 +41,7 @@ app.register_blueprint(auth_bp, url_prefix="/api")
 app.register_blueprint(health_bp, url_prefix="/api")
 app.register_blueprint(location_bp, url_prefix="/api")
 app.register_blueprint(optimizer_bp, url_prefix="/api")
+app.register_blueprint(repair_check_bp, url_prefix="/api")
 app.register_blueprint(emissions_bp, url_prefix="/api")
 
 if __name__ == "__main__":

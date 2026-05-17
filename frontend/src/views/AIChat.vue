@@ -122,7 +122,6 @@ import { api } from '@/api'
 const devices = [
   { id: 'phone', label: 'Phone', icon: '📱', text: 'Daily mobile use' },
   { id: 'laptop', label: 'Laptop', icon: '💻', text: 'Work and study' },
-  { id: 'tablet', label: 'Tablet', icon: '📲', text: 'Reading, browsing' },
 ]
 const quickIssues = [
   { label: 'Battery drains fast', icon: '🔋' },
@@ -152,39 +151,20 @@ async function getTips() {
   if (!issueText.value.trim()) return
   step.value = 'loading'
   errorMessage.value = ''
-  const apiDeviceType = selectedDevice.value === 'tablet' ? 'phone' : selectedDevice.value
   try {
-    result.value = await api.getDeviceOptimizationTips({ device_type: apiDeviceType, issue_text: issueText.value })
+    result.value = await api.getDeviceOptimizationTips({
+      device_type: selectedDevice.value,
+      issue_text: issueText.value,
+    })
     step.value = 'result'
   } catch (err) {
-    result.value = mockResponse(selectedDevice.value, issueText.value)
-    step.value = 'result'
+    result.value = null
+    step.value = 'issue'
+    errorMessage.value = err?.data?.detail || err?.message || 'Unable to get optimization tips right now.'
   }
 }
 
 function restart() { step.value = 'device'; selectedDevice.value = ''; issueText.value = ''; result.value = null; errorMessage.value = '' }
-
-function mockResponse(deviceId, text) {
-  const cat = /battery|drain|charge|hot|overheat/i.test(text) ? 'Battery drain'
-    : /storage|space|full|memory/i.test(text) ? 'Storage full'
-    : /slow|lag|crash|freeze/i.test(text) ? 'Slow performance' : 'General device care'
-  const labelMap = { phone: 'Phone', laptop: 'Laptop', tablet: 'Tablet' }
-  return {
-    device_type: deviceId,
-    device_label: labelMap[deviceId] || 'Device',
-    device_summary: deviceId === 'phone' ? 'Best for everyday mobile use.' : 'Best for longer sessions at a desk.',
-    issue_category: cat.toLowerCase().replace(/[^a-z]/g, '_'),
-    issue_label: cat,
-    issue_explanation: 'Most ' + cat.toLowerCase() + ' issues come from a few common causes — background apps, screen brightness, or storage pressure. Small changes usually help a lot.',
-    suggestions: [
-      'Restart the device to clear temporary clutter.',
-      'Check which apps use the most resources and close ones you don\'t need.',
-      'Update the operating system to the latest version.',
-      'Free up storage by removing unused apps and large media.',
-    ],
-    model: 'demo-fallback',
-  }
-}
 
 const sustainScore = computed(() => {
   if (!result.value) return 0
