@@ -3,10 +3,9 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import RepairCheck from '@/views/RepairCheck.vue'
-import ExtendUsage from '@/views/ExtendUsage.vue'
 import AIChat from '@/views/AIChat.vue'
-import SafeGuidance from '@/views/SafeGuidance.vue'
 import DisposalLocations from '@/views/DisposalLocations.vue'
+import PickupPoints from '@/views/PickupPoints.vue'
 import Game from '@/views/Game.vue'
 import Login from '@/views/Login.vue'
 import { authAPI } from '@/api'
@@ -39,28 +38,21 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/extend-usage',
-    name: 'ExtendUsage',
-    component: ExtendUsage,
-    meta: { requiresAuth: true }
-  },
-  {
     path: '/ai-chat',
     name: 'AIChat',
     component: AIChat,
-    meta: { requiresAuth: true }
-  },
-
-  {
-    path: '/safe-guidance',
-    name: 'SafeGuidance',
-    component: SafeGuidance,
     meta: { requiresAuth: true }
   },
   {
     path: '/disposal-locations',
     name: 'DisposalLocations',
     component: DisposalLocations,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/pickup-points',
+    name: 'PickupPoints',
+    component: PickupPoints,
     meta: { requiresAuth: true }
   },
   {
