@@ -45,8 +45,10 @@ backend/.env
 
 # Python virtual environment
 .venv/
+__pycache__/
 
-iteration3/
+Repair_model/__pycache__/
+
 
 backend/.venv/
 

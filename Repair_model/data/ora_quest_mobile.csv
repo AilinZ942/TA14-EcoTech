@@ -1,0 +1,938 @@
+fault_type,brand,age,problem
+Microphone,Apple,unknown_age,Mobile - Mic problem - Tried cardboard hack and failed
+Other,Samsung,unknown_age,Mobile - Configuration problem -
+Unknown,Samsung,unknown_age,Mobile - -
+Speaker/amplifier,Apple,unknown_age,Mobile - No sound output -
+Power/battery,Samsung,unknown_age,Mobile - Gets no power -
+Stuck booting,Samsung,unknown_age,Mobile - Won't boot -
+On/Off button,Apple,unknown_age,Mobile - Switch problem -
+Other,Samsung,unknown_age,Mobile - Bricked -
+Power/battery,Apple,unknown_age,Mobile - No power -
+Power/battery,Samsung,unknown_age,Mobile - Battery issue -
+Power/battery,Samsung,unknown_age,Mobile - No power -
+Software update,Samsung,unknown_age,Mobile - Bricked -
+Screen,Apple,unknown_age,Mobile - Screen issue - Not enough time
+Sim card slot,Apple,unknown_age,Mobile - No SIM card recognition -
+Stuck booting,Samsung,unknown_age,Mobile - Won't boot - Not enough time
+Software update,Samsung,unknown_age,Mobile - Firmware issue -
+Screen,Apple,unknown_age,Mobile - Screen issue - needs a new part
+Screen,Apple,unknown_age,Mobile - screen issue - Spare part needed
+Screen,Samsung,unknown_age,"Smashed screen, doesn't switch on"
+Software update,Samsung,unknown_age,"Switches on, but can't launch programmes"
+Power/battery,Apple,unknown_age,Turn off after a few minutes
+Screen,Samsung,unknown_age,Mobile - Screen issue - Referred to professional
+Other buttons,Samsung,unknown_age,Mobile - Home button - Needs more work
+On/Off button,Apple,unknown_age,Mobile - Home button/Power switch - Needs spare part - DIY ready
+Camera,Samsung,unknown_age,Mobile - Lens smashed - Self-fix
+USB/charging port,Samsung,unknown_age,Mobile - USB port - Referred to professional
+Stuck booting,Samsung,unknown_age,Mobile - Bootloop - Referred to professional
+Screen,Apple,unknown_age,Mobile - Screen issue -
+Stuck booting,Samsung,unknown_age,Mobile - Won't boot -
+Screen,Apple,unknown_age,Mobile - Screen issue -
+Screen,Apple,unknown_age,Mobile - Screen issue -
+Screen,Apple,unknown_age,Mobile - Screen issue - Self repair
+Other buttons,Apple,unknown_age,"Home button is stuck. Neeeds to go to shop, button mislodged after screen repair"
+Screen,Samsung,unknown_age,Broken screen
+Power/battery,Apple,unknown_age,Mobile - Battery dead -
+Screen,Apple,unknown_age,replacement screen/display is missing
+Screen,Apple,unknown_age,replacement screen/display is missing
+Other,Apple,unknown_age,Mobile - Water damaged -
+Performance,Samsung,unknown_age,Mobile - Running slow -
+Screen,Samsung,unknown_age,Screen broken
+Screen,Apple,unknown_age,Condensation underneath screen
+Screen,Apple,unknown_age,Poor battery ilfe and screen cracked
+Other buttons,Apple,unknown_age,Mobile - Broken home button -
+On/Off button,Samsung,unknown_age,Mobile - Power button? -
+Screen,Apple,unknown_age,Mobile - Screen issue -
+Other,Samsung,unknown_age,"Got wet, won't switch on. Photos saved, half fixed."
+Speaker/amplifier,Samsung,unknown_age,Can't hear calls. Can't be fixed.
+Screen,Apple,unknown_age,screen broken
+Screen,Apple,unknown_age,back and front screen
+Screen,Apple,unknown_age,screen broken
+Screen,Apple,unknown_age,broken screen
+Screen,Apple,unknown_age,Mobile - Screen issue -
+Headphone jack,Apple,unknown_age,Mobile - Earphone jack -
+Microphone,Apple,unknown_age,Mobile - Mic problem -
+Power/battery,Samsung,unknown_age,"Doesn't charge, doesn't switch on. Needs new battery."
+Screen,Apple,unknown_age,Speaker crackly and broken screen.
+Charger,Apple,unknown_age,"Charger, loose connection."
+Unknown,Apple,unknown_age,Dropped - no sign of life. (Was actually ok)
+Power/battery,Samsung,unknown_age,Keeps cutting out. Didn't need SD card.
+Unknown,Apple,unknown_age,Locked
+Speaker/amplifier,Apple,unknown_age,Speaker not working - referred to Lovefone
+Screen,Apple,unknown_age,Spare screen purchased by the person before they came but it wasn't the right one for this phone. Advised them to come back to another party.
+Screen,Apple,unknown_age,Person came to party with cracked screen. Restarter told them they needed to buy a screen. They went away and got one and after some time trying to fit it the Restarter said it was the wrong screen.
+Screen,Samsung,unknown_age,Screen cracked
+Screen,Apple,unknown_age,"Failed screen replacement, not clear why. Referred to Lovefone"
+Power/battery,Apple,unknown_age,Needs new battery
+Software update,Apple,unknown_age,Needs software update.
+Screen,Samsung,unknown_age,screen to find on the internet
+Other,Samsung,unknown_age,Motherboard? - Dead mobile
+Unknown,Apple,unknown_age,Needed back-up before repair
+On/Off button,Apple,unknown_age,defective power button. elegible for Apple recall
+Software update,Samsung,unknown_age,shuts down. reset to factory settings
+Camera,Apple,unknown_age,"dust in the camera. advised to ask Apple to do it free of charge, as not due to usage"
+Power/battery,Apple,unknown_age,battery problems. helped her understand that her constant use of Spotify and bluetooth is the main problem
+Camera,Samsung,unknown_age,"camera doesn't focus consistently. it's 6 month old from Argos, explained warranty repair"
+USB/charging port,Samsung,unknown_age,Bad micro USB port
+Unknown,Apple,unknown_age,Advised on purchasing part
+Camera,Apple,unknown_age,Crack in the camera
+Help/configuration,Samsung,unknown_age,it was in Spanish
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+USB/charging port,Samsung,unknown_age,"Micro USB damaged, needed replacing. DIY"
+Software update,Apple,unknown_age,Incomplete update. Owner wanted to backup before reset.
+Screen,Samsung,unknown_age,Broken screen
+Microphone,Samsung,unknown_age,Mic not working.
+Power/battery,Apple,unknown_age,Battery replacement
+Sim card slot,Apple,unknown_age,"Sim reader faulty, tried to resolder it."
+USB/charging port,Apple,unknown_age,"Not charging, battery replaced"
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen replacement - full LCD assembly
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,Screen repair
+Screen,Apple,unknown_age,cracked screen
+Screen,Samsung,unknown_age,"cracked glass, screen otherwise ok. helped with sourcing spare part"
+Camera,Apple,unknown_age,camera dirty
+Screen,Samsung,unknown_age,screen goes black - impossible to replicate the issue
+Speaker/amplifier,Apple,unknown_age,"speaker doesn't work. changed speaker cable, all sorted"
+Software update,Samsung,unknown_age,it blocks one specific contact. we suggested running a factory reset after backing up the phone
+Screen,Apple,unknown_age,cracked screen
+Power/battery,Samsung,unknown_age,doesn't switch on
+On/Off button,Apple,unknown_age,Iphone button on and off not working
+Screen,Apple,unknown_age,Screen replaced
+Other,Apple,unknown_age,Vibrator replaced
+Screen,Apple,unknown_age,Screen replaced
+Screen,Apple,unknown_age,Screen replaced
+Screen,Apple,unknown_age,Screen replaced
+Unknown,Samsung,unknown_age,Samsung
+USB/charging port,Apple,unknown_age,Broken charging port
+On/Off button,Apple,unknown_age,Power button not working
+Screen,Apple,unknown_age,Cracked screen
+On/Off button,Samsung,unknown_age,Power button does not work. Repair would require expensive spare part
+Storage problem,Apple,unknown_age,Memory/storage problem
+Screen,Samsung,unknown_age,Smashed screen
+Power/battery,Samsung,unknown_age,Not getting power
+Storage problem,Samsung,unknown_age,Storage problem
+Screen,Apple,unknown_age,Cracked LCD but appears to need a new battery
+Screen,Samsung,unknown_age,Faulty screen?
+Power/battery,Samsung,unknown_age,The battery had been nicked!
+Other,Samsung,unknown_age,Stuck in flight mode
+Unknown,Samsung,unknown_age,Not working
+Help/configuration,Apple,unknown_age,Needed help changing parts
+Unknown,Samsung,unknown_age,"smart phone, keeps turning off, next time"
+On/Off button,Apple,unknown_age,a on/off button not working
+Software update,Samsung,unknown_age,Needs a TURP recovery install
+Screen,Apple,unknown_age,Fuzzy screen
+Other,Samsung,unknown_age,Flight mode and IMEI number missing - recommend to contact manufacturer
+Power/battery,Apple,unknown_age,Battery problem?
+Other buttons,Apple,unknown_age,Lock button
+Screen,Samsung,unknown_age,"Screen broken, spare part deemed to expensive by owner"
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,"Cracked screen, needs new one fitted. Not enough time, advice given"
+Screen,Apple,unknown_age,"Cracked screen, needs new one fitted. Not enough time, advice given"
+Help/configuration,Samsung,unknown_age,On flight mode constantly. Advice given.
+Power/battery,Apple,unknown_age,"Not charging - needs a new battery, diagnosed"
+Screen,Apple,unknown_age,Screen cracked - deemed beyond repair
+Screen,Apple,unknown_age,Buttons and screen
+Power/battery,Samsung,unknown_age,Not hold a charge - new battery needed
+Power/battery,Samsung,unknown_age,Not turning on and not ringing
+Unknown,Apple,unknown_age,Does not turn on
+Unknown,Samsung,unknown_age,Doesn't charge
+Performance,Samsung,unknown_age,Very slow. Fixed
+Screen,Apple,unknown_age,cracked screen
+Screen,Apple,unknown_age,cracked screen
+Screen,Apple,unknown_age,cracked screen
+Power/battery,Apple,unknown_age,"Battery replaced, after a poor battery replacement"
+Screen,Apple,unknown_age,Glass replaced
+Help/configuration,Samsung,unknown_age,Needs advice on connecting phone to PC. Got advice.
+Software update,Samsung,unknown_age,Update - advice given
+Screen,Apple,unknown_age,broken screen
+Power/battery,Apple,unknown_age,Battery needs replacing - not applicable
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Power/battery,Apple,unknown_age,Battery
+Power/battery,Apple,unknown_age,Doesn't charge
+Unknown,Apple,unknown_age,Bug
+Power/battery,Apple,unknown_age,Switches off
+Screen,Samsung,unknown_age,Problem with the touchscreen. There is documented solution to this involving disconnecting the LCD from the circuit board
+Power/battery,Apple,unknown_age,dead battery
+Microphone,Apple,unknown_age,Bad mic connection
+Screen,Samsung,unknown_age,Change screen
+Other buttons,Apple,unknown_age,Button does not work
+Screen,Samsung,unknown_age,Broken screen
+Speaker/amplifier,Apple,unknown_age,Sound does not work
+Power/battery,Apple,unknown_age,Battery swap- screw stuck
+Power/battery,Samsung,unknown_age,Doesn't switch on - dead battery
+Unknown,Samsung,unknown_age,0.15kg
+Unknown,Samsung,unknown_age,0.2kg
+Storage problem,Samsung,unknown_age,Running slow - advice give
+Software update,Apple,unknown_age,Running slow
+Other,Samsung,unknown_age,"No power - further work needed. Recommend to sell for parts, water damage"
+USB/charging port,Samsung,unknown_age,Screen goes black/blank (intermittent fault). USB cover fixed and advice given
+Power/battery,Samsung,unknown_age,Slow and freezes. May need battery replaced.
+Speaker/amplifier,Apple,unknown_age,Sound issues - new speaker needed
+Screen,Apple,unknown_age,screen replacement
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Power/battery,Apple,unknown_age,Battery
+Unknown,Apple,unknown_age,Not turning on
+Unknown,Samsung,unknown_age,0.2kg
+Software issue,Apple,unknown_age,Crashing
+Screen,Apple,unknown_age,Cracked screen
+Power/battery,Apple,unknown_age,Battery
+Power/battery,Samsung,unknown_age,Does not power on
+Screen,Apple,unknown_age,Screen needs replacing
+Power/battery,Apple,unknown_age,Battery needs changing.
+Other buttons,Apple,unknown_age,Home button doesn't work.
+Screen,Apple,unknown_age,Broken screen
+Charger,Apple,unknown_age,iPhone charger
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Power/battery,Apple,unknown_age,Battery
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,iPhone - broken screen
+Power/battery,Apple,unknown_age,iPhone - needed battery change (also needed spare battery)
+Unknown,Apple,unknown_age,doesn't work ~ unknown
+Screen,Apple,unknown_age,"Cracked screen - fixable, but needs spare parts"
+Other buttons,Apple,unknown_age,Home button broken - cleaned but needs replacing
+Other,Apple,unknown_age,water damage - advice on recovering photos
+Screen,Samsung,unknown_age,No display - needs new screen
+Storage problem,Samsung,unknown_age,Full - how to free space. Advice given
+Help/configuration,Apple,1,unfamiliar with settings ~ age
+Software update,Samsung,1,Software challenge
+Screen,Samsung,2,Screen does not work
+Other,Apple,unknown_age,Water damage
+Other buttons,Apple,unknown_age,Button does not work
+Sim card slot,Samsung,unknown_age,Not recognizing SIM
+Screen,Samsung,unknown_age,Not working the lower part of the touch screen
+Power/battery,Samsung,unknown_age,doesn't work ~ battery empty
+Help/configuration,Apple,1,difficulty with settings ~ digitally ill
+Screen,Apple,unknown_age,Screen too dark. Fixed (needs new parts).
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen and home button
+Screen,Apple,unknown_age,Cracked screen and blurry camera
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,Cracked screen
+Screen,Apple,unknown_age,"Cracked screen, damaged home button"
+Other,Apple,unknown_age,"Asks for iTunes only. Advice given, hopefully DIY ready"
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen & damaged home button
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement (x2 - Needed to be replaced twice - faulty replacement unit?)
+Other buttons,Apple,unknown_age,Home Button Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Power/battery,Apple,unknown_age,Battery replacement
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement (x2)
+Screen,Apple,unknown_age,Screen Replacement
+Other buttons,Apple,unknown_age,Home Button Replacement
+Screen,Apple,unknown_age,Screen Replacement
+USB/charging port,Apple,unknown_age,Charging Port Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Screen,Apple,unknown_age,Screen Replacement
+Speaker/amplifier,Apple,unknown_age,Does not give a sound
+Screen,Apple,unknown_age,Change screen
+Screen,Samsung,unknown_age,"Screen damage after drop. Tested by connecting to laptop, phone is ok just needs new screen"
+Software update,Samsung,unknown_age,F-Droid installation & Clean Up device
+Camera,Samsung,unknown_age,Mobile phone with massive zoom camera. Lots of dismantling & testing. Maybe get clone and swap parts?
+Screen,Apple,1,Screen is black ~ No idea
+Other,Apple,unknown_age,Inconsistent WiFi
+Other,Apple,3,Dod had bitten on it
+Power/battery,Samsung,unknown_age,battery? phone no longer turns on.
+Screen,Apple,unknown_age,"Screen temperamental. Half fixed, will continue to work on it at home."
+Screen,Samsung,unknown_age,Broken display
+Other,Apple,unknown_age,changed flat cable
+Screen,Apple,unknown_age,changed dispay
+Screen,Apple,unknown_age,iPhone screen and motherboard. No fix - advice given (too costly to repair)
+Screen,Apple,unknown_age,iPhone 5c - Screen Repaired
+USB/charging port,Apple,unknown_age,iPhone 5 - Replaced Charging Port
+Speaker/amplifier,Apple,unknown_age,iPhone 5SE - Speaker to be Replaced - No replacement parts available
+Screen,Apple,unknown_age,iPhone 5 - Screen Replaced
+USB/charging port,Apple,unknown_age,iPhone 5c - Charging Port Replaced
+USB/charging port,Apple,unknown_age,iPhone 6 - Charging Port dirty/blocked - cleaned out
+Liquid damage,Apple,unknown_age,Two defective devices were turned into one that worked. A white model had water damage and a silver model had a screen damage. The result was an iPhone with a silver casing and a white home button.
+USB/charging port,Samsung,unknown_age,Loose charger connector.
+Screen,Samsung,17,glass broken ~ falling
+Unknown,Apple,unknown_age,The back falls off
+Other,Apple,unknown_age,Humidity problem
+Unknown,Apple,unknown_age,Humidity problem
+Other,Apple,unknown_age,Humidity problem
+Unknown,Apple,unknown_age,Humidity problem
+Screen,Samsung,unknown_age,It had a display damage. The repair failed because the old display was removed. Maybe you should try again.
+Screen,Samsung,unknown_age,"intermittent screen flicker, short battery life"
+Power/battery,Samsung,unknown_age,Doesn't turn on
+On/Off button,Apple,unknown_age,Power botton doesn't work
+Screen,Apple,unknown_age,Broken screen. The owner had the spare part so we placed it.
+Software issue,Samsung,unknown_age,Unable to install Airwatch ~ ??
+On/Off button,Apple,unknown_age,On-off switch stuck. Not fixable.
+Software update,Apple,unknown_age,OS issue (slow)
+Power/battery,Apple,1,"Bad battery, please order a new battery. ~ Unknown"
+Storage problem,Samsung,unknown_age,Unable to create memory space by deleting data.
+Volume buttons,Apple,unknown_age,Silence button not working. Owner will come to a future event once part ordered.
+Screen,Apple,unknown_age,"Broken screen, replaced with new LCD"
+Screen,Apple,unknown_age,cracked screen
+Screen,Apple,unknown_age,"Cracked screen, under warranty, sent to Apple store"
+Screen,Apple,unknown_age,"Cracked screen, new LCD"
+Screen,Apple,unknown_age,"Cracked screen, new LCD"
+Other buttons,Apple,unknown_age,"Home button not working, vibration not working. Replaced both components"
+Screen,Apple,unknown_age,"Cracked screen, new LCD"
+Unknown,Apple,unknown_age,Student purchased new phone before repair could be completed
+Unknown,Samsung,unknown_age,"Parts too expensive, referred to professional"
+Screen,Apple,unknown_age,cracked screen
+Screen,Apple,unknown_age,cracked screen
+Unknown,Apple,unknown_age,Hardware problem
+Power/battery,Samsung,unknown_age,loosing charge
+Unknown,Apple,unknown_age,Not working
+Power/battery,Samsung,unknown_age,No Power
+Power/battery,Samsung,unknown_age,instable power
+Help/configuration,Apple,4,Check settings ~ Unknown
+Help/configuration,Apple,unknown_age,don't know how to update ~ lack of knowledge
+Speaker/amplifier,Apple,unknown_age,Can't hear incoming voice
+Power/battery,Samsung,2,Battery not charging ~ Loose battery
+Software issue,Samsung,4,weather program did not work and date is incorrect ~ no internet connection
+Internal damage,Samsung,1,motherboard is broken
+Stuck booting,Samsung,unknown_age,Turns on but freezes
+Screen,Apple,unknown_age,Broken screen.
+Unknown,Apple,unknown_age,possibly repairable but beyond the capabilities of our team
+On/Off button,Apple,unknown_age,"doesn't turn on, on off switch gone"
+Power/battery,Samsung,unknown_age,doesn't switch on. Battery dead
+Power/battery,Apple,unknown_age,dead battery
+Screen,Apple,unknown_age,cracked LCD
+Screen,Apple,unknown_age,cracked LCD
+Screen,Apple,unknown_age,cracked LCD
+Screen,Apple,unknown_age,cracked LCD
+Power/battery,Apple,unknown_age,dead battery
+Screen,Apple,unknown_age,cracked LCD
+Screen,Apple,unknown_age,cracked LCD
+Screen,Apple,unknown_age,Repair too challenging due to waterproof seal (didn't have adhesive remover to open phone). Referred to Apple
+Other,Apple,unknown_age,Repair too challenging due to waterproof seal (didn't have adhesive remover to open phone). Referred to Apple
+Help/configuration,Samsung,4,No sound on messages
+Other,Apple,unknown_age,iPhone 6. Water damage
+Other,Apple,unknown_age,password forgotten. Apple id needed. owner will contact apple to resolve.
+Software update,Samsung,unknown_age,password forgotten. factory reset bit malicious apps preventing use.
+Unknown,Apple,1,1 year old.
+Unknown,Samsung,4,No result.
+Screen,Apple,unknown_age,Replaced cracked LCD
+Screen,Apple,unknown_age,Replaced cracked LCD
+Screen,Apple,unknown_age,Replaced cracked LCD
+Screen,Apple,unknown_age,Replaced cracked LCD
+Screen,Apple,unknown_age,Replaced cracked LCD & home button
+Screen,Apple,unknown_age,Replaced cracked LCD
+Screen,Apple,unknown_age,Replaced cracked LCD
+Screen,Apple,unknown_age,Replaced cracked LCD
+Storage problem,Apple,unknown_age,couldn't retrieve photos
+Camera,Apple,unknown_age,rear camera not working. re-connected
+Power/battery,Apple,unknown_age,battery losing charge quickly. new battery needed
+Other,Samsung,unknown_age,asked for setting optimization for security and performance.
+Help/configuration,Apple,unknown_age,make a backup
+Screen,Apple,unknown_age,Replaced cracked LCD
+Screen,Apple,unknown_age,Replaced cracked LCD
+Other,Apple,unknown_age,"Water damage throughout, repair not possible"
+Screen,Apple,unknown_age,Replaced cracked LCD
+Screen,Apple,unknown_age,"Referred to Apple store, screen too difficult to open without adhesive remover or heat gun"
+Screen,Apple,unknown_age,Replaced cracked LCD
+Unknown,Apple,unknown_age,"part not in stock, unable to repair. Sent student to Apple"
+Screen,Apple,unknown_age,Replaced cracked LCD
+Power/battery,Apple,8,The battery is old and drains quickly ~ Old battery
+Unknown,Apple,unknown_age,defect ~ known
+Power/battery,Apple,unknown_age,advice given - battery
+Screen,Samsung,unknown_age,broken screen
+Help/configuration,Apple,2,help with institutions
+Screen,Apple,unknown_age,replaced cracked LCD
+Screen,Apple,unknown_age,replaced cracked LCD
+Screen,Apple,unknown_age,replaced cracked LCD
+Screen,Apple,unknown_age,replaced cracked LCD
+Screen,Apple,unknown_age,replaced cracked LCD
+Screen,Apple,unknown_age,replaced cracked LCD
+Screen,Apple,unknown_age,replaced cracked LCD and microphone
+Screen,Apple,unknown_age,replaced cracked LCD
+Unknown,Apple,unknown_age,Part too expensive & device under warranty. referred to Apple
+Unknown,Apple,unknown_age,"intermittent volume issues, referred to apple. No identifiable hardware issue"
+Screen,Apple,unknown_age,replaced cracked LCD
+Screen,Apple,unknown_age,cracked LCD replaced
+Other buttons,Apple,unknown_age,"The home button now only responds when pressed very hard. However, since the entire button assembly probably has to be replaced and special tools are required to open and disassemble it, we unfortunately had to pass considering the time had already passed. It is better to plan around two hours for such demanding repair work on such highly integrated and sensitive electronics. With a short message in advance, the right tool can also be organized in good time. The visitor now thinks about whether he should buy a spare part and come back with the phone to one of the next appointments."
+Software update,samsung,unknown_age,not working; reset
+Screen,Apple,unknown_age,screen and home button broken
+Power/battery,Apple,8,battery drains quickly ~ old age
+Power/battery,Apple,unknown_age,Battery replacement using iFixit battery replacement kit
+USB/charging port,Apple,unknown_age,No charge.  Cleaned points.
+Camera,Samsung,unknown_age,"The camera lens had cracked and had ruined numerous photos for the owner. She had already gotten a replacement. We helped her disassemble the phone according to instructions from the internet, remove the old lens and glue in the new one. This required a lot of patience and sensitivity, as the adhesive surface had to be slowly heated with a hairdryer to soften the adhesive and the lens then had to be carefully lifted off. You should always allow a little more time for such delicate repairs."
+Unknown,Apple,unknown_age,"2017-10-31 Mark also had a go at Jan's iPhone problem, but no solution could be found"
+Software update,Apple,unknown_age,Was freezing on app
+Screen,Apple,unknown_age,Screen too dark
+Help/configuration,Apple,unknown_age,Not recognising ID
+Help/configuration,Samsung,4,Have data transferred from Microsoft to Samsung ~ Unknown
+Software issue,Samsung,1,remains on home screen
+USB/charging port,Samsung,4,Charging connection --> bent pin ~ Plug connected incorrectly
+Screen,Apple,unknown_age,Flickering screen
+Screen,Samsung,unknown_age,Order screen
+Other,Apple,2,Water damage
+Power/battery,Apple,unknown_age,Battery drains really fast
+Headphone jack,Apple,unknown_age,Fire wire as a headphone connection not working
+Software update,Apple,unknown_age,Crashes - fixed with software cleanup and making space
+Screen,Samsung,unknown_age,Broken screen - to order spare parts
+Other buttons,Apple,unknown_age,Menu button does not work - to order spare parts
+Other,Apple,unknown_age,Water damage- got wet over one month ago no instantaneous drying process
+Software update,Apple,unknown_age,Not functioning well - needed data cleanup and software updates
+On/Off button,Samsung,unknown_age,Power button not working. Temporary fix.
+Other,Samsung,unknown_age,broken keyboard connector
+Screen,Apple,unknown_age,replaced LCD
+Power/battery,Apple,unknown_age,replaced battery
+Screen,Apple,unknown_age,"cracked LCD replaced, home button replaced, camera replaced"
+Screen,Apple,unknown_age,cracked LCD replaced
+Screen,Apple,unknown_age,cracked LCD replaced
+Screen,Apple,unknown_age,"broken screen, but part was't available"
+Screen,Apple,unknown_age,cracked LCD replaced
+Screen,Apple,unknown_age,cracked LCD replaced
+Screen,Apple,unknown_age,cracked LCD replaced
+Screen,Apple,unknown_age,cracked LCD replaced
+Screen,Apple,unknown_age,cracked LCD replaced
+Software update,Apple,unknown_age,software issue resolved with reset
+Screen,Apple,unknown_age,replaced cracked screen and fixed boot loop
+Screen,Apple,unknown_age,cracked LCD replaced
+Screen,Apple,unknown_age,cracked LCD replaced
+Screen,Apple,unknown_age,replaced LCD
+Screen,Apple,unknown_age,replaced LCD
+Screen,Apple,unknown_age,replaced LCD
+Screen,Apple,unknown_age,replaced LCD
+Screen,Apple,unknown_age,replaced LCD
+Screen,Apple,unknown_age,replaced LCD & home button
+Screen,Apple,unknown_age,replaced LCD & home button
+Power/battery,Apple,unknown_age,Doesn't work anymore
+Help/configuration,Samsung,3,Scan ~ Setting
+Power/battery,Apple,unknown_age,not loading
+Screen,Samsung,4,"Broken screen, we opened the phone up and removed the screen.  Next time participants can come with the spare parts; new screen and put it in."
+Screen,Apple,2,Broken screen - spare part available
+Screen,Samsung,2,Broken screen
+Screen,Samsung,2,Broken screen
+Screen,Samsung,1,Broken screen
+Screen,Samsung,1,Broken screen
+Liquid damage,Apple,3,Network not responding ~ Fallen into water
+Power/battery,Apple,unknown_age,Does not switch on.
+Storage problem,Samsung,2,Overloaded
+Power/battery,Samsung,unknown_age,Not turning on
+Help/configuration,Apple,unknown_age,Won't download
+Camera,Apple,unknown_age,"No light, photo issue"
+Power/battery,Apple,unknown_age,"The display on the iPhone 3 had taken off. The reason for this was the built-in battery, which was quite bloated and needs to be replaced. Then the device will return to its original shape."
+Power/battery,Samsung,unknown_age,"A battery from the phone also had to be disposed of properly. This no longer showed any tension and had already bloated significantly. For this reason, the phone did not show any function and did not charge the battery. But with a new replacement battery it should work again soon."
+Microphone,Apple,unknown_age,replaced LCD & microphones
+Screen,Apple,unknown_age,replaced LCD & microphones
+Screen,Apple,unknown_age,replaced LCD & microphones
+Help/configuration,Samsung,6,falls back into login mode
+Screen,Samsung,unknown_age,"Had one of those daft curved-glass screens, smashed of course. The user did not bring any replacement parts, so was referred to a professional service."
+Power/battery,Apple,1,Change battery
+Other,Apple,1,Bent phone
+Volume buttons,Apple,4,Sound button broken
+Unknown,Samsung,1,Explanation ~ Unknown
+Power/battery,Apple,6,does not turn on anymore ~ ​​possible battery problem
+Screen,Apple,unknown_age,Cracked screen
+Screen,Samsung,2,Broken screen
+Power/battery,Apple,2,does not power on - battery
+USB/charging port,Apple,2,"Not charging - the charging port was dirty, a clean fixed the problem."
+USB/charging port,Apple,3,Needs new lightning USB port - sent to store
+Screen,Samsung,1,Screen cracked. surge and advice (new samsung screen can be replaced easily).
+Storage problem,Samsung,unknown_age,Fault by SD card
+Power/battery,Apple,unknown_age,"A new battery has been installed, but the device no longer works. ~ Battery defective and replaced by the customer himself"
+Power/battery,Apple,unknown_age,"After replacing the battery some time ago, the smartphone vehemently refused to charge the new battery. In any case, nothing happened when we plugged in the power supply and the charging indicator remained at its low level. All contacts, connectors and cables seemed to be OK, so we ultimately didn't know what to do next."
+Liquid damage,Apple,8,water damage
+Software update,Samsung,3,"Software issue causing updates from being installed.  Couldn't find permanent fix, recommended updating OS to Lineage"
+Power/battery,Samsung,unknown_age,Charging takes ages
+Power/battery,Samsung,unknown_age,"Problem: Won't charge.  Diagnosis:  It was charging 20 mA, which looked like it was fully charged and trickle charging. It wasn’t recognised by a laptop (nothing appeared on the USB) so it was not a case of it being switched on with a dead screen. We tried all the Android resetting key combinations we could find with no effect. Accessing the battery requires taking out the (broken) screen and a mid plate. The phone is under warranty but Samsung refused to repair it under warranty as the screen is broken on the sides and would shatter when opening the phone.  Owner was going to check with Lovephone."
+Power/battery,Samsung,4,Needed a battery replacement. No heatgun at this event.
+Storage problem,Apple,1,Full memory
+Screen,Samsung,3,Smashed screen
+Screen,Samsung,1,Nothing showing on screen (dropped)
+Power/battery,Samsung,unknown_age,Won't turn on
+Screen,Apple,3,cracked screen
+Screen,Apple,2,cracked screen
+Software issue,Samsung,unknown_age,"A symbol remains on the display, which means that someone has called. It doesn't want to go away."
+Other buttons,Apple,3,Button broken.  Advice given.
+Screen,Apple,3,Blroken screen
+Power/battery,Apple,unknown_age,Low battery
+Screen,Apple,unknown_age,cracked screen
+Screen,Apple,unknown_age,cracked screen
+USB/charging port,Apple,unknown_age,charging problems
+Screen,Apple,unknown_age,cracked screen
+Screen,Apple,unknown_age,cracked screen
+USB/charging port,Apple,unknown_age,USB + battery
+Power/battery,Apple,unknown_age,charging problems
+Screen,Apple,unknown_age,cracked screen
+Power/battery,Apple,unknown_age,Battery
+Screen,Apple,unknown_age,cracked screen
+Power/battery,Apple,unknown_age,battery replacement
+Power/battery,Apple,unknown_age,Battery
+Screen,Apple,unknown_age,screen
+Power/battery,Apple,unknown_age,battery
+Screen,Apple,unknown_age,cracked screen
+Screen,Apple,unknown_age,small crack on screen
+Power/battery,Apple,unknown_age,battery
+Power/battery,Apple,unknown_age,battery
+Storage problem,Apple,unknown_age,storage - help given
+Screen,Apple,unknown_age,cracked screen
+Power/battery,Apple,unknown_age,battery
+Screen,Apple,unknown_age,cracked screen - no part available
+Screen,Apple,unknown_age,cracked screen and slow -no part available
+Speaker/amplifier,Apple,unknown_age,Speaker unaudible works in whatsapp Voice but no video not' swatchaft/ call
+Screen,Apple,unknown_age,cracked screen - touch problems
+Screen,Samsung,unknown_age,cracked screen
+Screen,Apple,unknown_age,Edge cracked screen - No part available
+USB/charging port,Samsung,unknown_age,Charge port failing - No part available
+Screen,Apple,unknown_age,scuffed screen
+Screen,Samsung,unknown_age,cracked screen - no part available
+Screen,Apple,unknown_age,cracked screen
+Other buttons,Apple,unknown_age,lock button problem - no part available
+Screen,Apple,unknown_age,cracked screen
+Other,Apple,unknown_age,water damage
+Screen,Apple,unknown_age,cracked screen
+Stuck booting,Apple,unknown_age,Power/boot
+Screen,Apple,unknown_age,Broken screen
+Other,Samsung,3,sea water damage
+Power/battery,Samsung,5,swollen battery
+Help/configuration,Apple,5,Network disorder
+Screen,Apple,3,needs new screen (waiting for spare part)
+Power/battery,Apple,3,irregular charging
+Power/battery,Samsung,4,Not switch on.
+Power/battery,Samsung,unknown_age,does not turn on
+Screen,Samsung,2,Broken scrren
+Screen,Apple,4,Broken screen/battery
+Screen,Apple,2,Broken screen
+Stuck booting,Samsung,8,"Charges, but does't start"
+Power/battery,Apple,5,Doesn't charge
+Volume buttons,Apple,5,Volume button
+Other,Samsung,1,SD card not working.  Card found to be faulty.  Phone OK
+Screen,Apple,unknown_age,screen replaced but now not working. Also repairer did not replace any screws! Might be repairable but no easy fault found upon inspection.
+Stuck booting,Samsung,3,Stuck in boot mode
+Screen,Apple,unknown_age,Needs screws after DIY screen replacement went slightly wrong.
+Screen,Samsung,unknown_age,Cracked screen
+Power/battery,Samsung,6,Doesn't charge
+Power/battery,Samsung,unknown_age,needs new battery
+Screen,Apple,unknown_age,"screen, could also be logicboard"
+Other buttons,Apple,4,Broken home button. Fixed in software
+Screen,Apple,unknown_age,"frame dislocated, glass defective ~ protective edge loose"
+Screen,Samsung,5,Does not turn on.  Screen damaged
+Power/battery,Apple,3,Does not charge plus other damage
+Software update,Apple,2,Wants to put it back to factory settings
+Other buttons,Apple,3,"Home button issues, ""freezes"" sometimes"
+Speaker/amplifier,Apple,4,Weak/bad sound from speaker
+Speaker/amplifier,Apple,2,Sound issues
+Camera,Apple,2,Both cameras won't work after fall; guests suggests replacing hardware - no physical damage found. Suggest factory reset.
+Screen,Apple,2,Cracked digitiser; LCD ok touch ok - request new screen assembly
+Screen,Samsung,1,Cracked digitiser; LCD ok touch ok - request new screen assembly
+Screen,Apple,2,Cracked digitiser; LCD ok touch ok - request new screen assembly
+Screen,Apple,2,Cracked digitiser; LCD ok touch ok - replaced screen assembly
+Screen,Apple,2,"Rear camera won't focus; Cracked digitiser; LCD ok touch ok - 1) go to Apple Store for free repair program, 2) request new screen assembly"
+USB/charging port,Apple,3,Phone won't charge - removed dirt from charging port
+Screen,Apple,3,"Cracked digitiser; LCD ok touch ok - request new screen assembly; silence button stuck - cleaned, works again"
+Screen,Apple,4,"Display coming off, battery health low - request new screen assembly and battery"
+Other,Apple,3,"Water damage, phone won't boot; corrosion found on board - suggest data recovery"
+Screen,Apple,1,Cracked digitiser; LCD ok touch ok - request new screen assembly
+Other buttons,Apple,2,"Home button doesn't work, no press or touch id - guest wants to preserve touch ID, suggest to go to Apple"
+Screen,Apple,4,"Cracked digitiser; LCD ok touch ok, battery health low - request new screen assembly and battery"
+Camera,Apple,2,Cracked lens cover - request new lens cover
+Liquid damage,Samsung,2,"Device won't connect via USB, dropped in sea water - request new I/O daughterboard and battery"
+Screen,Apple,2,Cracked digitiser; LCD ok touch ok - request new screen assembly
+Screen,Apple,3,Cracked digitiser; LCD ok touch ok - request new screen assembly
+Screen,Samsung,2,Cracked digitiser; LCD ok touch ok - request new screen assembly
+Screen,Apple,3,"pink screen, runs hot and shuts off. Factory reset needed."
+Other,Apple,unknown_age,"dropped in toilet, not working"
+Screen,Samsung,unknown_age,broken display
+Help/configuration,Samsung,unknown_age,Advice ~ Advice
+Other buttons,Apple,unknown_age,"Home button broken - kit not available to fix, suggested local professional."
+Help/configuration,Samsung,unknown_age,time/date wrong
+Screen,Apple,4,Broken Screen - Screen Replaced and Phone Restored
+Screen,Apple,6,Broken Screen - Replaced and Phone Repaired
+Screen,Apple,3,Broken screen and bad battery
+Help/configuration,Samsung,unknown_age,time/date wrong
+Other buttons,Apple,5,Slow home-button
+Sim card slot,Samsung,2,Doesn't work + sim card
+Headphone jack,Apple,1,plug for earphones broken
+Power/battery,Apple,4,Turns off even when fully charged
+Other,Samsung,1,Change back cover
+Power/battery,Apple,3,"Won't charge, loose screen"
+Headphone jack,Samsung,2,minijack street
+Unknown,Apple,3,Won't turn on
+Screen,Apple,3,"""Dead"" screen"
+Screen,Samsung,3,Broken screen
+Power/battery,Apple,4,Battery poor
+Screen,Apple,6,Broken glass and back
+Other,Samsung,unknown_age,Had been exposed to water and wanted to check for water damage
+Other buttons,Apple,2,"Home button and Touch ID not working; cracked screen 2 years ago, LCD and touch OK"
+Screen,Apple,1,"Cracked Screen, Touch and LCD ok"
+Screen,Apple,2,"Cracked Screen, battery dying fast"
+Screen,Apple,2,"Cracked Screen, Touch and LCD ok"
+Software update,Apple,2,"Phone runs slow; changed battery 1 month ago but doesn't help, 4Gb of storage left from 64"
+Power/battery,Apple,4,Battery and Screen Assembly Replacement
+Screen,Apple,4,Screen assembly bracket missing
+USB/charging port,Apple,2,"Charging port blocked; water evaporation signs in front-facing camera (potential water damage); no other symptoms . Dirt in charging point, dust in camera channel"
+Screen,Apple,1,Cracked digitiser
+Screen,Apple,unknown_age,"Cracked digitiser, low battery health"
+Screen,Apple,2,Cracked digitser
+Unknown,Apple,unknown_age,No idea ~ Can't send messages
+Stuck booting,Samsung,4,Doesn't work anymore
+Power/battery,Samsung,5,"power problem, advice given"
+Screen,Apple,5,screen
+Screen,Apple,unknown_age,LCD glass defect ~ screen damaged
+Power/battery,Samsung,4,"Fell into water, battery dead. Just replace the battery."
+Software update,Samsung,unknown_age,Screen going on and off.  Fixed by turning off the screen saver.
+Speaker/amplifier,Apple,unknown_age,speakers not working
+Other buttons,Apple,3,home button doesn't wake ~ home button doesn't work
+Speaker/amplifier,Apple,4,doesn't work anymore
+Power/battery,Apple,unknown_age,doesn't charge
+Help/configuration,Samsung,unknown_age,Setting ~ Screen locked
+USB/charging port,Apple,2,"No longer works, charging socket is defective"
+Screen,Samsung,5,Broken screen on one device ~ Transfer screen from one phone to another
+Screen,Apple,2,Touch screen not working properly
+Stuck booting,Samsung,7,Boot loop
+Screen,Apple,unknown_age,Screen broken
+Screen,Apple,unknown_age,Screen broken and battery too old
+Screen,Apple,4,broken screen
+Screen,Samsung,2,Displaywechsel
+Power/battery,Samsung,unknown_age,Not always staying on - needs new battery
+Speaker/amplifier,Apple,unknown_age,Facetime not working - volume issue
+Unknown,Apple,5,won't turn on
+Screen,Samsung,2,Broken screen and replacement digitzer
+Screen,Samsung,2,Broken screen
+Screen,Apple,3,Broken glass
+Power/battery,Apple,5,Looks like overheated battery
+Software issue,Apple,unknown_age,Software
+Power/battery,Samsung,unknown_age,Akku defekt
+Power/battery,Apple,unknown_age,Replacement Battery needed
+Other buttons,Samsung,unknown_age,Home Button not working
+Camera,Apple,unknown_age,Front Camera Not Working
+Screen,Apple,unknown_age,Broken Screen
+Screen,Apple,unknown_age,Needs new screen
+Screen,Apple,2,Screen broken
+Screen,Apple,4,needs new screen
+Screen,Apple,3,Screen broken
+Screen,Apple,2,screen separating from casing
+Software issue,Samsung,unknown_age,"An elderly lady visited us with a Samsung Galaxy smartphone that no longer wanted to obey her will. After we updated the operating system on the device and reset the data connection, everything worked to your satisfaction again."
+Software issue,Samsung,unknown_age,"An elderly lady visited us with a Samsung Galaxy smartphone that no longer wanted to obey her will. After we updated the operating system on the device and reset the data connection, everything worked to your satisfaction again."
+Screen,Apple,6,Broken screen
+Screen,Apple,3,Screen not working properly
+Microphone,Apple,4,Microphone not working
+Screen,Apple,2,broken screen
+Screen,Apple,2,broken screen
+Screen,Samsung,3,Broken screen
+Other,Samsung,1,Back glass broken. Had an offer to change for 370€
+Unknown,Apple,4,does not open
+Power/battery,Samsung,7,"overheats /malfunctions, battery bulging, needs new battery"
+Unknown,Apple,7,"3 Phones, cannabilised parts into 1"
+Speaker/amplifier,Apple,unknown_age,Audio volume poor; New speaker needed
+Screen,Apple,unknown_age,Screen Broken; Replacement installed
+Screen,Apple,4,Broken screen. Swapped button and camera
+Camera,Apple,2,Broken camera lens
+Screen,Apple,3,Cracked digitiser; LCD ok
+Screen,Apple,2,Digitiser unresponsive; ghost touch
+Screen,Apple,unknown_age,Cracked screen assembly
+Software issue,Apple,2,iTunes won't detect
+Camera,Apple,unknown_age,Cracked back cover and camera lens
+Power/battery,Apple,unknown_age,check battery
+Screen,Apple,unknown_age,Screen cracked
+Screen,Samsung,3,screen not working right. Fixed screen (loose connector) but broke power button
+Power/battery,Apple,unknown_age,Battery old
+Power/battery,Apple,unknown_age,Akku defekt
+Screen,Apple,unknown_age,Display replacement
+Power/battery,Apple,7,Dead battery. Needs replacement and specialized screwdrivers.
+Screen,Samsung,4,Cracked screen. Could be replace with a spare.
+Help/configuration,Samsung,8,data via SIM ~ advice on data transfer
+Screen,Apple,4,Cracked screen assembly
+Screen,Apple,unknown_age,Cracked screen assembly
+Screen,Apple,3,"Gassing battery, cracked screen, broken camera lens"
+Screen,Apple,2,Ghost touch on digitiser
+Screen,Apple,unknown_age,"Cracked screen, end-of-life battery"
+Unknown,Apple,2,Nothing is wrong during diagnosis
+Screen,Apple,3,Strips on display - previous repair shop opened it and lost some screws and a bracket in between
+Other,Apple,unknown_age,Water damage
+Screen,Samsung,2,Damaged LCD
+Power/battery,Samsung,4,Likely short circuit in charging port or IO board - needs new battery and charging port
+Screen,Apple,3,Broken screen
+Screen,Apple,2,Broken screen
+Screen,Apple,4,Broken screen
+Screen,Apple,4,Broken screen
+Other,Samsung,9,Loose wire from former repair
+Other,Samsung,9,Loose wire from former repair
+Screen,Apple,5,Broken screen and button
+Screen,Apple,2,Replaced broken screen.
+Screen,Apple,4,Screen Replacement
+Screen,Apple,unknown_age,Screen Broken
+Power/battery,Apple,unknown_age,Battery Fails @ 40%
+Power/battery,Apple,unknown_age,Battery Needs Replacing
+Screen,Samsung,unknown_age,Broken screen ~ Broken screen
+Liquid damage,Samsung,3,moisture problem ~ dropped phone into water
+Screen,Apple,3,Screen cracked.  Replacement screen fitted.
+Screen,Samsung,unknown_age,"A visitor wanted to replace the cracked display glass on her Samsung “Galaxy J5” smartphone with us, but in the end this turned out to be too time-consuming and impractical. She ultimately decided to replace the entire display unit and now wants to order the necessary spare part by the next date."
+Screen,Apple,3,Cracked screen assembly + camera lens; needs new battery
+Screen,Apple,3,Cracked screen assembly
+Screen,Samsung,2,"No display on the screen, light at the bottom - need to research more on the issue"
+Screen,Samsung,unknown_age,Screen blacked out after physical impact
+Other,Apple,1,Cracjed rear case glass
+Screen,Apple,7,Cracked screen assembly
+Unknown,Samsung,unknown_age,no longer works
+Screen,Apple,unknown_age,display assembly replacement
+USB/charging port,Apple,unknown_age,needed new charging port and screen
+Help/configuration,Samsung,unknown_age,remove photos
+Help/configuration,Samsung,unknown_age,please set up properly and install apps
+Screen,Samsung,unknown_age,Screen broken; Replacement needed
+Screen,Samsung,unknown_age,Screen Locked
+Screen,Apple,unknown_age,Screen Broken; Replacement Needed
+USB/charging port,Samsung,unknown_age,Charging Port not working; Replacement Unit needed
+Power/battery,Samsung,unknown_age,phone gets hot
+Power/battery,Apple,unknown_age,Battery needs replacing ~ Battery needs replacing
+Power/battery,Apple,unknown_age,Battery needs replacing ~ Battery issue
+Screen,Apple,4,Snapped display assembly flex
+Screen,Apple,3,Cracked digitiser; LCD flex cable shows sign of torn damage
+Screen,Apple,4,Cracked digitiser
+Headphone jack,Samsung,1,Headphone jack clogged by dust; cleaned thoroughly
+USB/charging port,Samsung,1,Charger port not detected; faulty USB cable
+Camera,Apple,unknown_age,Camera OIS failure
+Microphone,Samsung,unknown_age,"The smartphone's microphone just hissed. Fortunately, it is located on the cable for the headphone jack and can be replaced individually."
+Power/battery,Apple,unknown_age,Glue the battery in place
+Screen,Apple,unknown_age,Broken screen
+Screen,Apple,unknown_age,"No display even if device is detected (on wifi, bluetooth)"
+Camera,Apple,unknown_age,Photo camera problem
+Power/battery,Apple,unknown_age,Battery won't charge
+Headphone jack,Apple,unknown_age,Jack port not working
+Screen,Apple,unknown_age,Screen replacement
+Screen,Apple,unknown_age,Broken screen
+Power/battery,Apple,unknown_age,Swolen battery
+Unknown,Apple,2,n.a.
+Power/battery,Apple,2,Akkuwechsel
+Screen,Apple,4,Screen assembly replacement
+Screen,Apple,3,Screen assembly replacement
+Screen,Apple,2,Cracked digitiser; screen assembly replacement requested
+Other,Apple,2,Extreme water damage after being put in a washing machine - data can be recovered
+Power/battery,Apple,4,Battery replacement
+Sim card slot,Apple,3,Bad contact with sim card
+USB/charging port,Apple,5,Charging socket and battery replaced
+Screen,Samsung,unknown_age,no screen ~ no screen
+Power/battery,Apple,unknown_age,"Needed a new battery. But after replacing the battery, the phone stopped working (even using the old battery). It looks like a mistake was made during the repair (possible short circuit). The phone was repaired after the event by replacing the display and vibration motor."
+Power/battery,Samsung,2,Doesn't turn on. Could be a battery issue.  Recommended to try a new battery and then if no joy take it to professional repairer.
+Power/battery,Apple,4,Replace battery ~ Battery worn out
+Power/battery,Apple,unknown_age,Needs new battery ~ Battery needs replacing
+Power/battery,Apple,unknown_age,The battery had already been changed before without calibrating it. Note on how to do this
+Unknown,Apple,7,"Dead. Checked battery, that seemed OK (at least not working when powered by power cube)."
+Screen,Samsung,unknown_age,Display split
+Software issue,Samsung,unknown_age,The smartphone did not work properly. When unlocked it sometimes reboots. We recommended backing up your data and resetting the device to factory settings.
+Headphone jack,Samsung,unknown_age,Replace jack plug
+Charger,Samsung,unknown_age,"Doesn't charge well - dodgy cable, so advised to replace"
+Screen,Samsung,2,screen broken ~ screen broken
+Power/battery,Apple,3,phone broken ~ phone won't turn on
+Power/battery,Samsung,4,not starting /responding
+Screen,Samsung,unknown_age,Broken screen
+Storage problem,Samsung,1,Unable to get pictures from sim to memory card
+Other,Apple,6,bended motherboard
+Power/battery,Apple,unknown_age,broken screen and recharge circuit not working
+Camera,Samsung,4,broken camera lens
+Unknown,Apple,7,wires loose
+Screen,Apple,unknown_age,Display glass broken. A new display is required. Shop recommended for repairs
+Screen,Samsung,unknown_age,Display torn and therefore no operation possible.
+Microphone,Samsung,4,The Galaxy J3 smartphone had problems with the microphone. We recommended that the guest get a new microphone so we can help him repair it.
+Screen,Apple,unknown_age,Broken Screen
+Speaker/amplifier,Apple,unknown_age,Audio Problem
+Screen,Samsung,unknown_age,Broken screen.
+Microphone,Samsung,unknown_age,difficulty with new technology ~ WhatsApp not working
+Camera,Samsung,unknown_age,Camera connector loose
+USB/charging port,Apple,unknown_age,Reinforced with shrink tubing to prevent cable breakage
+Screen,Samsung,unknown_age,Broken Screen
+Power/battery,Apple,unknown_age,Battery Needed Replacing
+Screen,Apple,unknown_age,Cracked Screen; Needed Replacement
+Screen,Samsung,unknown_age,Screen Needs Replacing
+Screen,Apple,unknown_age,Screen Broken; To be replaced
+USB/charging port,Apple,unknown_age,Charging Port Faulty; Replaced
+USB/charging port,Apple,unknown_age,Charging Port Also Faulty; Replaced
+Screen,Samsung,unknown_age,Faulty Screen; Needs Replacing
+Power/battery,Apple,unknown_age,Broken - fitted with new power cable and off switch realigned
+Unknown,Samsung,unknown_age,not working
+Power/battery,Samsung,4,Won't charge ~ Keeps cutting out
+Screen,Samsung,unknown_age,screen cracked and back light not working
+Screen,Samsung,unknown_age,Display replacement
+Storage problem,Apple,4,"iMessages could not get send and a generally bad reception. Turned out her mobile data was turned off and the storage on the phone was reaching an end. It works for now, more questions are fixed in the future."
+Screen,Apple,unknown_age,"Cracked screen from being dropped twice. Replacement module already purchased. Supplied tools inadequate to complete repair. The owner will return to complete repair when tools available. Update: This has now been fixed successfully after several more visits and ordering spare parts. A 3rd party screen £17.70 and a spare set of screws £2 to replace a lost screw. A good value repair as the secondhand resell value on this phone is currently £350. The instructions on iFixt were incomplete about the replacement of the two rubber buffer/grommets that are attached to the two pentalobe screws. And also there was some difficulty replacing the adhesive tape for gluing down the screen. In the future, it may be necessary to apply the adhesive before attaching the cables for the new screen as the cables get in the way. Because of issues with the adhesive this repair may not be as waterproof as the original phone. if the battery needs to be replaced due to having low capacity it is advised that it be done at the same time but the old battery was considered sufficient capacity and not replaced on this occasion. ooo-xxx"
+Microphone,Apple,3,Microphone not working
+Screen,Apple,5,Screen & Battery Replacements
+Screen,Apple,unknown_age,Screen Replacement
+Unknown,Apple,unknown_age,Not Working
+Power/battery,Apple,unknown_age,"Not starting properly.  Battery faulty, replacement needed.  User referred to local business."
+Screen,Samsung,unknown_age,Screen broken.  User advised on getting replacement
+Speaker/amplifier,Apple,unknown_age,Speakers don't work.  Found to be full of crud.  Cleaned.  Works.
+Volume buttons,Samsung,unknown_age,Loud quiet buttons defective
+Screen,Apple,unknown_age,screen cracked
+Screen,Samsung,1,"Screen broken ~ Stains on screen, now no image"
+Camera,Apple,3,rear camera shaking profusely - repaired before (screen replacement). Outside of apple's repair program
+Screen,Samsung,2,Cracked screen. Ordered new screen
+Screen,Apple,4,Screen cracked. Ordered new screen.
+Screen,Apple,4,Screen cracked. Ordered new screen.
+Charger,Samsung,unknown_age,"Device does not start. Loaded for 20 minutes for testing, device is ok. The charging cable is probably defective."
+Screen,Samsung,2,Broken screen. Replacement screen was probably broken.
+Storage problem,Samsung,7,"eMMC memory defective, device very slow. Owner had supplied a replacement mainboard. After the exchange everything worked except the camera. He does a FW update at home and comes back if the camera doesn't work."
+Screen,Apple,unknown_age,Broken Screen; Antenna Connection broken
+Power/battery,Samsung,5,doesn't charge
+Unknown,Samsung,5,"not working, unknown"
+Unknown,Samsung,7,"not working, unknown"
+Unknown,Samsung,5,"not working, unknown"
+Unknown,Samsung,7,"not working, unknown"
+USB/charging port,Samsung,5,Not charging
+USB/charging port,Samsung,5,not charging
+Power/battery,Apple,5,Battery change
+USB/charging port,Apple,5,Foreign object in charging port
+Unknown,Apple,4,Won't turn on
+Other,Samsung,4,Doesn't remember security code
+Other,Apple,5,Needs help with backup
+Other,Apple,5,iPhone 6 presents with reported water damage. Owner says they opened it up themselves to try to dry it up and did not turn it on thereafter.Found water damage on motherboard - requires microsoldering. Referred to professional
+Screen,Apple,5,iPhone 6 with cracked digitiser. Replaced. Touch ID non functional. Replaced digitiser
+Camera,Apple,3,"iPhone 6s Plus with unstable, shaky camera. Came for camera replacement. Camera replaced. Back to normal functionality. Might have cracked the screen while opening up the device"
+Screen,Samsung,2,Cracked digitiser. Replaced screen.
+Other,Apple,8,"iPhone 4S (black) with damaged (possible water damage) front-facing camera and home button. The led light is also permanently lit dimly draining the battery even when the phone is switched off. A spare iPhone4S (white) with an iCloud locked logic board was used for spare parts. The logic board from both phones were removed and swapped over, thus two non-working phones were converted into one working phone. The current secondhand retail price on a working iPhone4S is about £30 making the price on replacement parts prohibitively high, salvaging from another iPhone is the best option. IFixit was used as a take apart guide. The Battery removal tab was accidentally allowed to get trapped under the logic board on the fixed phone. The effort of removing the logic board again on discovery was considered not worth it. ooo-xxx"
+Screen,Samsung,unknown_age,Display defective
+Power/battery,Samsung,unknown_age,Akku defekt
+USB/charging port,Samsung,unknown_age,charging socket
+Screen,Apple,4,New screen needed
+Screen,Samsung,2,The screen was partly dead. After ordering a new screen it was fixed.
+Screen,Apple,2,"Cracked digitizer few days ago, used for a few months only. Ordered new screen assembly"
+Screen,Apple,3,"Cracked digitizer 4 months ago, screen repaired by 3rd part, Bad battery health(66%). Ordered new screen assembly"
+Power/battery,Samsung,4,"Second hand phone, user requests new battery. Battery ordered"
+Unknown,Apple,unknown_age,to
+Power/battery,Apple,5,"The owner of an “iPhone 5s” smartphone had already replaced the battery at home, but unfortunately the device no longer started. He checked all the plug connections and that didn't make any difference. We suspected that the battery was not sufficiently charged and recommended charging it for some time."
+Other,Apple,unknown_age,Broken screw
+Sim card slot,Samsung,1,Contact on sim card was dirty
+Screen,Apple,1,New screen
+Screen,Apple,5,Broken screen
+Screen,Samsung,3,Broken screen
+Screen,Apple,2,Broken screen
+Other buttons,Samsung,4,Button has slow reaction
+Screen,Apple,2,Broken screen
+Power/battery,Apple,5,The battery of an “Apple iPhone 4” was once again deeply discharged. So much so that it was no longer possible to shop. The only thing that helps is a new battery. The guest comes back with the new one.
+Liquid damage,Apple,unknown_age,Water damage
+Liquid damage,Apple,4,Water damage
+Camera,Apple,2,Camera exhibit is classic shaking issue. Order camera replacement
+Other buttons,Apple,5,Unresponsive home button. Order new home button and screen
+Screen,Samsung,1,Cracked screen after dropping it. Customer prefer not to repair
+Screen,Samsung,1,"Cracked Screen., Customer prefers not to repair"
+Power/battery,Samsung,4,Battery replacement
+Camera,Apple,2,"Device is second hand from a family member. Phone was dropped in water, caused smudges to appear on camera. Replaced rear camera and rear camera glass. Function back to normal"
+Software update,Apple,2,Phone is stuck in the software reinstall phase. Could not fix it. Maybe proceed with motherboard replacement.
+Power/battery,Samsung,unknown_age,does not start
+USB/charging port,Samsung,unknown_age,bad contact at charging socket
+Sim card slot,Samsung,3,Sim-card holder won't open
+Camera,Apple,4,"Camera doesn't work, wants to change battery"
+Screen,Apple,5,"""Frozen"" screen after fall"
+Screen,Apple,2,Change screen
+Camera,Apple,2,Camera not working. Advice given.
+Help/configuration,Samsung,2,not yet set up properly ~ ringtone with train sounds does not work
+On/Off button,Apple,4,home button defect
+Camera,Apple,2,Camera exhibit is classic shaking issue. Camera ordered was defective. Reordered camera
+Power/battery,Apple,2,Fast battery drain. Ordered new battery
+Screen,Apple,4,Digitiser fully broken and falling apart. Requested new screen assembly
+Power/battery,Apple,2,Low battery health. Ordered new battery
+Power/battery,Apple,7,Battery bad ~ battery bad
+Screen,Apple,4,"Screen broken ~ Screen broken, streaks on LCD."
+Other buttons,Apple,3,button stuck
+Software issue,Samsung,2,Software and/or Android ~ Device keeps restarting
+Internal damage,Samsung,unknown_age,Doesn't work anymore (fallen)
+Power/battery,Apple,4,dead battery
+Other,Samsung,unknown_age,4G signal problems.  Possible on-board fault to Tx/Rx radio or antenna. Not replacable.  Advise to put into re-flow
+Screen,Samsung,unknown_age,broken window√©
+Software update,Apple,unknown_age,Software defect. The firmware and software were updated via developer mode.
+Screen,Apple,unknown_age,Transfer a screen from a broken device to a replacement one.
+Screen,Apple,3,Screen damaged
+Screen,Samsung,unknown_age,Display replacement
+Screen,Apple,3,screen defect ~ does not turn on and freezes
+Screen,Apple,unknown_age,Display cracked
+Software issue,Samsung,4,password setting ~ no longer works properly
+USB/charging port,Samsung,4,no contact charger
+Unknown,Samsung,unknown_age,Not found. ~ No function
+Power/battery,Samsung,unknown_age,No power
+Screen,Samsung,unknown_age,Display
+Unknown,Apple,unknown_age,Been through the washing machine.  Provided advise for repair
+Software issue,Apple,5,"1. All screws were included loose, too great a risk to replace. 2. update via iTunes failed (error 78) ~ put screen on and suspected software problem"
+Software issue,Samsung,unknown_age,suggested install malware ~ hijacked by an app with adds
+Stuck booting,Samsung,unknown_age,Suggested factory reset ~ screen black
+Power/battery,Apple,unknown_age,"Following instructions on the Internet, the guest independently replaced the old battery and the worn charging socket, for which he had previously purchased suitable replacement parts. Disassembly, replacement and assembly went smoothly. The only drawback: the Touch ID function no longer worked afterwards and now has to be reactivated again."
+Help/configuration,Samsung,unknown_age,Transfer data ~ Transfer data
+Screen,Apple,5,want to make 1 working phone from 3 ~ screen cracked
+Camera,Apple,3,Broken back camera and flashlight
+Other,Apple,4,Cannot transfer files to new phone.  Files partly corrupted but moved to new phone and cloud
+Unknown,Apple,unknown_age,"Difficult diagnosis: charging cable missing, battery almost empty ~ ask if it can be repaired"
+Screen,Apple,8,Screen broken
+Screen,Samsung,2,Screen not working.
+Screen,Samsung,unknown_age,broken cable ~ Touchpad doesn't work
+Unknown,Samsung,unknown_age,Flickered and died over a 2 month period
+Help/configuration,Apple,unknown_age,"I phone, A Nokias, A samsung and a Motorola all need re setting"
+Power/battery,Samsung,unknown_age,Charging issue
+Help/configuration,Apple,unknown_age,WhatsApp is not installed ~ WhatsApp does not work
+Screen,Apple,5,"The visitor brought the iPhone with a broken display and had also gotten the right replacement display. With good instructions online and a lot of patience, one of our “specialists” was able to give the device with a new display back to its owner at the end of the day."
+Microphone,Apple,unknown_age,Microphone not working
+Storage problem,Apple,unknown_age,Not enough space
+Liquid damage,Apple,4,Water Damage
+Unknown,Samsung,unknown_age,he doesn't answer anymore
+Help/configuration,Samsung,20,Please set up internet
+Software update,Samsung,6,Locked admin restricted downloading apps. Reset.
+Screen,Samsung,unknown_age,"Dark screen, lcd  trouble"
+Software update,Apple,2,scan disk key not recognized
