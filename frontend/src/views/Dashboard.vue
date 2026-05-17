@@ -1,660 +1,656 @@
-<template>
-  <div class="dash">
-    <!-- INTRO -->
-    <transition name="fade-up" mode="out-in">
-      <section v-if="phase === 'intro'" key="intro" class="phase intro">
-        <div class="eco-shell intro-grid">
-          <div class="intro-text">
-            <span class="eco-eyebrow">Health & e-waste</span>
-            <h1 class="eco-display">
-              Five questions.<br />
-              <em>Real impact.</em>
-            </h1>
-            <p class="eco-lead">
-              Most health stats about e-waste land flat. So we'll ask you five quick questions —
-              then show you the numbers that actually apply to <em>your</em> habits.
-            </p>
-            <div class="intro-actions">
-              <button class="eco-btn eco-btn--mint" @click="start">
-                Start the 60-second check <span class="arrow">→</span>
-              </button>
-              <button class="eco-btn eco-btn--ghost" @click="phase = 'insights'">
-                Skip to the data
-              </button>
-            </div>
-          </div>
-          <aside class="intro-meta">
-            <div class="meta-card">
-              <span class="eco-mono">What you'll learn</span>
-              <ul>
-                <li>The pollutant most linked to your habits</li>
-                <li>Your personal health-risk profile</li>
-                <li>Three concrete actions you can take today</li>
-              </ul>
-            </div>
-            <div class="meta-card">
-              <span class="eco-mono">Time</span>
-              <strong>~ 60 seconds</strong>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <!-- QUIZ -->
-      <section v-else-if="phase === 'quiz'" key="quiz" class="phase quiz">
-        <div class="eco-shell quiz-shell">
-          <header class="quiz-head">
-            <span class="eco-mono">Question {{ qIndex + 1 }} / {{ questions.length }}</span>
-            <div class="progress">
-              <div class="bar" :style="{ width: progressPct + '%' }" />
-            </div>
-            <button class="back" @click="back" :disabled="qIndex === 0">← Back</button>
-          </header>
-
-          <transition name="slide" mode="out-in">
-            <div class="qcard" :key="qIndex">
-              <h2 class="qprompt">{{ current.q }}</h2>
-              <p v-if="current.help" class="qhelp">{{ current.help }}</p>
-
-              <div class="opts">
-                <button
-                  v-for="opt in current.options"
-                  :key="opt.value"
-                  class="opt"
-                  :class="{ on: answers[current.id] === opt.value }"
-                  @click="answer(opt.value)"
-                >
-                  <span class="opt-mark">
-                    <svg v-if="answers[current.id] === opt.value" viewBox="0 0 16 16" width="14" height="14">
-                      <path d="M2 8l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </span>
-                  <span class="opt-text">
-                    <strong>{{ opt.label }}</strong>
-                    <em v-if="opt.tag">{{ opt.tag }}</em>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </transition>
-        </div>
-      </section>
-
-      <!-- INSIGHTS -->
-      <section v-else key="insights" class="phase insights">
-        <div class="eco-shell">
-          <header class="ins-head">
-            <span class="eco-eyebrow reveal">Your read</span>
-            <h2 class="eco-h2 reveal reveal-delay-1">
-              Based on your answers,<br />
-              <em>{{ profile.title }}</em>
-            </h2>
-            <p class="eco-lead reveal reveal-delay-2">{{ profile.summary }}</p>
-            <div class="ins-actions reveal reveal-delay-3">
-              <button class="eco-btn eco-btn--ghost" @click="restart">Retake quiz</button>
-              <router-link to="/disposal-locations" class="eco-btn eco-btn--mint">
-                Find a drop-off <span class="arrow">→</span>
-              </router-link>
-            </div>
-          </header>
-
-          <!-- THREE BIG NUMBERS -->
-          <div class="kpi-grid">
-            <div class="kpi reveal" v-for="(k, i) in kpis" :key="k.label" :class="`reveal-delay-${i + 1}`">
-              <span class="eco-mono">{{ k.label }}</span>
-              <strong class="kpi-num">{{ k.value }}<span>{{ k.unit }}</span></strong>
-              <p>{{ k.note }}</p>
-            </div>
-          </div>
-
-          <!-- CHAIN -->
-          <article class="chain reveal">
-            <span class="eco-eyebrow">The chain</span>
-            <h3>From device → environment → people</h3>
-            <div class="chain-flow">
-              <div v-for="(step, i) in chain" :key="step.t" class="chain-node">
-                <span class="ch-dot" />
-                <strong>{{ step.t }}</strong>
-                <p>{{ step.d }}</p>
-                <span v-if="i < chain.length - 1" class="chain-line" />
-              </div>
-            </div>
-          </article>
-
-          <!-- SIGNAL BARS -->
-          <article class="signals reveal">
-            <div class="signals-head">
-              <span class="eco-eyebrow">Strongest signals</span>
-              <h3>What predicts harm best?</h3>
-            </div>
-            <div class="signal-list">
-              <div v-for="f in findings" :key="f.metric" class="signal">
-                <div class="sig-meta">
-                  <strong>{{ f.metric }}</strong>
-                  <span>{{ f.signal }}</span>
-                </div>
-                <div class="sig-bars">
-                  <div class="sig-bar">
-                    <div class="bar mint" :style="{ width: (f.spearman * 100) + '%' }" />
-                    <span class="bar-val">{{ f.spearman }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <p class="sig-foot">
-              <span class="eco-mono">Spearman correlation · 0–1</span>
-              Based on Australian state-year health and emissions data.
-            </p>
-          </article>
-
-          <!-- WHAT TO DO -->
-          <article class="actions-card reveal">
-            <span class="eco-eyebrow">What to do</span>
-            <h3>Three concrete actions</h3>
-            <div class="action-list">
-              <div v-for="(a, i) in profile.actions" :key="a.title" class="action">
-                <span class="a-num">0{{ i + 1 }}</span>
-                <div>
-                  <strong>{{ a.title }}</strong>
-                  <p>{{ a.text }}</p>
-                </div>
-                <router-link v-if="a.to" :to="a.to" class="a-link">{{ a.cta }} →</router-link>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-    </transition>
-  </div>
-</template>
-
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { api } from '@/api'
-import { useReveal } from '@/composables/useReveal'
+import NewFeatureDashboard from './New_feature_Dashboard.vue'
+import pearsonHeatmapUrl from '@/assets/health-analysis/emissions_health_pearson_heatmap.png'
+import spearmanHeatmapUrl from '@/assets/health-analysis/emissions_health_spearman_heatmap.png'
+import environmentHeatmapUrl from '@/assets/environment-analysis/overall_state_aggregate_pearson_heatmap.png'
 
-useReveal()
+const selectedMethod = ref('spearman')
 
-// Quiz state
-const phase = ref('intro') // intro | quiz | insights
-const qIndex = ref(0)
-const answers = reactive({})
+const selectedHeatmapUrl = computed(() =>
+  selectedMethod.value === 'spearman' ? spearmanHeatmapUrl : pearsonHeatmapUrl,
+)
 
-const questions = [
-  {
-    id: 'replace',
-    q: 'How often do you replace your phone?',
-    help: 'Best estimate. Skips and trade-ins count too.',
-    options: [
-      { value: 'every1', label: 'Every 1 year', tag: 'Heavy upgrader' },
-      { value: 'every2', label: 'Every 2–3 years', tag: 'Average' },
-      { value: 'every4', label: 'Every 4+ years', tag: 'Low impact' },
-      { value: 'never', label: 'Until it dies', tag: 'Minimalist' },
-    ],
-  },
-  {
-    id: 'disposal',
-    q: 'When a device dies, where does it usually go?',
-    options: [
-      { value: 'bin', label: 'General rubbish bin', tag: 'Highest risk' },
-      { value: 'drawer', label: 'Sits in a drawer for years', tag: 'Latent risk' },
-      { value: 'recycle', label: 'E-waste recycling drop-off', tag: 'Good' },
-      { value: 'reuse', label: 'Sold, donated, or traded in', tag: 'Best' },
-    ],
-  },
-  {
-    id: 'battery',
-    q: 'A swollen lithium battery — what would you do?',
-    options: [
-      { value: 'bin', label: 'Throw in the bin', tag: 'Fire risk' },
-      { value: 'drawer', label: 'Leave in the drawer', tag: 'Risky' },
-      { value: 'unknown', label: 'I genuinely don\'t know', tag: 'Most people' },
-      { value: 'safe', label: 'Take to a battery drop-off', tag: 'Correct' },
-    ],
-  },
-  {
-    id: 'cables',
-    q: 'Old chargers, cables, headphones — what happens to them?',
-    options: [
-      { value: 'bin', label: 'They go in the bin', tag: 'Common' },
-      { value: 'box', label: 'In a "tech junk" box at home', tag: 'Likely' },
-      { value: 'recycle', label: 'I drop them at e-waste sites', tag: 'Best' },
-    ],
-  },
-  {
-    id: 'aware',
-    q: 'How concerned are you about e-waste health impact?',
-    options: [
-      { value: 'low', label: 'Honestly, not much', tag: 'Common' },
-      { value: 'mid', label: 'A little', tag: 'Average' },
-      { value: 'high', label: 'A lot', tag: 'Engaged' },
-    ],
-  },
-]
+const summaryCards = ref([])
+const pathwayChains = ref([])
+const environmentSummary = ref([])
+const stateEnvironmentSignals = ref([])
+const topEwasteStates = ref([])
+const findings = ref([])
+const modelCards = ref([])
 
-const current = computed(() => questions[qIndex.value])
-const progressPct = computed(() => ((qIndex.value + 1) / questions.length) * 100)
-
-function start() { phase.value = 'quiz'; qIndex.value = 0 }
-function answer(value) {
-  answers[current.value.id] = value
-  setTimeout(() => {
-    if (qIndex.value < questions.length - 1) qIndex.value++
-    else phase.value = 'insights'
-  }, 280)
+function applyHealthData(data = {}) {
+  summaryCards.value = Array.isArray(data.summaryCards) ? data.summaryCards : []
+  pathwayChains.value = Array.isArray(data.pathwayChains) ? data.pathwayChains : []
+  environmentSummary.value = Array.isArray(data.environmentSummary) ? data.environmentSummary : []
+  stateEnvironmentSignals.value = Array.isArray(data.stateEnvironmentSignals)
+    ? data.stateEnvironmentSignals
+    : []
+  topEwasteStates.value = Array.isArray(data.topEwasteStates) ? data.topEwasteStates : []
+  findings.value = Array.isArray(data.findings) ? data.findings : []
+  modelCards.value = Array.isArray(data.modelCards) ? data.modelCards : []
 }
-function back() { if (qIndex.value > 0) qIndex.value-- }
-function restart() { phase.value = 'intro'; qIndex.value = 0; for (const k in answers) delete answers[k] }
-
-// === Insights ===
-const profile = computed(() => {
-  const a = answers
-  // Risk score: bin/drawer/unknown answers raise it
-  let risk = 0
-  if (a.replace === 'every1') risk += 2
-  if (a.replace === 'every2') risk += 1
-  if (a.disposal === 'bin') risk += 3
-  if (a.disposal === 'drawer') risk += 2
-  if (a.battery === 'bin') risk += 3
-  if (a.battery === 'drawer' || a.battery === 'unknown') risk += 2
-  if (a.cables === 'bin') risk += 2
-  if (a.cables === 'box') risk += 1
-  if (a.aware === 'low') risk += 1
-
-  if (risk >= 8) return profileHigh
-  if (risk >= 4) return profileMid
-  return profileLow
-})
-
-const profileHigh = {
-  title: 'your habits sit on the high-impact end.',
-  summary:
-    'You replace devices often and tend to bin them. That puts you in the group most exposed to battery-fire risk and most responsible for emissions tied to manufacturing new devices.',
-  actions: [
-    { title: 'Stop binning batteries today', text: 'A single swollen battery can ignite a waste truck. Drop them at any battery point — supermarkets, libraries, e-waste centres.', cta: 'Find a drop-off', to: '/disposal-locations' },
-    { title: 'Run the repair check', text: 'Before replacing your next device, spend 30 seconds on the repair-or-replace tool. Most issues cost less to fix.', cta: 'Open repair tool', to: '/repair-check' },
-    { title: 'Sell instead of binning', text: 'Working devices have value. Drop them at an EcoReviva pickup stall — no listing, no haggling.', cta: 'Find pickup', to: '/pickup-points' },
-  ],
-}
-const profileMid = {
-  title: 'your habits are average for Australia.',
-  summary:
-    'You\'re not the worst case, but old devices probably pile up in a drawer. That\'s where battery degradation and e-waste creep happen.',
-  actions: [
-    { title: 'Empty the tech-junk drawer', text: 'Set aside one Saturday. Any working device → pickup point. Anything dead → e-waste drop-off.', cta: 'Find drop-off', to: '/disposal-locations' },
-    { title: 'Treat batteries differently', text: 'Cables in a regular bin is fine in some councils. Batteries — never. Always a battery point.', cta: 'See safety tips', to: '/disposal-locations' },
-    { title: 'Try a longer phone cycle', text: 'Stretching from 2 years to 4 cuts your manufacturing emissions in half.', cta: 'AI optimizer', to: '/ai-chat' },
-  ],
-}
-const profileLow = {
-  title: 'you\'re already in the low-impact group.',
-  summary:
-    'Long device cycles and proper disposal mean you\'re not the problem. The risk is what your friends and family do — and that\'s where you can have the biggest knock-on impact.',
-  actions: [
-    { title: 'Share what you know', text: 'The sorting game is the easiest thing to send to a friend. Two minutes, no signup.', cta: 'Open the game', to: '/game' },
-    { title: 'Take old devices off other hands', text: 'You already do the hard part. Offer to drop off other people\'s tech junk too — they often won\'t.', cta: 'Find a drop-off', to: '/disposal-locations' },
-    { title: 'Push the repair tool', text: 'When friends ask "should I upgrade?" — send them the calculator instead of an opinion.', cta: 'Repair tool', to: '/repair-check' },
-  ],
-}
-
-// KPI numbers (also varies slightly with profile)
-const kpis = computed(() => {
-  const high = profile.value.title.includes('high-impact')
-  const low = profile.value.title.includes('low-impact')
-  return [
-    {
-      label: 'Likely exposure',
-      value: high ? 'High' : low ? 'Low' : 'Medium',
-      unit: '',
-      note: 'How directly your habits expose people around you to e-waste pollutants.',
-    },
-    {
-      label: 'Strongest signal',
-      value: '0.94',
-      unit: '',
-      note: 'Spearman correlation between water emissions and years of life lost (state-year data).',
-    },
-    {
-      label: 'Battery fires per year',
-      value: '12',
-      unit: 'K+',
-      note: 'In Australian waste trucks. Most are caused by binned lithium batteries.',
-    },
-  ]
-})
-
-const chain = [
-  { t: 'E-waste generation', d: 'Old phones, laptops, batteries, cables — discarded faster than they\'re recycled.' },
-  { t: 'Pollutants released', d: 'Heavy metals leach into water. PM2.5 from informal burning enters air.' },
-  { t: 'Health burden', d: 'Premature deaths and years of life lost — measurable per Australian state.' },
-]
-
-// Pulled from /api/health/all with a baked-in fallback
-const findings = ref([
-  { metric: 'Years of Life Lost', signal: 'Total Water Emission', spearman: 0.94 },
-  { metric: 'Avoidable Deaths', signal: 'Total Water Emission', spearman: 0.93 },
-  { metric: 'Premature Deaths', signal: 'Total Water Emission', spearman: 0.93 },
-  { metric: 'Deaths', signal: 'Total Water Emission', spearman: 0.90 },
-  { metric: 'Crude Rate', signal: 'Zinc Water', spearman: 0.82 },
-])
 
 onMounted(async () => {
   try {
-    const data = await api.getHealthAll()
-    if (Array.isArray(data?.findings) && data.findings.length) {
-      findings.value = data.findings.map((f) => ({
-        metric: f.metric, signal: f.signal, spearman: f.spearman,
-      }))
-    }
-  } catch (e) { /* keep fallback */ }
+    applyHealthData(await api.getHealthAll())
+  } catch (error) {
+    console.error('[Dashboard] failed to load health data:', error)
+  }
 })
 </script>
 
-<style scoped>
-.dash { padding-top: 120px; padding-bottom: 80px; min-height: 100vh; }
-.phase { padding: 40px 0; }
+<template>
+  <main class="dashboard-page">
+    <section class="hero-panel">
+      <div>
+        <span class="eyebrow">Impact Dashboard</span>
+        <h1>E-waste pollution and health impact insights</h1>
+        <p>
+          This dashboard presents the evidence pathway from e-waste pressure to environmental
+          pollution, then from pollution indicators to health burden signals.
+        </p>
+      </div>
+      <div class="hero-chips">
+        <span>E-waste pressure</span>
+        <span>Environmental emissions</span>
+        <span>Health burden</span>
+      </div>
+    </section>
 
-/* INTRO */
-.intro-grid {
+    <section class="pathway-grid">
+      <article v-for="chain in pathwayChains" :key="chain.title" class="pathway-card">
+        <span class="section-tag">{{ chain.tag }}</span>
+        <h2>{{ chain.title }}</h2>
+        <div class="pathway-steps">
+          <template v-for="(step, index) in chain.steps" :key="step">
+            <strong>{{ step }}</strong>
+            <span v-if="index < chain.steps.length - 1" class="arrow">→</span>
+          </template>
+        </div>
+        <p>{{ chain.evidence }}</p>
+      </article>
+    </section>
+
+    <!--
+    <section class="stats-grid">
+      <article v-for="card in summaryCards" :key="card.label" class="card">
+        <span class="card-label">{{ card.label }}</span>
+        <h2>{{ card.value }}</h2>
+        <p>{{ card.text }}</p>
+      </article>
+    </section>
+    
+
+    <section class="analysis-panel">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">E-waste → Environment</span>
+          <h2>E-waste pressure and pollutant emission signals</h2>
+        </div>
+      </div>
+
+      <div class="heatmap-frame">
+        <img :src="environmentHeatmapUrl" alt="E-waste and pollutant correlation heatmap" />
+      </div>
+    </section>
+  -->
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="section-header compact">
+          <div>
+            <span class="section-tag">Overall Signals</span>
+            <h2>Environmental impacts linked to e-waste activity</h2>
+            <p class="section-desc">
+              These signals show how e-waste related activity aligns with broader pollution
+              patterns.
+            </p>
+          </div>
+        </div>
+
+        <div class="finding-list">
+          <div v-for="item in environmentSummary" :key="item.metric" class="finding-row">
+            <div class="finding-text">
+              <strong class="title">{{ item.metric }}</strong>
+
+              <span class="sub">
+                {{ item.pollutant }} ·
+                {{
+                  item.metric.toLowerCase().includes('recycling')
+                    ? 'Air pollution signal'
+                    : item.metric.toLowerCase().includes('proxy')
+                      ? 'Land contamination signal'
+                      : item.metric.toLowerCase().includes('disposal')
+                        ? 'Disposal-related pollution signal'
+                        : 'Environmental signal'
+                }}
+              </span>
+            </div>
+
+            <b class="value">{{ item.corr.toFixed(2) }}</b>
+          </div>
+        </div>
+        <p class="note">Correlation score (−1 to 1). Higher values indicate stronger alignment.</p>
+      </article>
+    </section>
+    <!--
+
+      <article class="panel">
+        <div class="section-header compact">
+          <div>
+            <span class="section-tag">State Signals</span>
+            <h2>Strongest state-level e-waste links</h2>
+          </div>
+        </div>
+        <div class="finding-list">
+          <div v-for="item in stateEnvironmentSignals" :key="item.state" class="finding-row">
+            <div>
+              <strong>{{ item.state }}</strong>
+              <span>{{ item.pollutant }}</span>
+            </div>
+            <b :class="{ negative: item.corr < 0 }">{{ item.corr.toFixed(2) }}</b>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="analysis-panel">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">Environment → Health</span>
+          <h2>Pollution indicators and health burden signals</h2>
+        </div>
+        <div class="method-tabs" aria-label="Correlation method">
+          <button
+            type="button"
+            :class="{ active: selectedMethod === 'pearson' }"
+            @click="selectedMethod = 'pearson'"
+          >
+            Pearson
+          </button>
+          <button
+            type="button"
+            :class="{ active: selectedMethod === 'spearman' }"
+            @click="selectedMethod = 'spearman'"
+          >
+            Spearman
+          </button>
+        </div>
+      </div>
+
+      <div class="heatmap-frame">
+        <img :src="selectedHeatmapUrl" alt="Environment and health correlation heatmap" />
+      </div>
+    </section>
+ 
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="section-header compact">
+          <div>
+            <span class="section-tag">Top Signals</span>
+            <h2>Fixed analysis findings</h2>
+          </div>
+        </div>
+        <div class="finding-list">
+          <div v-for="finding in findings" :key="finding.metric" class="finding-row">
+            <div>
+              <strong>{{ finding.metric }}</strong>
+              <span>{{ finding.signal }}</span>
+            </div>
+            <b>
+              {{
+                selectedMethod === 'spearman'
+                  ? finding.spearman.toFixed(2)
+                  : finding.pearson.toFixed(2)
+              }}
+            </b>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="section-header compact">
+          <div>
+            <span class="section-tag">Regression Summary</span>
+            <h2>Selected model results</h2>
+          </div>
+        </div>
+        <div class="model-list">
+          <div v-for="model in modelCards" :key="model.title" class="model-card">
+            <h3>{{ model.title }}</h3>
+            <div class="model-stats">
+              <span
+                >R squared <strong>{{ model.r2 }}</strong></span
+              >
+              <span
+                >Adjusted <strong>{{ model.adjusted }}</strong></span
+              >
+            </div>
+            <p>{{ model.note }}</p>
+          </div>
+        </div>
+      </article>
+    </section>
+       -->
+
+    <section class="panel state-pressure-panel">
+      <div class="section-header compact">
+        <div>
+          <span class="section-tag">E-waste Pressure</span>
+          <h2>Largest e-waste pressure states</h2>
+        </div>
+      </div>
+      <div class="state-pressure-grid">
+        <article v-for="item in topEwasteStates" :key="item.state" class="state-card">
+          <h3>{{ item.state }}</h3>
+          <strong>{{ item.ewaste }}</strong>
+          <span>Air {{ item.air }} · Water {{ item.water }}</span>
+        </article>
+      </div>
+    </section>
+
+    <NewFeatureDashboard />
+  </main>
+</template>
+
+<style scoped>
+.dashboard-page {
+  min-height: 100vh;
+  padding: 30px 24px 80px;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(129, 199, 132, 0.12), transparent 18%),
+    radial-gradient(circle at 12% 92%, rgba(67, 160, 71, 0.08), transparent 22%),
+    linear-gradient(180deg, #f8fbf8 0%, #eef4ef 100%);
+  color: #163728;
+}
+
+.hero-panel,
+.pathway-grid,
+.stats-grid,
+.analysis-panel,
+.content-grid,
+.state-pressure-panel {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-panel,
+.card,
+.pathway-card,
+.analysis-panel,
+.panel {
+  border: 1px solid rgba(226, 238, 227, 0.98);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(251, 253, 251, 0.88) 100%);
+  box-shadow:
+    0 18px 34px rgba(27, 67, 50, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(14px);
+}
+
+.hero-panel {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 60px;
-  align-items: center;
-  min-height: 70vh;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding: 32px;
+  border-radius: 28px;
 }
-.intro-text { display: flex; flex-direction: column; gap: 28px; }
-.intro-text h1 { color: var(--ink-0); }
-.intro-text h1 em {
-  font-style: italic;
-  background: linear-gradient(120deg, var(--mint), var(--mint-bright) 60%, var(--violet));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+
+.eyebrow,
+.section-tag,
+.card-label {
+  display: inline-flex;
+  margin: 0 0 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(232, 245, 233, 0.9);
+  border: 1px solid rgba(207, 232, 209, 0.98);
+  color: #2e7d32;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.intro-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
-.intro-meta { display: flex; flex-direction: column; gap: 18px; }
-.meta-card {
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-md);
+
+.hero-panel h1 {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.08;
+  color: #143324;
+}
+
+.hero-panel p,
+.card p,
+.model-card p {
+  margin: 0;
+  color: #587465;
+  line-height: 1.75;
+}
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 12px;
+}
+
+.hero-chips span {
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: #eff8f0;
+  border: 1px solid rgba(210, 232, 214, 0.98);
+  font-weight: 700;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.pathway-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.card,
+.pathway-card,
+.analysis-panel,
+.panel {
+  border-radius: 24px;
   padding: 24px;
-  display: flex; flex-direction: column; gap: 12px;
 }
-.meta-card ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.meta-card ul li {
-  position: relative;
-  padding-left: 22px;
-  color: var(--ink-1);
+
+.analysis-panel {
+  margin-bottom: 24px;
+}
+
+.pathway-card h2 {
+  margin: 0 0 18px;
+  color: #143324;
+  font-size: 1.45rem;
+}
+
+.pathway-card p {
+  margin: 18px 0 0;
+  color: #587465;
+  line-height: 1.75;
+}
+
+.pathway-steps {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pathway-steps strong,
+.pathway-steps .arrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+.pathway-steps strong {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(241, 248, 242, 0.9);
+  border: 1px solid rgba(210, 232, 214, 0.98);
+  color: #163728;
+}
+
+.pathway-steps .arrow {
+  color: #2e7d32;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  color: #143324;
+  font-size: 2rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: #143324;
+  font-size: 1.45rem;
+}
+
+.section-header.compact {
+  margin-bottom: 12px;
+}
+
+.section-desc {
+  margin-top: 6px;
+  color: #6f8a7c;
   font-size: 14px;
 }
-.meta-card ul li::before {
-  content: ''; position: absolute; left: 0; top: 8px;
-  width: 8px; height: 8px;
-  background: var(--mint);
-  border-radius: 50%;
-}
-.meta-card strong {
-  font-family: var(--font-display);
-  font-size: 32px;
-  letter-spacing: -0.02em;
-  color: var(--mint);
+
+.finding-row b {
+  font-size: 22px;
+  font-weight: 600;
 }
 
-/* QUIZ */
-.quiz-shell { max-width: 900px; }
-.quiz-head {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 20px;
-  align-items: center;
-  margin-bottom: 60px;
-}
-.progress {
-  height: 2px;
-  background: var(--hairline);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.progress .bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--mint), var(--mint-bright));
-  transition: width 0.5s var(--ease-out);
-}
-.back {
-  background: transparent;
-  border: 0;
-  color: var(--ink-2);
+.finding-row span.sub {
+  display: block;
+  margin-top: 4px;
+  color: #7f9a8c;
   font-size: 13px;
-  cursor: pointer;
-}
-.back:disabled { opacity: 0.3; cursor: not-allowed; }
-.back:not(:disabled):hover { color: var(--mint); }
-
-.qcard { display: flex; flex-direction: column; gap: 28px; }
-.qprompt {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 5vw, 56px);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  font-weight: 500;
-  color: var(--ink-0);
-}
-.qhelp { color: var(--ink-2); font-size: 14px; max-width: 60ch; }
-.opts { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
-.opt {
-  display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 14px;
-  align-items: center;
-  padding: 22px 24px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-md);
-  text-align: left;
-  color: var(--ink-0);
-  cursor: pointer;
-  transition: all 0.3s var(--ease-out);
-}
-.opt:hover { border-color: var(--mint); background: rgba(125, 216, 176, 0.05); transform: translateY(-2px); }
-.opt.on { border-color: var(--mint); background: rgba(125, 216, 176, 0.12); }
-.opt-mark {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  border: 1.5px solid var(--hairline-strong);
-  display: grid; place-items: center;
-  color: var(--ink-on-light);
-  background: transparent;
-  transition: all 0.2s var(--ease-out);
-}
-.opt.on .opt-mark {
-  background: var(--mint);
-  border-color: var(--mint);
-}
-.opt-text { display: flex; flex-direction: column; gap: 4px; }
-.opt-text strong { font-family: var(--font-display); font-weight: 500; font-size: 17px; }
-.opt-text em { font-style: normal; color: var(--ink-2); font-size: 12px; font-family: var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
-
-/* INSIGHTS */
-.ins-head {
-  display: flex; flex-direction: column; gap: 18px;
-  max-width: 900px;
-  margin-bottom: 80px;
-}
-.ins-head h2 { color: var(--ink-0); }
-.ins-head h2 em {
-  font-style: italic;
-  background: linear-gradient(120deg, var(--mint), var(--mint-bright) 60%, var(--violet));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.ins-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
-
-.kpi-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
-  margin-bottom: 60px;
-}
-.kpi {
-  display: flex; flex-direction: column; gap: 12px;
-  padding: 32px 28px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-md);
-  transition: border-color 0.3s, transform 0.3s var(--ease-out);
-}
-.kpi:hover { border-color: var(--mint); transform: translateY(-4px); }
-.kpi-num {
-  font-family: var(--font-display);
-  font-size: clamp(48px, 6vw, 80px);
-  font-weight: 500;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  color: var(--mint);
-}
-.kpi-num span { font-size: 0.5em; color: var(--ink-2); margin-left: 4px; }
-.kpi p { font-size: 14px; color: var(--ink-1); }
-
-/* CHAIN */
-.chain {
-  padding: 40px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  margin-bottom: 60px;
-  display: flex; flex-direction: column; gap: 24px;
-}
-.chain h3 {
-  font-family: var(--font-display);
-  font-size: clamp(24px, 3vw, 36px);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-.chain-flow {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  position: relative;
-}
-.chain-node {
-  position: relative;
-  padding: 20px 24px 20px 0;
-  display: flex; flex-direction: column; gap: 6px;
-}
-.ch-dot {
-  width: 12px; height: 12px;
-  background: var(--mint);
-  border-radius: 50%;
-  margin-bottom: 8px;
-  box-shadow: 0 0 0 4px rgba(125, 216, 176, 0.16);
-}
-.chain-node strong { font-family: var(--font-display); font-size: 18px; font-weight: 500; }
-.chain-node p { color: var(--ink-2); font-size: 14px; }
-.chain-line {
-  position: absolute;
-  top: 26px; left: 14px; right: 0; height: 1px;
-  background: linear-gradient(90deg, var(--mint), transparent);
 }
 
-/* SIGNALS */
-.signals {
-  padding: 40px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  margin-bottom: 60px;
-  display: flex; flex-direction: column; gap: 24px;
-}
-.signals-head h3 {
-  font-family: var(--font-display);
-  font-size: clamp(24px, 3vw, 36px);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  margin-top: 8px;
-}
-.signal-list { display: flex; flex-direction: column; gap: 18px; }
-.signal {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 28px;
-  align-items: center;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--hairline);
-}
-.signal:last-child { border-bottom: 0; }
-.sig-meta strong { display: block; font-family: var(--font-display); font-size: 18px; font-weight: 500; margin-bottom: 4px; }
-.sig-meta span { color: var(--ink-2); font-size: 13px; }
-.sig-bar {
-  position: relative;
-  height: 10px;
-  background: var(--hairline);
-  border-radius: 999px;
-  overflow: visible;
-}
-.sig-bar .bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--mint), var(--mint-bright));
-  border-radius: 999px;
-  position: relative;
-}
-.bar-val {
-  position: absolute;
-  right: 0;
-  top: -22px;
-  font-family: var(--font-mono);
+.note {
+  margin-top: 12px;
+  color: #9bb3a7;
   font-size: 12px;
-  color: var(--mint);
 }
-.sig-foot { color: var(--ink-2); font-size: 13px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 
-/* ACTIONS */
-.actions-card {
-  padding: 40px;
-  background: linear-gradient(135deg, rgba(125, 216, 176, 0.08), transparent);
-  border: 1px solid rgba(125, 216, 176, 0.25);
-  border-radius: var(--r-lg);
-  display: flex; flex-direction: column; gap: 24px;
+.method-tabs {
+  display: inline-flex;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 16px;
+  background: rgba(241, 248, 242, 0.92);
+  border: 1px solid rgba(210, 232, 214, 0.98);
 }
-.actions-card h3 {
-  font-family: var(--font-display);
-  font-size: clamp(24px, 3vw, 36px);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  margin-top: 8px;
+
+.method-tabs button {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 15px;
+  background: transparent;
+  color: #587465;
+  font-weight: 800;
+  cursor: pointer;
 }
-.action-list { display: flex; flex-direction: column; gap: 0; }
-.action {
+
+.method-tabs button.active {
+  background: #ffffff;
+  color: #2e7d32;
+  box-shadow: 0 8px 18px rgba(27, 67, 50, 0.08);
+}
+
+.heatmap-frame {
+  width: 100%;
+  overflow: auto;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(210, 232, 214, 0.98);
+}
+
+.heatmap-frame img {
+  display: block;
+  width: 100%;
+  min-width: 760px;
+  height: auto;
+}
+
+.content-grid {
   display: grid;
-  grid-template-columns: 60px 1fr auto;
+  grid-template-columns: 1fr;
   gap: 18px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.finding-list,
+.model-list {
+  display: grid;
+  gap: 12px;
+}
+
+.finding-row,
+.model-card {
+  border-radius: 18px;
+  background: rgba(241, 248, 242, 0.82);
+  border: 1px solid rgba(210, 232, 214, 0.92);
+}
+
+.finding-row {
+  display: flex;
   align-items: center;
-  padding: 22px 0;
-  border-top: 1px solid var(--hairline);
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 70px;
+  padding: 14px 16px;
 }
-.action:last-child { border-bottom: 1px solid var(--hairline); }
-.action .a-num { font-family: var(--font-mono); font-size: 12px; color: var(--mint); letter-spacing: 0.18em; }
-.action strong { display: block; font-family: var(--font-display); font-size: 18px; font-weight: 500; margin-bottom: 4px; }
-.action p { color: var(--ink-2); font-size: 14px; max-width: 60ch; }
-.a-link { color: var(--mint); font-size: 13px; font-weight: 500; white-space: nowrap; }
-.a-link:hover { color: var(--mint-bright); }
 
-/* TRANSITIONS */
-.fade-up-enter-active, .fade-up-leave-active {
-  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+.finding-row div {
+  display: grid;
+  gap: 5px;
 }
-.fade-up-enter-from { opacity: 0; transform: translateY(16px); }
-.fade-up-leave-to { opacity: 0; transform: translateY(-16px); }
-.slide-enter-active, .slide-leave-active {
-  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
-}
-.slide-enter-from { opacity: 0; transform: translateX(40px); }
-.slide-leave-to { opacity: 0; transform: translateX(-40px); }
 
-@media (max-width: 880px) {
-  .intro-grid { grid-template-columns: 1fr; gap: 40px; }
-  .opts { grid-template-columns: 1fr; }
-  .quiz-head { grid-template-columns: 1fr; gap: 12px; }
-  .kpi-grid { grid-template-columns: 1fr; }
-  .chain-flow { grid-template-columns: 1fr; }
-  .chain-line { display: none; }
-  .signal { grid-template-columns: 1fr; gap: 8px; }
-  .action { grid-template-columns: 40px 1fr; gap: 12px; }
-  .a-link { grid-column: 2; }
-  .chain, .signals, .actions-card { padding: 24px; }
+.finding-row strong,
+.model-card h3 {
+  color: #143324;
+}
+
+.finding-row span {
+  color: #587465;
+}
+
+.finding-row b {
+  color: #2f9e6d;
+  font-size: 1.35rem;
+}
+
+.finding-row b.negative {
+  color: #c77943;
+}
+
+.state-pressure-panel {
+  margin-top: 24px;
+}
+
+.state-pressure-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.state-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(241, 248, 242, 0.82);
+  border: 1px solid rgba(210, 232, 214, 0.92);
+}
+
+.state-card h3 {
+  margin: 0;
+  color: #143324;
+}
+
+.state-card strong {
+  color: #2f9e6d;
+  font-size: 1.45rem;
+}
+
+.state-card span {
+  color: #587465;
+  line-height: 1.5;
+}
+
+.model-card {
+  padding: 16px;
+}
+
+.model-card h3 {
+  margin: 0 0 10px;
+}
+
+.model-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.model-stats span {
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #587465;
+}
+
+.model-stats strong {
+  color: #143324;
+}
+
+@media (max-width: 1100px) {
+  .hero-panel,
+  .pathway-grid,
+  .stats-grid,
+  .content-grid,
+  .state-pressure-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-page {
+    padding: 18px 14px 60px;
+  }
+
+  .hero-panel,
+  .card,
+  .pathway-card,
+  .analysis-panel,
+  .panel {
+    border-radius: 20px;
+  }
+
+  .section-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .method-tabs {
+    width: 100%;
+  }
+
+  .method-tabs button {
+    flex: 1;
+  }
+
+  .heatmap-frame img {
+    min-width: 680px;
+  }
 }
 </style>

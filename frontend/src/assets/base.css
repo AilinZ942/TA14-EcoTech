@@ -1,256 +1,86 @@
-/* EcoReviva — premium design system */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
+/* color palette from <https://github.com/vuejs/theme> */
 :root {
-  /* Surface */
-  --bg-0: #06120F;
-  --bg-1: #0A1B17;
-  --bg-2: #0E2620;
-  --surface: rgba(255, 255, 255, 0.03);
-  --surface-2: rgba(255, 255, 255, 0.06);
-  --hairline: rgba(255, 255, 255, 0.08);
-  --hairline-strong: rgba(255, 255, 255, 0.16);
+  --vt-c-white: #ffffff;
+  --vt-c-white-soft: #f8f8f8;
+  --vt-c-white-mute: #f2f2f2;
 
-  /* Text */
-  --ink-0: #F2F4F1;
-  --ink-1: #C5CDC8;
-  --ink-2: #8A968F;
-  --ink-3: #5A6660;
-  --ink-on-light: #06120F;
+  --vt-c-black: #181818;
+  --vt-c-black-soft: #222222;
+  --vt-c-black-mute: #282828;
 
-  /* Accents */
-  --mint: #7DD8B0;
-  --mint-bright: #5EEAD4;
-  --mint-deep: #0F766E;
-  --violet: #A78BFA;
-  --peach: #F4A261;
-  --rose: #F472B6;
+  --vt-c-indigo: #2c3e50;
 
-  /* Status */
-  --ok: #5EEAD4;
-  --warn: #F4A261;
-  --bad: #F87171;
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
 
-  /* Radius */
-  --r-xs: 8px;
-  --r-sm: 14px;
-  --r-md: 22px;
-  --r-lg: 32px;
-  --r-pill: 999px;
-
-  /* Type */
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-
-  /* Spacing scale */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 18px;
-  --space-5: 28px;
-  --space-6: 44px;
-  --space-7: 70px;
-  --space-8: 110px;
-
-  /* Motion */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --vt-c-text-light-1: var(--vt-c-indigo);
+  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+  --vt-c-text-dark-1: var(--vt-c-white);
+  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 }
 
-* { box-sizing: border-box; }
-*::before, *::after { box-sizing: border-box; }
+/* semantic color variables for this project */
+:root {
+  --color-background: var(--vt-c-white);
+  --color-background-soft: var(--vt-c-white-soft);
+  --color-background-mute: var(--vt-c-white-mute);
 
-html, body, #app {
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
+
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-text-light-1);
+
+  --section-gap: 160px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
-  padding: 0;
-  background: var(--bg-0);
-  color: var(--ink-0);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-}
-
-html {
-  scroll-behavior: smooth;
+  font-weight: normal;
 }
 
 body {
-  /* Cinematic backdrop applied once globally so individual pages don't have to */
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(125, 216, 176, 0.10), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(167, 139, 250, 0.06), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 0% 80%, rgba(94, 234, 212, 0.05), transparent 60%),
-    var(--bg-0);
-  background-attachment: fixed;
-}
-
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; cursor: pointer; }
-img { max-width: 100%; height: auto; display: block; }
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  margin: 0;
-  letter-spacing: -0.02em;
-  font-weight: 600;
-  color: var(--ink-0);
-}
-
-p { margin: 0; color: var(--ink-1); }
-
-::selection { background: var(--mint); color: var(--ink-on-light); }
-
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(125, 216, 176, 0.18); border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(125, 216, 176, 0.32); }
-
-/* Utility classes — use these to compose pages cheaply */
-.eco-shell {
-  width: min(1240px, calc(100% - 48px));
-  margin: 0 auto;
-}
-
-.eco-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--mint);
-}
-.eco-eyebrow::before {
-  content: '';
-  width: 18px; height: 1px;
-  background: currentColor;
-}
-
-.eco-glass {
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-md);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-}
-
-.eco-display {
-  font-family: var(--font-display);
-  font-size: clamp(48px, 9vw, 140px);
-  line-height: 0.96;
-  letter-spacing: -0.04em;
-  font-weight: 500;
-}
-
-.eco-h2 {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 5vw, 64px);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  font-weight: 500;
-}
-
-.eco-lead {
-  color: var(--ink-1);
-  font-size: clamp(15px, 1.4vw, 18px);
-  line-height: 1.55;
-  max-width: 60ch;
-}
-
-.eco-mono {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-
-/* Buttons */
-.eco-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 22px;
-  border-radius: var(--r-pill);
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 14px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--ink-0);
-  cursor: pointer;
-  transition: all 0.4s var(--ease-out);
-  position: relative;
-  overflow: hidden;
-}
-.eco-btn--solid {
-  background: var(--ink-0);
-  color: var(--ink-on-light);
-}
-.eco-btn--solid:hover {
-  background: var(--mint);
-  transform: translateY(-1px);
-  box-shadow: 0 18px 40px rgba(125, 216, 176, 0.25);
-}
-.eco-btn--ghost {
-  background: transparent;
-  color: var(--ink-0);
-  border-color: var(--hairline-strong);
-}
-.eco-btn--ghost:hover {
-  border-color: var(--mint);
-  color: var(--mint);
-}
-.eco-btn--mint {
-  background: var(--mint);
-  color: var(--ink-on-light);
-}
-.eco-btn--mint:hover { background: var(--mint-bright); transform: translateY(-1px); }
-
-.eco-btn .arrow {
-  display: inline-block;
-  transition: transform 0.4s var(--ease-out);
-}
-.eco-btn:hover .arrow { transform: translateX(4px); }
-
-/* Reveal-on-scroll. Use class="reveal" on any element. */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
-  will-change: opacity, transform;
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.08s; }
-.reveal-delay-2 { transition-delay: 0.16s; }
-.reveal-delay-3 { transition-delay: 0.24s; }
-.reveal-delay-4 { transition-delay: 0.32s; }
-
-/* Marquee */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@keyframes float-y {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    transition-duration: 0.001ms !important;
-  }
-  html { scroll-behavior: auto; }
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

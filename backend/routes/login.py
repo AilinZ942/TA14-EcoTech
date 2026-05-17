@@ -10,8 +10,8 @@ import logging
 
 auth_bp = Blueprint("login", __name__)
 
-USERNAME = os.environ.get("APP_USERNAME")
-PASSWORD = os.environ.get("APP_PASSWORD")
+USERNAME = os.environ.get("APP_USERNAME", "admin")
+PASSWORD = os.environ.get("APP_PASSWORD", "password")
 PASSWORD_HASH = generate_password_hash(PASSWORD)
 MAX_ATTEMPTS = 5
 LOCKOUT_DURATION = timedelta(minutes=15)
@@ -63,10 +63,11 @@ def login():
             429,
         )
 
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
+    username = data.get("username", "")
+    password = data.get("password", "")
 
-
-    if data.get('username')  == USERNAME and check_password_hash(PASSWORD_HASH, data.get('password')):
+    if username == USERNAME and check_password_hash(PASSWORD_HASH, password):
         login_attempts.pop(ip, None)
         session["logged_in"] = True
         session["ip"] = ip  # store IP in session for hijacking detection

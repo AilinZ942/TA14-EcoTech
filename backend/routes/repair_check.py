@@ -13,6 +13,7 @@ import requests
 from flask import Blueprint, jsonify, request
 
 from routes.login import login_required
+import repair_status_transformers  # noqa: F401
 
 repair_check_bp = Blueprint("repair_check", __name__)
 

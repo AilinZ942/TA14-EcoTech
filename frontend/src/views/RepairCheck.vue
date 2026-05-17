@@ -1,19 +1,18 @@
 <template>
   <section class="repair-page">
-    <div class="eco-shell repair-shell">
-      <header class="head">
-        <span class="eco-eyebrow">Repair Check</span>
-        <h1 class="eco-display">Repair or Replace?</h1>
-        <p class="eco-lead">
-          Choose your device details and let the system compare repair cost, used value, and repair
-          status.
-        </p>
+    <div class="repair-shell">
+      <header class="hero">
+        <div class="hero-badge">
+          <span>✦</span>
+        </div>
+        <h1>Repair or Replace?</h1>
+        <p>Choose your device details and let the system compare repair cost, used value, and repair status.</p>
       </header>
 
-      <div class="eco-glass form-card">
+      <div class="card">
         <div class="form-grid">
           <div class="field">
-            <label class="field-label">Brand</label>
+            <label>Brand</label>
             <select v-model="form.brand">
               <option v-for="brand in brandOptions" :key="brand.value" :value="brand.value">
                 {{ brand.label }}
@@ -22,7 +21,7 @@
           </div>
 
           <div class="field">
-            <label class="field-label">Model</label>
+            <label>Model</label>
             <select v-model="form.model">
               <option value="" disabled>Select model</option>
               <option v-for="model in modelOptions" :key="model" :value="model">
@@ -32,7 +31,7 @@
           </div>
 
           <div class="field">
-            <label class="field-label">Storage</label>
+            <label>Storage</label>
             <select v-model="form.storage">
               <option value="" disabled>Select storage</option>
               <option v-for="storage in storageOptions" :key="storage" :value="storage">
@@ -42,7 +41,7 @@
           </div>
 
           <div class="field">
-            <label class="field-label">Fault Type</label>
+            <label>Fault Type</label>
             <select v-model="form.faultType">
               <option value="" disabled>Select fault type</option>
               <option v-for="fault in faultTypeOptions" :key="fault" :value="fault">
@@ -52,7 +51,7 @@
           </div>
 
           <div class="field">
-            <label class="field-label">Age</label>
+            <label>Age</label>
             <select v-model="form.age">
               <option value="" disabled>Select age</option>
               <option v-for="age in ageOptions" :key="age.value" :value="age.value">
@@ -62,7 +61,7 @@
           </div>
 
           <div class="field field--wide">
-            <label class="field-label">Problem</label>
+            <label>Problem</label>
             <textarea
               v-model="form.problem"
               rows="5"
@@ -71,26 +70,24 @@
           </div>
         </div>
 
-        <button class="eco-btn eco-btn--mint action-btn" :disabled="isSubmitting" @click="analyze">
+        <button class="analyze-button" :disabled="isSubmitting" @click="analyze">
           <span v-if="isSubmitting">Analyzing...</span>
           <span v-else>Analyze with AI</span>
-          <span class="arrow">→</span>
         </button>
 
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </div>
 
-      <div v-if="isSubmitting" class="eco-glass result-card loading-card">
+      <div v-if="isSubmitting" class="result-card loading-card">
         <div class="spinner"></div>
-        <span class="eco-mono">Working</span>
         <h2>Running repair analysis...</h2>
         <p>We are checking the price tables, predicting repair status, and preparing the final recommendation.</p>
       </div>
 
-      <div v-else-if="result" class="eco-glass result-card">
+      <div v-else-if="result" class="result-card">
         <div class="result-topline">
           <div>
-            <p class="eco-mono">Decision</p>
+            <p class="eyebrow">Decision</p>
             <h2>{{ result.recommendation }}</h2>
           </div>
           <div class="decision-pill" :class="decisionClass(result.recommendation)">
@@ -130,6 +127,7 @@
             <li><strong>Problem:</strong> {{ result.problem }}</li>
           </ul>
         </div>
+
       </div>
     </div>
   </section>
@@ -295,45 +293,62 @@ onMounted(async () => {
 <style scoped>
 .repair-page {
   min-height: 100vh;
-  padding: 140px 0 80px;
+  padding: 48px 24px 72px;
+  background:
+    radial-gradient(circle at top, rgba(191, 223, 209, 0.55), transparent 34%),
+    linear-gradient(180deg, #f6fbf8 0%, #edf5ef 100%);
+  color: #1f4333;
 }
 
 .repair-shell {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.head {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  max-width: 760px;
-  margin: 0 auto;
-  text-align: center;
-  align-items: center;
-}
-
-.head h1 em {
-  font-style: italic;
-  background: linear-gradient(120deg, var(--mint), var(--mint-bright) 60%, var(--violet));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.form-card,
-.result-card {
   max-width: 1120px;
-  width: 100%;
   margin: 0 auto;
-  padding: 32px;
 }
 
-.form-card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.hero {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.hero-badge {
+  width: 104px;
+  height: 104px;
+  border-radius: 999px;
+  margin: 0 auto 22px;
+  background: #e2ece7;
+  display: grid;
+  place-items: center;
+  color: #346a53;
+  font-size: 2.4rem;
+  box-shadow: 0 18px 40px rgba(46, 91, 68, 0.08);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.hero p {
+  max-width: 760px;
+  margin: 16px auto 0;
+  color: #5f7f71;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.card,
+.result-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(63, 105, 84, 0.12);
+  border-radius: 28px;
+  box-shadow: 0 18px 48px rgba(46, 91, 68, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.card {
+  padding: 28px;
 }
 
 .form-grid {
@@ -352,33 +367,30 @@ onMounted(async () => {
   grid-column: 1 / -1;
 }
 
-.field-label {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-2);
+label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #224235;
 }
 
 select,
 textarea {
   width: 100%;
-  border: 1px solid var(--hairline-strong);
-  border-radius: var(--r-md);
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--ink-0);
+  border: 1.5px solid #d6e4db;
+  border-radius: 18px;
+  background: #fff;
+  color: #18362c;
   font: inherit;
-  padding: 16px 18px;
+  padding: 18px 20px;
   outline: none;
   transition:
-    border-color 0.2s var(--ease-out),
-    box-shadow 0.2s var(--ease-out),
-    transform 0.2s var(--ease-out),
-    background 0.2s var(--ease-out);
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 select {
-  min-height: 62px;
+  height: 68px;
 }
 
 textarea {
@@ -388,27 +400,47 @@ textarea {
 
 select:focus,
 textarea:focus {
-  border-color: var(--mint);
-  box-shadow: 0 0 0 4px rgba(125, 216, 176, 0.12);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: #95baa4;
+  box-shadow: 0 0 0 4px rgba(148, 187, 164, 0.16);
 }
 
-.action-btn {
+.analyze-button {
   width: 100%;
-  justify-content: center;
-  margin-top: 6px;
+  margin-top: 24px;
+  border: none;
+  border-radius: 22px;
+  padding: 20px 24px;
+  background: #c9dcd2;
+  color: #3b6550;
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.analyze-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(78, 122, 102, 0.18);
+  background: #b7d0c2;
+}
+
+.analyze-button:disabled {
+  cursor: wait;
+  opacity: 0.8;
 }
 
 .error-message {
-  margin-top: 4px;
-  color: var(--bad);
-  font-weight: 500;
+  margin: 16px 2px 0;
+  color: #b03d3d;
+  font-weight: 600;
 }
 
 .result-card {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  margin-top: 24px;
+  padding: 28px;
 }
 
 .loading-card {
@@ -422,8 +454,8 @@ textarea:focus {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  border: 4px solid rgba(125, 216, 176, 0.18);
-  border-top-color: var(--mint);
+  border: 4px solid rgba(59, 101, 80, 0.16);
+  border-top-color: #3b6550;
   animation: spin 0.9s linear infinite;
 }
 
@@ -440,55 +472,62 @@ textarea:focus {
   align-items: flex-start;
 }
 
+.eyebrow {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.74rem;
+  color: #729486;
+}
+
 .result-topline h2 {
   margin: 0;
-  font-size: clamp(26px, 3vw, 40px);
+  font-size: 2rem;
   line-height: 1.1;
 }
 
 .decision-pill {
-  border-radius: var(--r-pill);
+  border-radius: 999px;
   padding: 10px 14px;
   font-weight: 700;
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--ink-0);
-  border: 1px solid var(--hairline-strong);
+  background: #edf5ef;
+  color: #426452;
 }
 
 .decision-pill--repair {
-  background: rgba(94, 234, 212, 0.12);
-  color: var(--mint-bright);
-  border-color: rgba(94, 234, 212, 0.24);
+  background: #e5f5ea;
+  color: #25603a;
 }
 
 .decision-pill--replace {
-  background: rgba(244, 162, 97, 0.12);
-  color: var(--peach);
-  border-color: rgba(244, 162, 97, 0.24);
+  background: #fbe9e5;
+  color: #9e4b31;
 }
 
 .decision-pill--uncertain {
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--ink-1);
+  background: #eef2f4;
+  color: #50606a;
 }
 
 .result-reason {
-  color: var(--ink-1);
+  margin: 18px 0 0;
+  color: #456557;
   line-height: 1.7;
   font-size: 1.02rem;
 }
 
 .stats-grid {
+  margin-top: 22px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
 .stat {
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-md);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(63, 105, 84, 0.1);
+  border-radius: 20px;
+  background: #f8fbf9;
   padding: 18px;
   display: flex;
   flex-direction: column;
@@ -496,20 +535,20 @@ textarea:focus {
 }
 
 .stat span {
-  color: var(--ink-2);
+  color: #678275;
   font-size: 0.92rem;
 }
 
 .stat strong {
   font-size: 1.05rem;
-  color: var(--ink-0);
+  color: #19372d;
 }
 
 .summary-block {
+  margin-top: 22px;
   padding: 18px 20px;
-  border-radius: var(--r-md);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--hairline);
+  border-radius: 22px;
+  background: #f4f8f6;
 }
 
 .summary-block h3 {
@@ -520,7 +559,7 @@ textarea:focus {
 .summary-block ul {
   margin: 0;
   padding-left: 18px;
-  color: var(--ink-1);
+  color: #46685a;
   line-height: 1.8;
 }
 
@@ -532,10 +571,6 @@ textarea:focus {
 
   .result-topline {
     flex-direction: column;
-  }
-
-  .repair-page {
-    padding-top: 120px;
   }
 }
 </style>
