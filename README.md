@@ -4,71 +4,42 @@
 
 ### build local database
 
-we use docker to create a virtual database, so you don't need to create a database in your local server. It helps us collaborate and run the 
-
-```docker compose up db```
-
-connect to the db using psql or pg admin4, and update database (insert data, change tables)
-
-```pg_dump --no-owner --no-acl -U [username] -d [database_name] > ./migrations/backup.sql```
+we use docker to create a virtual database, so you don't need to create a database in your local server. It helps us collaborate and run the the server. First you need to download docker from [Docker desktop](https://www.docker.com/)
 
 
+After downloading the docker desktop, you need to open it. then you need to run the docker command:
 
+```
+cd backend
+docker compose up --build -d
+```
+
+to build the database. Once you have done that, you can find that the backend service is running.
+
+You can connect to the db using psql or pg admin4, and update database (insert data, change tables), after that, you need to update the backup file by using this command
+
+```pg_dump --no-owner --no-acl -U user -d my_database > ./migrations/backup.sql```
+
+
+Every time when you change the backend code or update the database, you need to rebuild it
 
 ```
 docker compose down -v
-docker compose up -d
+docker compose up --build -d
 ```
 
-### Update database
-
-try to start the postgresql first, if you use macOS, use homebrew to start it：
-
-```brew services start postgresql```
-
-Once you start it, you need to know these things:
-
-- DB_HOST
-- DB_USER
-- DB_PASSWORD
-- DB_NAME
-- DB_PORT
-
-and set them in **./backend/.env.local** file
-
-then run backup.sql
-
-```
-dropdb -U username database_name
-createdb -U username database_name
-psql -U username -d database_name -f .backend/db/scripts/backup.sql
-```
-
+More docker details can be found on their website.
 
 
 ### Install frontend dependencies
+
 ```
+cd frontend
 npm install
 npm run build
 ```
-### Install backend dependencies
 
-```
-python -m venv .venv
-backend/.venv/bin/activate
-pip install -r ./backend/requirements.txt
-```
-
-
-### Start the backend
-
-use one terminal 
-
-```flask --app app run --host 0.0.0.0 --port 8000```
-
-### Start the frontend
-
-use the other terminal
+### Start the frontend service
 
 ```npm run dev```
 
@@ -103,7 +74,7 @@ This is the high-level flow:
 
 ## Deployment
 
-Cloud VM Server: AWS EC2 - m7i-flex.large
+Cloud VM Server: AWS EC2 - t3 small
 
 DNS:  https://freedns.afraid.org/ named "Free DNS" 
 
