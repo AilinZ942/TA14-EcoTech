@@ -1,0 +1,88 @@
+brand,model,storage,price_aud,references
+Apple,iPhone 11,128GB,300,
+Apple,iPhone 11,256GB,339,
+Apple,iPhone 11,64GB,200,
+Apple,iPhone 12,128GB,367,
+Apple,iPhone 12,256GB,367,
+Apple,iPhone 12,64GB,367,
+Apple,iPhone 12 mini,128GB,259,https://shop.greengadgets.net.au/products/apple-iphone-12-mini
+Apple,iPhone 12 mini,256GB,309,https://shop.greengadgets.net.au/products/apple-iphone-12-mini
+Apple,iPhone 12 mini,64GB,259,https://shop.greengadgets.net.au/products/apple-iphone-12-mini
+Apple,iPhone 12 Pro,128GB,433,https://www.backmarket.com.au/en-au/p/iphone-12-pro-128-gb-pacific-blue-unlocked/ef8db578-b5aa-469b-a570-90ca658a801c?l=11&variantClicked=true&pickerClicked=true#scroll=false
+Apple,iPhone 12 Pro,256GB,493,https://www.backmarket.com.au/en-au/p/iphone-12-pro-128-gb-pacific-blue-unlocked/ef8db578-b5aa-469b-a570-90ca658a801c?l=11&variantClicked=true&pickerClicked=true#scroll=false
+Apple,iPhone 12 Pro,512GB,546,https://www.backmarket.com.au/en-au/p/iphone-12-pro-128-gb-pacific-blue-unlocked/ef8db578-b5aa-469b-a570-90ca658a801c?l=11&variantClicked=true&pickerClicked=true#scroll=false
+Apple,iPhone 12 Pro Max,128GB,453,https://www.jbhifi.com.au/search?query=iphone%2012%20pro%20max
+Apple,iPhone 12 Pro Max,256GB,463,https://www.jbhifi.com.au/search?query=iphone%2012%20pro%20max
+Apple,iPhone 12 Pro Max,512GB,484,https://www.jbhifi.com.au/search?query=iphone%2012%20pro%20max
+Apple,iPhone 13,128GB,383.37,
+Apple,iPhone 13,256GB,469,
+Apple,iPhone 13,512GB,487.95,
+Apple,iPhone 13 mini,128GB,411,https://www.jbhifi.com.au/search?query=iphone%2013%20mini
+Apple,iPhone 13 mini,256GB,494,https://www.jbhifi.com.au/search?query=iphone%2013%20mini
+Apple,iPhone 13 mini,512GB,529,https://shop.greengadgets.net.au/products/apple-iphone-13-mini?variant=39680574750823
+Apple,iPhone 13 Pro,128GB,540,https://www.jbhifi.com.au/search?query=iphone%2013%20pro
+Apple,iPhone 13 Pro,256GB,570,https://www.jbhifi.com.au/search?query=iphone%2013%20pro
+Apple,iPhone 13 Pro,512GB,628,https://www.jbhifi.com.au/search?query=iphone%2013%20pro
+Apple,iPhone 13 Pro Max,128GB,566,https://www.jbhifi.com.au/search?query=iphone%2013%20pro%20max
+Apple,iPhone 13 Pro Max,256GB,607,https://www.jbhifi.com.au/search?query=iphone%2013%20pro%20max%20256gb
+Apple,iPhone 13 Pro Max,512GB,628,https://www.jbhifi.com.au/search?query=iphone%2013%20pro%20max%20512GB
+Apple,iPhone 14,128GB,539,
+Apple,iPhone 14,256GB,791,
+Apple,iPhone 14,512GB,489,
+Apple,iPhone 14 Plus,128GB,525,https://www.jbhifi.com.au/search?query=iphone%2014%20plus
+Apple,iPhone 14 Plus,256GB,587,https://www.jbhifi.com.au/search?query=iphone%2014%20plus
+Apple,iPhone 14 Plus,512GB,662,https://reebelo.com.au/collections/apple-iphone-14-plus?color=Starlight&condition=Excellent&storage=512GB&simSlot=Dual+eSim&batteryHealth=100&utm_organicad=true&srsltid=AfmBOoo_fHnEAe_zYuBvRlrwNh0gDRIvYdR1rg9fq3iyXYKtfodjBaN4EZo
+Apple,iPhone 14 Pro,128GB,646,https://www.jbhifi.com.au/search?query=iphone%2014%20pro
+Apple,iPhone 14 Pro,256GB,690,https://www.jbhifi.com.au/search?query=iphone%2014%20pro
+Apple,iPhone 14 Pro,512GB,782,https://www.jbhifi.com.au/search?query=iphone%2014%20pro%20512GB
+Apple,iPhone 14 Pro Max,128GB,700,https://www.jbhifi.com.au/search?query=iphone%2014%20pro%20max
+Apple,iPhone 14 Pro Max,256GB,762,https://www.jbhifi.com.au/search?query=iphone%2014%20pro%20max
+Apple,iPhone 14 Pro Max,512GB,834,https://www.jbhifi.com.au/search?query=iphone%2014%20pro%20max%20512GB
+Apple,iPhone 15,128GB,652,
+Apple,iPhone 15,256GB,700,
+Apple,iPhone 15,512GB,731,
+Apple,iPhone 15 Plus,128GB,793,https://www.jbhifi.com.au/search?query=iphone%2015%20plus
+Apple,iPhone 15 Plus,256GB,865,https://www.jbhifi.com.au/search?query=iphone%2015%20plus
+Apple,iPhone 15 Plus,512GB,978,https://www.jbhifi.com.au/search?query=iphone%2015%20plus
+Apple,iPhone 15 Pro,128GB,852,
+Apple,iPhone 15 Pro,256GB,891,
+Apple,iPhone 15 Pro,512GB,1040,
+Apple,iPhone 16,128GB,849,
+Apple,iPhone 16,256GB,898,
+Apple,iPhone 16,512GB,911,
+Apple,iPhone 16 Plus,128GB,1139,
+Apple,iPhone 16 Plus,256GB,936,
+Apple,iPhone 16 Plus,512GB,1346,
+Apple,iPhone 16 Pro,128GB,1099,
+Apple,iPhone 16 Pro,1TB,1499,
+Apple,iPhone 16 Pro,256GB,1249,
+Apple,iPhone 16 Pro,512GB,1429,
+Apple,iPhone 16 Pro Max,1TB,1544,
+Apple,iPhone 16 Pro Max,256GB,1277,
+Apple,iPhone 16 Pro Max,512GB,1534,
+Apple,iPhone 16e,128GB,720,
+Apple,iPhone 16e,256GB,793,
+Apple,iPhone 16e,512GB,1299,
+Apple,iPhone 17,256GB,1250,
+Apple,iPhone 17,512GB,1300,
+Apple,iPhone 17 Pro,256GB,1659,
+Apple,iPhone 17 Pro,512GB,1879,
+Apple,iPhone 17 Pro,1TB,2100,
+Apple,iPhone 17 Pro Max,256GB,1850,
+Apple,iPhone 17 Pro Max,512GB,2100,
+Apple,iPhone 17 Pro Max,1TB,2150,
+Apple,iPhone 17 Pro Max,2TB,2400,
+Apple,iPhone 17e,256GB,779,
+Apple,iPhone 17e,512GB,1159,
+Apple,iPhone Air,256GB,999,
+Apple,iPhone Air,512GB,1300,
+Apple,iPhone Air,1TB,1500,
+Apple,iPhone SE (2nd generation),128GB,205,
+Apple,iPhone SE (2nd generation),256GB,235,
+Apple,iPhone SE (2nd generation),64GB,148,
+Apple,iPhone SE (3rd generation),128GB,319,
+Apple,iPhone SE (3rd generation),256GB,339,
+Apple,iPhone SE (3rd generation),64GB,210,
+Apple,iPhone XR,128GB,230,
+Apple,iPhone XR,256GB,279,
+Apple,iPhone XR,64GB,189,

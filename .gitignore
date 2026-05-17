@@ -46,7 +46,7 @@ backend/.env
 # Python virtual environment
 .venv/
 
-iteration3/
+iteration3/__pycache__/
 
 backend/.venv/
 
