@@ -406,17 +406,21 @@ function dropItem(binName) {
   draggedItem.value = null
 }
 
+let toastTimer = null
+
 function showFeedback(text, type) {
   toastText.value = text
   toastType.value = type
   showToast.value = true
 
-  setTimeout(
-    () => {
-      showToast.value = false
-    },
-    type === 'wrong' ? 3000 : 2000,
-  )
+  if (toastTimer) {
+    clearTimeout(toastTimer)
+  }
+
+  toastTimer = setTimeout(() => {
+    showToast.value = false
+    toastTimer = null
+  }, 6000)
 }
 
 function placeItem(binName) {
@@ -763,13 +767,13 @@ function goHome() {
 }
 
 .battery-bin {
-  background: linear-gradient(180deg, #fff7f7 0%, #fee2e2 100%);
-  border: 2px solid #ef4444;
+  background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 2px solid #22c55e;
 }
 
 .reuse-bin {
-  background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
-  border: 2px solid #22c55e;
+  background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
+  border: 2px solid #f97316;
 }
 
 .general-bin {
