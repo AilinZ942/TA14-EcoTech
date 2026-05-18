@@ -99,32 +99,41 @@
 
         <div class="stats-grid">
           <div class="stat">
-            <span>Current Price</span>
+            <span>Approximate used price</span>
             <strong>{{ formatMoney(result.current_price_aud) }}</strong>
           </div>
           <div class="stat">
-            <span>Repair Price</span>
+            <span>Approximate repair price</span>
             <strong>{{ formatMoney(result.repair_price_aud) }}</strong>
           </div>
           <div class="stat">
-            <span>Repair Status</span>
+            <span>Predicted repair status based on historical data</span>
             <strong>{{ result.repair_status || 'Unavailable' }}</strong>
-          </div>
-          <div class="stat">
-            <span>Decision Source</span>
-            <strong>{{ result.decision_source }}</strong>
           </div>
         </div>
 
         <div class="summary-block">
-          <h3>What we used</h3>
+          <h3>Why this is {{ String(result.recommendation || '').toLowerCase() }}</h3>
           <ul>
-            <li><strong>Brand:</strong> {{ result.brand }}</li>
-            <li><strong>Model:</strong> {{ result.model }}</li>
-            <li><strong>Storage:</strong> {{ result.storage }}</li>
-            <li><strong>Age:</strong> {{ result.age }}</li>
-            <li><strong>Fault Type:</strong> {{ result.fault_type }}</li>
-            <li><strong>Problem:</strong> {{ result.problem }}</li>
+            <li>
+              <strong>Rule 1:</strong>
+              <span v-if="ratioText">
+                The approximate repair price is {{ ratioText }} of the approximate used price.
+              </span>
+              <span v-else>
+                One of the prices was unavailable, so the decision had to rely more on the predicted
+                repair status.
+              </span>
+            </li>
+            <li>
+              <strong>Rule 2:</strong>
+              The historical model predicted {{ result.repair_status || 'an unavailable status' }},
+              which nudged the decision toward the final recommendation.
+            </li>
+            <li>
+              <strong>Rule 3:</strong>
+              {{ ruleExplanation }}
+            </li>
           </ul>
         </div>
 
@@ -241,6 +250,50 @@ function decisionClass(value) {
   if (normalized.includes('replace')) return 'decision-pill--replace'
   return 'decision-pill--uncertain'
 }
+
+const ratioText = computed(() => {
+  const used = Number(result.value?.current_price_aud)
+  const repair = Number(result.value?.repair_price_aud)
+  if (!Number.isFinite(used) || !Number.isFinite(repair) || used <= 0) return ''
+  return `${Math.round((repair / used) * 100)}%`
+})
+
+const ruleExplanation = computed(() => {
+  const recommendation = String(result.value?.recommendation || '').toLowerCase()
+  const status = String(result.value?.repair_status || '').toLowerCase()
+  const used = Number(result.value?.current_price_aud)
+  const repair = Number(result.value?.repair_price_aud)
+
+  if (!Number.isFinite(used) || !Number.isFinite(repair) || used <= 0) {
+    if (recommendation === 'repair') return 'The model and status signals were strong enough to support repair even without both prices.'
+    if (recommendation === 'replace') return 'The model and status signals were strong enough to support replacement even without both prices.'
+    return 'The decision was made conservatively because one or more price values were unavailable.'
+  }
+
+  const ratio = repair / used
+
+  if (recommendation === 'replace') {
+    if (status === 'end of life') {
+      return 'The historical repair status suggests the device is difficult to keep in service, so replacement is the safer option.'
+    }
+    if (ratio >= 0.6) {
+      return 'The repair cost is close to the used value, so replacing the device gives better value for money.'
+    }
+    return 'The decision still leans to replacement because the overall score and cost balance are not strong enough for repair.'
+  }
+
+  if (recommendation === 'repair') {
+    if (status === 'repairable' && ratio <= 0.3) {
+      return 'The device is historically repairable and the repair cost is much lower than the used value, so repair is the better call.'
+    }
+    if (ratio <= 0.45) {
+      return 'The repair cost stays well below the used value, so repair remains the more economical option.'
+    }
+    return 'The model signals and cost balance still support repair more than replacement.'
+  }
+
+  return 'The rules were not strong enough to clearly prefer repair or replacement, so the result stays conservative.'
+})
 
 async function analyze() {
   errorMessage.value = ''
